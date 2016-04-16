@@ -1,0 +1,63 @@
+{
+    "events":
+	[
+		{
+            "event_type": "INTERACT",
+			"action": "RIGHT_AIR",
+            "issuer": "SELF",
+			"modid": "minecraft",
+			"name": "air",
+			"meta": "0",
+			"ignoreBlock": "true",
+            "tasks": [
+				{
+					"task_type": "COMMAND",
+					"command": "/tc research @p MT_TTSTART",
+					"ignorePrivilages": "true",
+					"conditions":  
+						[
+							{
+								"condition_type": "USING",
+								"modid": "ModpackStuff",
+								"name": "TCAddonsTomes",
+								"meta": "0"
+							}
+						]
+					},
+					{
+					"task_type": "CHAT",
+					"receiver_type": "SELF",
+					"receiver": "",
+					"message": "This book talks about further uses of Thaumaturgy.",
+					"conditions":  
+						[
+							{
+								"condition_type": "USING",
+								"modid": "ModpackStuff",
+								"name": "TCAddonsTomes",
+								"meta": "0"
+							}
+						]
+					},
+					{
+					"task_type": "INVENTORY_REMOVE",
+					"target_type": "SELF",
+					"target": "",
+					"modid": "ModpackStuff",
+					"name": "TCAddonsTomes",
+					"meta": "0",
+					"count": "1",
+					"conditions":  
+						[
+							{
+								"condition_type": "USING",
+								"modid": "ModpackStuff",
+								"name": "TCAddonsTomes",
+								"meta": "0"
+							}
+						]
+					}
+			]
+		}
+	]
+}

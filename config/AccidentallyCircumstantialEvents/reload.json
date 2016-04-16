@@ -1,0 +1,20 @@
+{
+    "events":
+	[
+		{
+		"event_type": "CHAT",
+		"text": "reload",
+		"tasks": [
+					{
+					"task_type": "CHAT",
+					"receiver_type": "SELF",
+					"receiver": "",
+					"message": "Reloaded!"
+					},                
+					{
+						"task_type": "RELOAD"  
+					}
+				 ]
+		}
+	]
+}
