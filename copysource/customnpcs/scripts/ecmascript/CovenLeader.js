@@ -61,7 +61,6 @@ function init() {
 	npc.setStoredData("ox",npc.getBlockX());
 	npc.setStoredData("oy",npc.getBlockY());
 	npc.setStoredData("oz",npc.getBlockZ());
-	npc.setTempData("cheeseCount",0);
 }
 
 var update() {
@@ -132,7 +131,7 @@ var update() {
 															  //BTW it's for summoning mobs
 			var maxCountSummon;
 			if (!npc.hasTempData("maxCountSummon") || npc.getTempData("maxCountSummon") == "reset") {
-				maxCountSummon = 6 + Math.random()*8;
+				maxCountSummon = 3 + Math.random()*6;
 			} else {
 				maxCountSummon = npc.getTempData("maxCountSummon");
 			}
@@ -194,9 +193,7 @@ var update() {
 			//SECOND BARRIER PHASE
 			/////////////////////
 			} else if (phase == "barrier2" && !debug) {
-				//Set the time for the next barrier to appear to a random value between 3 and 4 seconds ()
-				//if it isn't set
-				maxCount = 6;
+				maxCount = 5;
 				
 				//Place barrier and set maxcount to a random value (see above)
 				if (count >= maxCount) {
@@ -217,7 +214,7 @@ var update() {
 				} else {
 				//Count upwards
 					count++;
-					npc.executeCommand("/tellraw @a "+count);
+					// npc.executeCommand("/tellraw @a "+count);
 				}
 			}
 			
@@ -225,22 +222,6 @@ var update() {
 			npc.setTempData("countSummon",countSummon);
 			npc.setTempData("maxCountBarrier",maxCount);
 		}
-		
-		//Cheese prevention, teleport all nearby players away 3 seconds after a throw
-		var cheeseCount = npc.getTempData("cheeseCount");
-		if (cheeseCount > 0 && cheeseCount < 7) {
-			cheeseCount++;
-		} else if (cheeseCount >= 7) {
-			var nearbyPlayers = npc.getSurroundingEntities(5,1);
-			if (nearbyPlayers != null) {
-				for (i=0;i<nearbyPlayers.length;i++) {					
-					nearbyPlayers[i].setPosition(ox-27,oy-1,oz);
-					if (debug) {npc.executeCommand('/tellraw @a "teleporting '+nearbyPlayers[i].getName()+' to '+(ox-27)+' '+(oy-1)+' '+oz+'"');}
-				}
-			}
-			cheeseCount=0;
-		}
-		npc.setTempData("cheeseCount",cheeseCount);
 	}
 	
 	npc.setStoredData("count",count);
@@ -254,33 +235,27 @@ function damaged(event) {
 	var health = npc.getHealth();
 	var maxHealth = npc.getMaxHealth();
 	var hitcount = npc.getStoredData("hitcount");
-	var cheeseCount = npc.getTempData("cheeseCount"); //Timer for player teleportation away
 	
 	var ox = npc.getStoredData("ox");
 	var oy = npc.getStoredData("oy");
 	var oz = npc.getStoredData("oz");
 	
-	if (cheeseCount > 0) {
-		event.setCancelled(true);
-	} else if (phase == "barrier1" || phase == "barrier2") {
+	if (phase == "barrier1" || phase == "barrier2") {
 		if (hitcount < 1) {
-			hitcount++;
+			hitcount++
 		} else {
-			hitcount=0;
+			var nearbyPlayers = npc.getSurroundingEntities(10,1);
 			
-			var players = npc.getSurroundingEntities(10,1);
-			
-			//Remove barrier blocks to launch player properly
-			fill(ox,oy-1,oz-4,ox+3,oy+3,oz+8,"air",0,"",true,"witchery:barrier");
-			
-			//Throw players back, different strenght than at start because for some reason it launched differently with the same values
-			if (players !== null) {
-				for (i=0;i<players.length;i++) {
-					throwBack(players[i],7,1.7);
+			if (nearbyPlayers != null) {
+				for (i=0;i<nearbyPlayers.length;i++) {					
+					nearbyPlayers[i].setPosition(ox-26.5,oy-1,oz+0.5);
+					npc.executeCommand("/playsound mob.endermen.portal @a " + ox-27 + " " + oy-1 + " " + oz);
+					
+					// npc.executeCommand('/tellraw @a "teleporting '+nearbyPlayers[i].getName()+' to '+(ox-27)+' '+(oy-1)+' '+oz+'"');
 				}
 			}
-			//Starts a timer to teleport all nearby players away in case they managed to stay close
-			npc.setTempData("cheeseCount",1);
+
+			hitcount = 0;
 		}
 	}
 	
