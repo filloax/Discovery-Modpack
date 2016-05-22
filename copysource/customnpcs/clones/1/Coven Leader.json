@@ -1,0 +1,712 @@
+{
+    "ReturnToStart": 0b,
+    "NpcInv": [
+    ],
+    "PotionEffect": 0,
+    "Size": 5,
+    "stopAndInteract": 1b,
+    "Resistances": {
+        "Arrow": 1.8028169f,
+        "Explosion": 1.0f,
+        "Knockback": 2.0f,
+        "Melee": 1.0f
+    },
+    "BossBar": 1b,
+    "RespawnTime": 0,
+    "NpcAngrySound": "",
+    "ReactsToFire": 0b,
+    "IgnoreCobweb": 0b,
+    "PositionOffsetZ": 5.0f,
+    "PositionOffsetY": 5.0f,
+    "PositionOffsetX": 5.0f,
+    "LootMode": 0,
+    "TransformHasAI": 0b,
+    "AttackStrenght": 5,
+    "PersistenceRequired": 0b,
+    "id": "customnpcs.CustomNpc",
+    "HealF": 300.0f,
+    "MovingPatern": 0,
+    "NpcLines": {
+        "Lines": [
+        ]
+    },
+    "DefendFaction": 0b,
+    "FireIndirect": 0,
+    "NpcVisible": 0,
+    "LinkedNpcName": "",
+    "FindShelter": 2,
+    "ScriptsContainers": [
+        {
+            "Script": "	//Variables starting with f are function locals
+	
+	//Throw players back
+	var throwBack = function(player,strengthx,strengthy) {
+		var fmcp = player.getMCEntity();
+		if (!strengthx) {strengthx = 1}
+		if (!strengthy) {strengthy = 1}
+		
+		//addVelocity(double,double,double)
+		fmcp.func_70024_g(-3.5*strengthx,1.0*strengthy,Math.random()-0.5);
+		//velocityChanged
+		fmcp.field_70133_I = true;
+	}
+	npc.setStoredData(\"throwBack\",throwBack.toString());
+		
+	//Fill from first coords to second coords with block of dmg and nbt
+	//Replaces only specified block if specified
+	var fill = function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
+		if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
+		if (debug == undefined || debug === null) {debug = false;}
+		
+		if (x2<x || y2<y || z2<z) {
+			npc.say(\"Wrong usage of fill, the second coords should be higher!\");
+		} else {
+			for (i=0;i<(x2-x+1);i++) {
+				for (j=0;j<(y2-y+1);j++) {			
+					for (k=0;k<(z2-z+1);k++) {
+						var blockTest = world.getBlock(x+i,y+j,z+k);
+						if (replaceSolid && blockTest !== null) {
+							if (replaceWhat == undefined || replaceWhat === null || blockTest.getName() == replaceWhat) {
+								npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+							}
+							if (debug) {npc.say(block);}
+						} else if (blockTest === null) {
+							npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+							if (debug) {npc.say(block);}							
+						}
+					}
+				}
+			}
+		}
+	}
+	npc.setStoredData(\"fill\",fill.toString());
+	
+	var players = npc.getSurroundingEntities(10,1);
+	if (players !== null) {
+		for (i=0;i<players.length;i++) {
+			throwBack(players[i]);
+		}
+	}
+	npc.setTempData(\"thrownPlayers\",players);
+	
+	npc.setStoredData(\"count\",0);
+	npc.setStoredData(\"phase\",\"start\");
+	npc.setStoredData(\"hitcount\",0);
+	npc.setHealth(1);
+	npc.setCombatRegen(50);
+	npc.setHealthRegen(50);
+	npc.setTempData(\"maxCountBarrier\",\"reset\");
+	npc.setStoredData(\"ox\",npc.getBlockX());
+	npc.setStoredData(\"oy\",npc.getBlockY());
+	npc.setStoredData(\"oz\",npc.getBlockZ());
+	npc.setTempData(\"cheeseCount\",0);",
+            "ScriptConsole": "",
+            "Type": 0,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "	var throwBack = eval(npc.getStoredData(\"throwBack\"));
+	var fill = eval(npc.getStoredData(\"fill\"));
+	
+	var phase = npc.getStoredData(\"phase\");
+	var count = npc.getStoredData(\"count\");
+	var health = npc.getHealth();
+	var maxHealth = npc.getMaxHealth();
+	
+	var ox = npc.getStoredData(\"ox\");
+	var oy = npc.getStoredData(\"oy\");
+	var oz = npc.getStoredData(\"oz\");
+	
+	//////////////////
+	//START
+	//////////////////
+	if (phase == \"start\") {
+		//go to first phase when npc's health fully charges
+		if (health == maxHealth) {
+			count = 0;
+			npc.setHealthRegen(1);
+			npc.setCombatRegen(0);
+			npc.setStoredData(\"phase\",\"barrier1\");
+			// npc.say(\"phase barrier 1\")
+		} else {
+			//Encase thrown players in barrier after a while
+			if (count < 2) {
+				count++;
+			} else if (count == 2) {
+				if (npc.hasTempData(\"thrownPlayers\")) {
+					var players = npc.getTempData(\"thrownPlayers\");
+					for (i=0;i<players.length;i++) {
+						var px = players[i].getX();
+						var py = players[i].getY();
+						var pz = players[i].getZ();
+						
+						var barrierTicks = maxHealth/npc.getCombatRegen()*20;
+						
+						fill(px-2,py-2,pz-2,px+2,py+2,pz+2,\"witchery:barrier\",0,\"{remainingTicks:\"+barrierTicks+\",blocksPlayers:1}\");
+						fill(px-1,py-1,pz-1,px+1,py+1,pz+1,\"air\",0,\"\",true,\"witchery:barrier\");
+					}
+				}
+				count++;
+			}
+		}
+	////////////////////
+	//BOTH BARRIER PHASES
+	////////////////////
+	} else if (phase == \"barrier1\" || phase == \"barrier2\") {
+		//Stay at starting position
+		npc.setPosition(ox+0.5,oy,oz+0.5);
+		
+		//Get players and only do stuff if sat least 1 is found
+		var players = npc.getSurroundingEntities(40,1);
+		if (players !== null) {
+			var px = players[0].getBlockX();
+			var py = players[0].getBlockY();
+			var pz = players[0].getBlockZ();
+			var debug;
+			if (players[0].getHeldItem() !== null) {
+				debug = players[0].getHeldItem().getName() == \"customnpcs:npcScripter\" || players[0].getHeldItem().getName() == \"customnpcs:npcWand\" || players[0].getHeldItem().getName() == \"customnpcs:npcMobCloner\";
+			}
+			var barrierTicks = 200;
+
+			var countSummon = npc.getTempData(\"countSummon\"); //This is another tempdata because it needs to be counted separately, yes ik this is getting spaghetti
+															  //BTW it's for summoning mobs
+			var maxCountSummon;
+			if (!npc.hasTempData(\"maxCountSummon\") || npc.getTempData(\"maxCountSummon\") == \"reset\") {
+				maxCountSummon = 6 + Math.random()*8;
+			} else {
+				maxCountSummon = npc.getTempData(\"maxCountSummon\");
+			}
+			
+			if (countSummon >= maxCountSummon && !debug) {
+				maxCountSummon = \"reset\";
+				countSummon = 0;
+				
+				//Summon stuff
+				var rand = Math.random();
+				// var qrand = Math.sqrt(rand ^ 2); //Module of rand
+				// var vrand = rand / qrand; //Verse of rand
+				
+				//The x should go from 1 block behind player to 9 blocks in front,
+				//the z +- 6 max, the y equal
+				var x = px + 4 + rand*5;
+				var y = py;
+				var z = pz + rand*6 - 3;
+				
+				if (world.getBlock(x,y,z) === null) {
+					world.spawnClone(x,y,z,1,(Math.random() < 0.5) ? \"Hungry Zombie\" : \"Summoned Wraith\");
+				}
+			} else {
+				countSummon++;
+			}
+			
+			var maxCount;
+			
+			/////////////////////
+			//FIRST BARRIER PHASE
+			/////////////////////
+			if (phase == \"barrier1\" && !debug) {
+				//Set the time for the next barrier to appear to a random value between 1 and 3 seconds ()
+				//if it isn't set
+				if (!npc.hasTempData(\"maxCountBarrier\") || npc.getTempData(\"maxCountBarrier\") == \"reset\") {
+					maxCount = 2 + Math.random()*4;
+					// npc.executeCommand('/tellraw @a '+maxCount);
+				} else {
+					maxCount = npc.getTempData(\"maxCountBarrier\");
+				}
+				
+				//Place barrier and set maxcount to a random value (see above)
+				if (count >= maxCount) {
+					maxCount = \"reset\";
+					count = 0;
+					// npc.executeCommand('/tellraw @a barrier');
+					
+					//Actuall filling, make a 5x6x1 barrier that lasts 10 seconds 2 blocks in front of the player
+					//Don't if the barrier would be over the npc
+					if (px+2 != ox) {
+						fill(px+2,py,pz-2,px+2,py+5,pz+2,\"witchery:barrier\",0,\"{remainingTicks:\"+barrierTicks+\",blocksPlayers:1}\");
+					}
+				} else {
+				//Count upwards
+					count++;
+					// npc.executeCommand(\"/tellraw @a \"+count);
+				}
+			/////////////////////
+			//SECOND BARRIER PHASE
+			/////////////////////
+			} else if (phase == \"barrier2\" && !debug) {
+				//Set the time for the next barrier to appear to a random value between 3 and 4 seconds ()
+				//if it isn't set
+				maxCount = 6;
+				
+				//Place barrier and set maxcount to a random value (see above)
+				if (count >= maxCount) {
+					// maxCount = \"reset\";
+					count = 0;
+					// npc.executeCommand('/tellraw @a barrier');
+					
+					//Make a room-width barrier that lasts 10 seconds with a random 3x3 opening
+					//The barrier is placed in the nearest position divisible by 4
+					
+					var fillx = Math.ceil((px+2)/4)*4; //The x for the wall
+					var openingz = oz+Math.random()*12-6;
+					
+					//Create barrier
+					fill(fillx,oy-1,oz-9,fillx,oy+13,oz+9,\"witchery:barrier\",0,\"{remainingTicks:\"+barrierTicks+\",blocksPlayers:1}\");
+					//Create opening
+					fill(fillx,oy-1,openingz-1,fillx,oy+1,openingz+1,\"air\",0,\"\",true,\"witchery:barrier\");
+				} else {
+				//Count upwards
+					count++;
+					npc.executeCommand(\"/tellraw @a \"+count);
+				}
+			}
+			
+			npc.setTempData(\"maxCountSummon\",maxCountSummon);
+			npc.setTempData(\"countSummon\",countSummon);
+			npc.setTempData(\"maxCountBarrier\",maxCount);
+		}
+		
+		//Cheese prevention, teleport all nearby players away 3 seconds after a throw
+		var cheeseCount = npc.getTempData(\"cheeseCount\");
+		if (cheeseCount > 0 && cheeseCount < 7) {
+			cheeseCount++;
+		} else if (cheeseCount >= 7) {
+			var nearbyPlayers = npc.getSurroundingEntities(5,1);
+			if (nearbyPlayers != null) {
+				for (i=0;i<nearbyPlayers.length;i++) {					
+					nearbyPlayers[i].setPosition(ox-27,oy-1,oz);
+					if (debug) {npc.executeCommand('/tellraw @a \"teleporting '+nearbyPlayers[i].getName()+' to '+(ox-27)+' '+(oy-1)+' '+oz+'\"');}
+				}
+			}
+			cheeseCount=0;
+		}
+		npc.setTempData(\"cheeseCount\",cheeseCount);
+	}
+	
+	npc.setStoredData(\"count\",count);",
+            "ScriptConsole": "",
+            "Type": 1,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "	var throwBack = eval(npc.getStoredData(\"throwBack\"));
+	var fill = eval(npc.getStoredData(\"fill\"));
+	
+	var phase = npc.getStoredData(\"phase\");
+	var health = npc.getHealth();
+	var maxHealth = npc.getMaxHealth();
+	var hitcount = npc.getStoredData(\"hitcount\");
+	var cheeseCount = npc.getTempData(\"cheeseCount\"); //Timer for player teleportation away
+	
+	var ox = npc.getStoredData(\"ox\");
+	var oy = npc.getStoredData(\"oy\");
+	var oz = npc.getStoredData(\"oz\");
+	
+	if (cheeseCount > 0) {
+		event.setCancelled(true);
+	} else if (phase == \"barrier1\" || phase == \"barrier2\") {
+		if (hitcount < 1) {
+			hitcount++;
+		} else {
+			hitcount=0;
+			
+			var players = npc.getSurroundingEntities(10,1);
+			
+			//Remove barrier blocks to launch player properly
+			fill(ox,oy-1,oz-4,ox+3,oy+3,oz+8,\"air\",0,\"\",true,\"witchery:barrier\");
+			
+			//Throw players back, different strenght than at start because for some reason it launched differently with the same values
+			if (players !== null) {
+				for (i=0;i<players.length;i++) {
+					throwBack(players[i],7,1.7);
+				}
+			}
+			//Starts a timer to teleport all nearby players away in case they managed to stay close
+			npc.setTempData(\"cheeseCount\",1);
+		}
+	}
+	
+	if (health < maxHealth/3*2 && phase == \"barrier1\") {
+		npc.setStoredData(\"phase\",\"barrier2\")
+		npc.executeCommand('/tellraw @a barrier2')
+	}
+	
+	// npc.say(\"ouch \"+hitcount);
+	npc.setStoredData(\"hitcount\",hitcount);",
+            "ScriptConsole": "",
+            "Type": 4,
+            "ScriptList": [
+            ]
+        }
+    ],
+    "Air": 300s,
+    "TacticalVariant": 0,
+    "Orientation": 0,
+    "ScriptLanguage": "ECMAScript",
+    "KnockBack": 0,
+    "TransformHasJob": 0b,
+    "CustomName": "",
+    "CanDespawn": 0b,
+    "BurnInSun": 0b,
+    "StandingState": 0,
+    "AttackInvisible": 0b,
+    "HurtTime": 0s,
+    "WalkingRange": 10,
+    "CustomNameVisible": 0b,
+    "ShotCount": 1,
+    "pDur": 5,
+    "AttackRange": 2,
+    "NpcKillLines": {
+        "Lines": [
+        ]
+    },
+    "PotionImmune": 1b,
+    "AvoidsSun": 0b,
+    "Texture": "witchery:textures/entities/covenwitch1.png",
+    "NpcJob": 0,
+    "BurstCount": 1,
+    "NpcAttackLines": {
+        "Lines": [
+        ]
+    },
+    "pSpeed": 10,
+    "pArea": 0,
+    "DeathTime": 0s,
+    "pImpact": 0,
+    "DropChances": [
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f
+    ],
+    "MoveState": 0,
+    "RangeAndMelee": 0,
+    "pRender3D": 0b,
+    "Motion": [
+        0.0d,
+        -0.0784000015258789d,
+        0.0d
+    ],
+    "CombatRegen": 0,
+    "pEffect": 0,
+    "DistanceToMelee": 4,
+    "NpcStepSound": "",
+    "FireRate": 5,
+    "pEffAmp": 0,
+    "OnGround": 1b,
+    "Dimension": 0,
+    "ImmuneToFire": 0b,
+    "NpcKilledLines": {
+        "Lines": [
+        ]
+    },
+    "CreatureInfusion": {
+        "PlayerInfusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "InfusionCosts": {
+            "Aspects": [
+            ]
+        },
+        "tumorWarpTemp": 0,
+        "Infusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "toggleClimb": 0b,
+        "toggleInvisible": 0b,
+        "tumorWarp": 0,
+        "sitting": 0b,
+        "tumorWarpPermanent": 0
+    },
+    "UUIDMost": 104679978717845L,
+    "Fire": -1s,
+    "DisablePitch": 0b,
+    "pPhysics": 1b,
+    "TransformHasInv": 0b,
+    "NpcInteractLines": {
+        "Lines": [
+        ]
+    },
+    "pSpin": 0b,
+    "NpcHurtSound": "minecraft:game.player.hurt",
+    "pTrail": 0,
+    "CreatureType": 1,
+    "Attributes": [
+        {
+            "Base": 300.0d,
+            "Name": "generic.maxHealth"
+        },
+        {
+            "Base": 0.0d,
+            "Name": "generic.knockbackResistance"
+        },
+        {
+            "Base": 0.25d,
+            "Name": "generic.movementSpeed"
+        },
+        {
+            "Base": 32.0d,
+            "Name": "generic.followRange"
+        },
+        {
+            "Base": 5.0d,
+            "Name": "generic.attackDamage"
+        }
+    ],
+    "Invulnerable": 0b,
+    "TransformHasDisplay": 0b,
+    "NoFallDamage": 0b,
+    "AbsorptionAmount": 0.0f,
+    "TransformHasRole": 0b,
+    "Name": "Coven Leader",
+    "FallDistance": 0.0f,
+    "NpcIdleSound": "",
+    "Weapons": [
+    ],
+    "NPCDialogOptions": [
+    ],
+    "AggroRange": 50,
+    "DirectLOS": 1b,
+    "HealthRegen": 1,
+    "NpcModelData": {
+        "LegsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "BodyConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "EntityClass": "com.emoniph.witchery.entity.EntityCovenWitch",
+        "LegParts": {
+            "Type": 0b,
+            "PlayerTexture": 1b,
+            "Color": 16777215
+        },
+        "Parts": [
+        ],
+        "Breasts": 0b,
+        "Headwear": 2b,
+        "ArmsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "ExtraData": {
+        },
+        "HeadConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        }
+    },
+    "minDelay": 20,
+    "DoorInteract": 2,
+    "MoveSpeed": 5,
+    "TransformEditingModus": 0b,
+    "UsingSkinUrl": 0b,
+    "Leashed": 0b,
+    "SkinUrl": "",
+    "CanSwim": 1b,
+    "MaxHealth": 300,
+    "HideBodyWhenKilled": 0b,
+    "AttackSpeed": 20,
+    "PotionDuration": 5,
+    "maxDelay": 40,
+    "ScriptEnabled": 1b,
+    "Role": 0,
+    "DropChance": [
+        {
+            "Integer": 100,
+            "Slot": 0
+        },
+        {
+            "Integer": 100,
+            "Slot": 1
+        },
+        {
+            "Integer": 100,
+            "Slot": 2
+        },
+        {
+            "Integer": 100,
+            "Slot": 3
+        },
+        {
+            "Integer": 100,
+            "Slot": 4
+        },
+        {
+            "Integer": 100,
+            "Slot": 5
+        },
+        {
+            "Integer": 100,
+            "Slot": 6
+        },
+        {
+            "Integer": 100,
+            "Slot": 7
+        },
+        {
+            "Integer": 100,
+            "Slot": 8
+        }
+    ],
+    "FactionPoints": {
+        "DecreaseFaction1Points": 0b,
+        "OptionFaction2Points": 100,
+        "OptionFactions1": -1,
+        "OptionFactions2": -1,
+        "OptionFaction1Points": 100,
+        "DecreaseFaction2Points": 0b
+    },
+    "pDamage": 4,
+    "KilledTime": 0L,
+    "AimWhileShooting": 0b,
+    "CanPickUpLoot": 0b,
+    "AttackOtherFactions": 0b,
+    "CanDrown": 0b,
+    "AttackTime": 0s,
+    "pSize": 5,
+    "CanSprint": 0b,
+    "CanLeap": 0b,
+    "TransformIsActive": 0b,
+    "ForgeData": {
+        "WITCInitialWidth": 0.6f,
+        "CNPCStoredData": {
+            "fillLine": "function (x,y,z,dir,length,block,dmg,nbt,replaceSolid) {
+		if (dir == \"x\") {
+			for (i=0;i<length;i++) {
+				var block = world.getBlock(x+i,y,z);
+				if (block == null || replaceSolid) {
+					npc.executeCommand(\"/setblock \"+(x+i)+\" \"+y+\" \"+z+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+				}
+			}
+		} else if (dir == \"y\") {
+			for (i=0;i<length;i++) {
+				var block = world.getBlock(x,y+i,z);
+				if (block == null || replaceSolid) {
+					npc.executeCommand(\"/setblock \"+x+\" \"+(y+i)+\" \"+z+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+				}
+			}
+		} else if (dir == \"z\") {
+			for (i=0;i<length;i++) {
+				var block = world.getBlock(x,y,z+i);
+				if (block == null || replaceSolid) {
+					npc.executeCommand(\"/setblock \"+x+\" \"+y+\" \"+(z+i)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+				}
+			}
+		} else {
+			npc.say(\"Wrong syntax on fillLine!\");
+		}
+	}",
+            "phase": "barrier1",
+            "throwBack": "function(player,strengthx,strengthy) {
+		var fmcp = player.getMCEntity();
+		if (!strengthx) {strengthx = 1}
+		if (!strengthy) {strengthy = 1}
+		
+		//addVelocity(double,double,double)
+		fmcp.func_70024_g(-3.5*strengthx,1.0*strengthy,Math.random()-0.5);
+		//velocityChanged
+		fmcp.field_70133_I = true;
+	}",
+            "count": 0.0d,
+            "ox": 20214.0d,
+            "oy": 66.0d,
+            "oz": 20067.0d,
+            "fill": "function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
+		if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
+		if (debug == undefined || debug === null) {debug = false;}
+		
+		if (x2<x || y2<y || z2<z) {
+			npc.say(\"Wrong usage of fill, the second coords should be higher!\");
+		} else {
+			for (i=0;i<(x2-x+1);i++) {
+				for (j=0;j<(y2-y+1);j++) {			
+					for (k=0;k<(z2-z+1);k++) {
+						var blockTest = world.getBlock(x+i,y+j,z+k);
+						if (replaceSolid && blockTest !== null) {
+							if (replaceWhat == undefined || replaceWhat === null || blockTest.getName() == replaceWhat) {
+								npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+							}
+							if (debug) {npc.say(block);}
+						} else if (blockTest === null) {
+							npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+							if (debug) {npc.say(block);}							
+						}
+					}
+				}
+			}
+		}
+	}",
+            "hitcount": 0.0d
+        },
+        "WITCInitialHeight": 1.95f
+    },
+    "MovingState": 0,
+    "MovingPos": 0,
+    "PotionAmp": 0,
+    "OnAttack": 3,
+    "TacticalRadius": 8,
+    "MaxExp": 0,
+    "OrderedLines": 0b,
+    "PortalCooldown": 0,
+    "pGlows": 0b,
+    "TransformHasAdvanced": 0b,
+    "TransformHasStats": 0b,
+    "FiringSound": "random.bow",
+    "ModRev": 16,
+    "Accuracy": 60,
+    "MinExp": 0,
+    "Armor": [
+    ],
+    "CloakTexture": "",
+    "GlowTexture": "",
+    "MaxFiringRange": 15,
+    "pXlr8": 0b,
+    "UUIDLeast": 4810205481735555545L,
+    "Health": 300s,
+    "pExplode": 0b,
+    "pStick": 0b,
+    "MovingPause": 1b,
+    "NpcDeathSound": "minecraft:game.player.hurt",
+    "FactionID": 2,
+    "Title": "CovenLeader1",
+    "TotalTicksAlive": 87608L,
+    "Rotation": [
+        -233.35928f,
+        0.0f
+    ],
+    "ShowName": 1,
+    "npcInteracting": 1b,
+    "AvoidsWater": 0b,
+    "Equipment": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+    ],
+    "NoLivingAnimation": 0b,
+    "SpawnCycle": 3
+}

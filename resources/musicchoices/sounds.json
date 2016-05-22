@@ -1,0 +1,123 @@
+{
+ "mch.bossvictory": {
+    "category": "music",
+    "musicchoices": true,
+	"victory": [
+      "{Title:BossTest}",
+	  "{Title:CovenLeader}"
+	],
+    "sounds": [
+      {
+        "name": "victory",
+        "stream": true
+      }
+    ]
+  },
+  "mch.boss.covenleader": {
+    "category": "music",
+    "musicchoices": true,
+	"boss": [
+      "{Title:CovenLeader}"
+	],
+    "sounds": [
+      {
+        "name": "bossdark1",
+        "stream": true
+      }
+    ]
+  },
+  "bossbattle": {
+	  "category": "record",
+	  "sounds": [
+		  {
+			"name": "Queen_of_the_night",
+			"stream": true
+		  }
+		]
+  },
+  "bossbattle2": {
+	  "category": "record",
+	  "sounds": [
+		  {
+			"name": "The_end_of_mankind",
+			"stream": true
+		  }
+		]
+  },
+  "Achaidh.cheide": {
+    "category": "music",
+    "sounds": [{"name": "Achaidh Cheide", "stream": true}]
+  },
+  "Celtic.impulse": {
+    "category": "music",
+    "sounds": [{"name": "Celtic Impulse", "stream": true}]
+  },
+  "Chase": {
+    "category": "music",
+    "sounds": [{"name": "Chase", "stream": true}]
+  },
+  "Confuse.state": {
+    "category": "music",
+    "sounds": [{"name": "Confused State", "stream": true}]
+  },
+  "Double.drift": {
+    "category": "music",
+    "sounds": [{"name": "Double Drift", "stream": true}]
+  },
+  "Expeditionary": {
+    "category": "music",
+    "sounds": [{"name": "Expeditionary", "stream": true}]
+  },
+  "Frost.waltz.2": {
+    "category": "music",
+    "sounds": [{"name": "Frost Waltz (Alternate)", "stream": true}]
+  },
+  "Frost.waltz": {
+    "category": "music",
+    "sounds": [{"name": "Frost Waltz", "stream": true}]
+  },
+  "Heroic.age": {
+    "category": "music",
+    "sounds": [{"name": "Heroic Age", "stream": true}]
+  },
+  "Not.as.it.seems": {
+    "category": "music",
+    "sounds": [{"name": "Not As It Seems", "stream": true}]
+  },
+  "Opium": {
+    "category": "music",
+    "sounds": [{"name": "Opium", "stream": true}]
+  },
+  "Savannah.sketch": {
+    "category": "music",
+    "sounds": [{"name": "Savannah Sketch", "stream": true}]
+  },
+  "Senbazuru": {
+    "category": "music",
+    "sounds": [{"name": "Senbazuru", "stream": true}]
+  },
+  "Skye.cullin": {
+    "category": "music",
+    "sounds": [{"name": "Skye Cullin", "stream": true}]
+  },
+  "Temple.of.the.manes": {
+    "category": "music",
+    "sounds": [{"name": "Temple of the Manes", "stream": true}]
+  },
+  "The.pyre": {
+    "category": "music",
+    "sounds": [{"name": "The Pyre", "stream": true}]
+  },
+  "To.the.ends": {
+    "category": "music",
+    "sounds": [{"name": "To the Ends", "stream": true}]
+  },
+  "Unpromised": {
+    "category": "music",
+    "sounds": [{"name": "Unpromised", "stream": true}]
+  },
+  "Willow.and.the.light": {
+    "category": "music",
+    "sounds": [{"name": "Willow and the Light", "stream": true}]
+  }
+}
