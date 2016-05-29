@@ -43,6 +43,11 @@ function init() {
 	}
 	npc.setStoredData("fill",fill.toString());
 	
+	var getRandArr = function(array) {
+		return(array[Math.floor(Math.random()*array.length)]);
+	}
+	npc.setStoredData("getRandArr",getRandArr.toString());
+	
 	var players = npc.getSurroundingEntities(10,1);
 	if (players !== null) {
 		for (i=0;i<players.length;i++) {
@@ -66,6 +71,7 @@ function init() {
 var update() {
 	var throwBack = eval(npc.getStoredData("throwBack"));
 	var fill = eval(npc.getStoredData("fill"));
+	var getRandArr = eval(npc.getStoredData("getRandArr"));
 	
 	var phase = npc.getStoredData("phase");
 	var count = npc.getStoredData("count");
@@ -126,6 +132,10 @@ var update() {
 				debug = players[0].getHeldItem().getName() == "customnpcs:npcScripter" || players[0].getHeldItem().getName() == "customnpcs:npcWand" || players[0].getHeldItem().getName() == "customnpcs:npcMobCloner";
 			}
 			var barrierTicks = 200;
+			
+			///////////
+			//SUMMONING
+			///////////
 
 			var countSummon = npc.getTempData("countSummon"); //This is another tempdata because it needs to be counted separately, yes ik this is getting spaghetti
 															  //BTW it's for summoning mobs
@@ -157,6 +167,42 @@ var update() {
 			} else {
 				countSummon++;
 			}
+						
+			////////////////
+			//POTIONS
+			///////////////
+			
+			var countPotion = npc.getTempData("countPotion"); //This is yet another tempdata for throwing potions
+			var maxCountPotion; //Between 3 and 8 seconds
+			
+			//Effect item string
+			var effects = [
+			["{id:minecraft:glowstone_dust},{id:minecraft:stick}"],  //knockback
+			["{id:minecraft:fermented_spider_eye},{id:minecraft:speckled_melon}"],  //hurting
+			["{id:minecraft:fermented_spider_eye},{id:minecraft:sugar}"],  //slowness
+			["{id:minecraft:spider_eye}"],  //poison
+			["{id:witchery:ingredient,Damage:23}"]]; //demon heart, paralysis
+						
+			if (!npc.hasTempData("maxCountPotion") || npc.getTempData("maxCountPotion") == "reset") {
+				maxCountPotion = 6 + Math.random()*10;
+			} else {
+				maxCountPotion = npc.getTempData("maxCountPotion");
+			}
+			
+			if (countPotion >= maxCountPotion && !debug) {
+				maxCountPotion = "reset";
+				countPotion = 0;
+								
+				var command = '/summon2 witchery.brew2 '+(px+Math.random()*4-2)+' '+(oy+3)+' '+(pz+Math.random()*4-2)+' {Brew:{id:witchery:brewbottle,tag:{Splash:1,Color:'+(Math.random()*Math.pow(10, 8))+',EffectCount:1,Items:[{id:witchery:ingredient,Damage:22},{id:minecraft:nether_wart},{id:witchery:ingredient,Damage:37},'+getRandArr(effects)+',{id:minecraft:gunpowder}]}},Air:300,inTile:-1,xTile:-1,yTile:-1,zTile:-1,Motion:[0.0,0.1,0.0]}';
+				
+				// npc.executeCommand('/tellraw @a "'+command+'"');
+
+				npc.executeCommand(command);
+			} else {
+				countPotion++;
+			}
+			
+			//BARRIERS
 			
 			var maxCount;
 			
@@ -219,6 +265,8 @@ var update() {
 			}
 			
 			npc.setTempData("maxCountSummon",maxCountSummon);
+			npc.setTempData("countPotion",countPotion);
+			npc.setTempData("maxCountPotion",maxCountPotion);
 			npc.setTempData("countSummon",countSummon);
 			npc.setTempData("maxCountBarrier",maxCount);
 		}
