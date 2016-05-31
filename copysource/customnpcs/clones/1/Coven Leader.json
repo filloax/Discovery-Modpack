@@ -24,7 +24,7 @@
     "AttackStrenght": 5,
     "PersistenceRequired": 0b,
     "id": "customnpcs.CustomNpc",
-    "HealF": 300.0f,
+    "HealF": 251.0f,
     "MovingPatern": 0,
     "NpcLines": {
         "Lines": [
@@ -103,14 +103,16 @@
 	npc.setTempData(\"maxCountBarrier\",\"reset\");
 	npc.setStoredData(\"ox\",npc.getBlockX());
 	npc.setStoredData(\"oy\",npc.getBlockY());
-	npc.setStoredData(\"oz\",npc.getBlockZ());",
+	npc.setStoredData(\"oz\",npc.getBlockZ());
+	npc.setTempData(\"pCount\",0);
+	npc.setRightItem(null);",
             "ScriptConsole": "",
             "Type": 0,
             "ScriptList": [
             ]
         },
         {
-            "Script": "	var throwBack = eval(npc.getStoredData(\"throwBack\"));
+            "Script": "var throwBack = eval(npc.getStoredData(\"throwBack\"));
 	var fill = eval(npc.getStoredData(\"fill\"));
 	var getRandArr = eval(npc.getStoredData(\"getRandArr\"));
 	
@@ -203,7 +205,7 @@
 				var z = pz + rand*6 - 3;
 				
 				if (world.getBlock(x,y,z) === null) {
-					world.spawnClone(x,y,z,1,(Math.random() < 0.5) ? \"Hungry Zombie\" : \"Summoned Wraith\");
+					world.spawnClone(x,y,z,1,(Math.random() < 0.5) ? ((Math.random() < 0.3) ? \"Hungry Zombie\" : \"Stabby Zombie\") : \"Summoned Wraith\");
 				}
 			} else {
 				countSummon++;
@@ -243,7 +245,37 @@
 				countPotion++;
 			}
 			
+			////////////////////
+			//STABBY ZOMBIE / POPPET HANDLING
+			////////////////////
+			
+			var pCount = npc.getTempData(\"pCount\"); //counter for managing poppet magic
+			var pTarget = npc.getTempData(\"pTarget\"); //target for the magic
+			var poppet = world.createItem(\"witchery:poppet\",0,1);
+			
+			if (pCount == 1) {
+				if (debug) {npc.say(pTarget.getName());}
+				
+				npc.setRightItem(poppet);
+				pCount++;
+			} else if (pCount == 4) {
+				npc.swingHand();
+				throwBack(pTarget, 0.4);
+				pCount++;
+			} else if (pCount == 7) {
+				npc.swingHand();
+				throwBack(pTarget, 0.4);
+				pCount = 0;	
+				npc.setRightItem(null);
+			} else if ((pCount > 1 && pCount < 4) || (pCount > 4 && pCount < 7)) {
+				pCount++;
+			}
+			
+			npc.setTempData(\"pCount\",pCount);
+			
+			//////////
 			//BARRIERS
+			/////////
 			
 			var maxCount;
 			
@@ -366,14 +398,14 @@
     ],
     "Air": 300s,
     "TacticalVariant": 0,
-    "Orientation": 0,
+    "Orientation": 90,
     "ScriptLanguage": "ECMAScript",
     "KnockBack": 0,
     "TransformHasJob": 0b,
     "CustomName": "",
     "CanDespawn": 0b,
     "BurnInSun": 0b,
-    "StandingState": 0,
+    "StandingState": 1,
     "AttackInvisible": 0b,
     "HurtTime": 0s,
     "WalkingRange": 10,
@@ -387,7 +419,7 @@
     },
     "PotionImmune": 1b,
     "AvoidsSun": 0b,
-    "Texture": "witchery:textures/entities/covenwitch1.png",
+    "Texture": "customnpcs:textures/covenleader.png",
     "NpcJob": 0,
     "BurstCount": 1,
     "NpcAttackLines": {
@@ -413,7 +445,7 @@
         -0.0784000015258789d,
         0.0d
     ],
-    "CombatRegen": 0,
+    "CombatRegen": 50,
     "pEffect": 0,
     "DistanceToMelee": 4,
     "NpcStepSound": "",
@@ -489,7 +521,7 @@
     ],
     "AggroRange": 50,
     "DirectLOS": 1b,
-    "HealthRegen": 1,
+    "HealthRegen": 50,
     "NpcModelData": {
         "LegsConfig": {
             "ScaleZ": 1.0f,
@@ -651,7 +683,7 @@
 		//velocityChanged
 		fmcp.field_70133_I = true;
 	}",
-            "count": 3.0d,
+            "count": 0.0d,
             "ox": 20214.0d,
             "oy": 66.0d,
             "oz": 20067.0d,
@@ -706,16 +738,16 @@
     "MaxFiringRange": 15,
     "pXlr8": 0b,
     "UUIDLeast": 4810205481735555545L,
-    "Health": 300s,
+    "Health": 251s,
     "pExplode": 0b,
     "pStick": 0b,
     "MovingPause": 1b,
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
     "Title": "CovenLeader1",
-    "TotalTicksAlive": 123642L,
+    "TotalTicksAlive": 147277L,
     "Rotation": [
-        -233.35928f,
+        90.0f,
         0.0f
     ],
     "ShowName": 1,
