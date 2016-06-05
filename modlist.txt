@@ -3,14 +3,14 @@
 
  Directory di C:\Giochi\Minecraft\MultiMC\instances\WIP Exploration\minecraft\mods
 
-05/06/2016  14.40    <DIR>          .
-05/06/2016  14.40    <DIR>          ..
+05/06/2016  15.39    <DIR>          .
+05/06/2016  15.39    <DIR>          ..
 09/04/2016  12.42    <DIR>          1.7.10
 13/04/2016  22.46           813.329 1.7.10-Pistronics2-v0.6.4.jar
 14/01/2016  21.18           159.664 accidentallycircumstantialevents-1.11.0.jar
 01/03/2016  16.56         1.120.608 AgriCraft-1.7.10-1.4.6-hotfix.jar
 07/03/2016  16.43            14.859 AnimationAPI-1.7.10-1.2.4.jar
-01/03/2016  16.56           211.266 AOBD-2.9.1.jar
+05/06/2016  15.39           211.318 AOBD-2.9.2.jar
 25/01/2016  21.22           107.461 AppleCore-mc1.7.10-1.3.0.jar
 13/04/2016  22.50         2.526.302 appliedenergistics2-rv2-stable-10.jar
 17/03/2016  23.56           240.223 archimedesshipsplus-1.7.10-1.8.1.jar
@@ -45,13 +45,12 @@
 28/02/2016  11.01           773.792 Et Futurum-1.5.4.jar
 01/03/2016  16.56         2.149.827 extrautilities-1.2.12.jar
 14/03/2016  22.29           376.751 Farseek-1.0.11.jar
-18/12/2015  19.19           116.959 fastcraft-1.21.jar
+05/06/2016  14.53           182.657 fastcraft-1.23.jar
 01/03/2016  16.56             7.079 FastLeafDecay-1.7.10-1.4.jar
 01/03/2016  16.56           626.171 Forbidden Magic-1.7.10-0.573.jar
 01/03/2016  16.56         3.303.413 forestry_1.7.10-4.2.9.57.jar
 09/03/2016  16.50            77.576 ForgeNBTEdit-universal-1.0.0.test.jar
 05/06/2016  12.43         1.009.655 GeoStrata 1.7.10 V14b.jar
-07/03/2016  15.19             7.692 GlobalGameRules-1.0.jar.disabled
 01/03/2016  16.56           184.951 Guide-API-1.7.10-1.0.1-20.jar
 08/04/2016  18.48             6.552 HelpFixer-1.0.7.jar
 14/01/2016  21.18         1.435.528 HQM-The Journey-4.4.4.jar
@@ -65,7 +64,6 @@
 01/03/2016  16.56         1.734.339 journeymap-1.7.10-5.1.4-unlimited.jar
 18/06/2012  19.07         1.134.765 js.jar
 26/03/2016  22.50            17.994 LaunchGui-1.7.10-2.0-18-client.jar
-06/04/2016  13.52           533.903 liteloader-1.7.10.jar.disabled
 01/03/2016  16.56           972.727 magicbees-1.7.10-2.4.3.jar
 13/04/2016  22.47           648.081 malisiscore-1.7.10-0.14.3.jar
 13/04/2016  22.47         1.645.689 malisisdoors-1.7.10-1.13.2.jar
@@ -75,7 +73,6 @@
 13/04/2016  23.24             8.951 modlist.txt
 04/03/2016  23.16    <DIR>          Modpack Custom Stuff
 01/03/2016  16.56           578.158 ModTweaker2-0.9.5.jar
-06/04/2016  13.49           418.520 mod_MAtmos_29ub4_mc1.7.10.litemod.disabled
 17/03/2016  23.56           154.694 movingworld-1.7.10-1.8.1.jar
 17/04/2016  20.15            44.118 MusicChoices-1.3_for_1.7.10.jar
 07/03/2016  16.40         1.088.992 MutantCreatures-1.7.10-1.4.9.jar
@@ -133,5 +130,5 @@
 13/04/2016  22.43           352.856 WR-CBE-1.7.10-1.4.1.9-universal.jar
 06/03/2016  15.52         1.361.162 YeGamolChattels-1.1.2.jar
 08/04/2016  14.45            27.281 [1.7.10]ArmorStatusHUD-client-1.28.jar
-             122 File    299.791.107 byte
-               8 Directory  189.391.122.432 byte disponibili
+             119 File    298.896.742 byte
+               8 Directory  187.506.704.384 byte disponibili
