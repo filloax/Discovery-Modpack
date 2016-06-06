@@ -67,7 +67,8 @@ function init() {
 	npc.setStoredData("oy",npc.getBlockY());
 	npc.setStoredData("oz",npc.getBlockZ());
 	npc.setTempData("pCount",0);
-	npc.setRightItem(null);
+	npc.clearPotionEffects();
+	npc.setRetaliateType(3);
 }
 
 var update() {
@@ -86,6 +87,8 @@ function damaged(event) {
 	var ox = npc.getStoredData("ox");
 	var oy = npc.getStoredData("oy");
 	var oz = npc.getStoredData("oz");
+	
+	if (event.getSource() == null || event.getSource().getType() != 1) {event.setCancelled(true);}
 	
 	if (phase == "barrier1" || phase == "barrier2") {
 		if (hitcount < 1) {
@@ -107,8 +110,11 @@ function damaged(event) {
 	}
 	
 	if (health < maxHealth/3*2 && phase == "barrier1") {
-		npc.setStoredData("phase","barrier2")
-		npc.executeCommand('/tellraw @a barrier2')
+		npc.setStoredData("phase","barrier2");
+		// npc.executeCommand('/tellraw @a barrier2')
+	} else if (health < maxHealth/3 && phase == "barrier2") {
+		npc.setStoredData("phase","giant");
+		npc.setRetaliateType(0);
 	}
 	
 	// npc.say("ouch "+hitcount);

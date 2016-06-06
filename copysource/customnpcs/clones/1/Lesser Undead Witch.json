@@ -1,0 +1,519 @@
+{
+    "ReturnToStart": 0b,
+    "NpcInv": [
+        {
+            "Slot": 0b,
+            "id": "witchery:ingredient",
+            "Count": 1b,
+            "Damage": 37s
+        },
+        {
+            "Slot": 1b,
+            "id": "witchery:ingredient",
+            "Count": 1b,
+            "Damage": 39s
+        }
+    ],
+    "PotionEffect": 0,
+    "Size": 5,
+    "stopAndInteract": 1b,
+    "Resistances": {
+        "Arrow": 1.0f,
+        "Explosion": 1.0f,
+        "Knockback": 1.0f,
+        "Melee": 1.0f
+    },
+    "BossBar": 0b,
+    "RespawnTime": 0,
+    "NpcAngrySound": "",
+    "ReactsToFire": 0b,
+    "IgnoreCobweb": 1b,
+    "PositionOffsetZ": 5.0f,
+    "PositionOffsetY": 5.0f,
+    "PositionOffsetX": 5.0f,
+    "LootMode": 0,
+    "TransformHasAI": 0b,
+    "AttackStrenght": 5,
+    "PersistenceRequired": 0b,
+    "id": "customnpcs.CustomNpc",
+    "HealF": 24.0f,
+    "MovingPatern": 0,
+    "NpcLines": {
+        "Lines": [
+        ]
+    },
+    "DefendFaction": 0b,
+    "FireIndirect": 0,
+    "NpcVisible": 0,
+    "LinkedNpcName": "",
+    "FindShelter": 2,
+    "ScriptsContainers": [
+        {
+            "Script": "var rand = Math.random();
+	var texture = (rand != 0) ? Math.ceil(rand * 5) : 1;
+	
+	npc.setTexture(\"customnpcs:textures/covenwitch\"+texture+\".png\");
+	npc.setTempData(\"countMax\",1);
+	npc.setTempData(\"count\",0);
+	switch(Math.round(Math.random() * 2)) {
+		case 1:
+			npc.setStoredData(\"type\",\"spell\");
+			break;
+		default:
+			npc.setStoredData(\"type\",\"brew\");
+	}",
+            "ScriptConsole": "",
+            "Type": 0,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "	var type = npc.getStoredData(\"type\");
+	if (npc.isAttacking()) {
+		var count = npc.getTempData(\"count\");
+		var countMax = npc.getTempData(\"countMax\");
+		
+		var playerL = npc.getSurroundingEntities(60,1);
+		var player;
+		try {
+			player = playerL[0];
+		}
+		catch(err) {
+			player = \"this is weird, getSurroudingEntities works strangely so I have to do this workaround\";
+		}
+		
+		if (typeof player != \"string\") {
+			var mcNpc = npc.getMCEntity();
+			var mcPlayer = player.getMCEntity();
+			var dist = mcNpc.func_70032_d(mcPlayer); //get distance from player
+		
+			//Switch between Retaliate and not to space player
+			if (dist > 4) {
+				npc.setRetaliateType(0);
+			} else {
+				npc.setRetaliateType(3);
+			}
+			
+			//Throw potion or shoot spell
+			if (count >= countMax) {
+				var x = npc.getX();
+				var z = npc.getZ();
+				var px = player.getX();
+				var pz = player.getZ();
+				var brew;	
+				
+				//Calculate throw force and direction
+				var dirx = (px-x)/30*1.6;
+				var dirz = (pz-z)/30*1.6;
+				
+				//Verse of the two components
+				var verx = (dirx >= 0) ? 1 : -1;
+				var verz = (dirz >= 0) ? 1 : -1;
+				
+				var l = 2.0; //Max throw force
+				
+				//the idea is to limit the throw force's vector module to 2, while keeping the original direction
+				//following the equations b=ak and c^2 = a^2 + b^2, where b is z, a is x, c is the throw force
+				if (Math.sqrt(dirx^2+diry^2) > l) {
+					var k = dirz/dirx;
+					
+					var modx = l / Math.sqrt(k^2 + 1);
+					var modz = l / Math.sqrt((1 / k^2) + 1);
+					
+					dirx = modx * verx;
+					dirz = modz * verz;
+				}
+				
+
+				var offx = (px-x > 0) ? Math.ceil((px-x)/100)*2 : Math.floor((px-x)/100)*2;
+				var offz = (pz-z > 0) ? Math.ceil((pz-z)/100)*2 : Math.floor((pz-z)/100)*2;
+
+				//Throw potion
+				if (type == \"brew\") {
+					//Choose which one to throw
+					switch(Math.floor(Math.random() * 10)) {
+						case 1:
+							//Webs
+							brew = 58;
+							break;
+						case 2:
+							//Bats
+							brew = 109;
+							break;
+						// case 3:
+							//Infection
+							// brew = 88;
+							// break;
+						case 4:
+							//Ink
+							brew = 60;
+							break;
+						// case 5:
+							//Frost
+							// brew = 76;
+							// break;
+						default:
+							brew = \"Harming\"
+					}
+					
+					var diry = 0.2
+					
+					npc.executeCommand(\"/playsound random.bow @a ~ ~ ~ 1.0 0.7\")
+					if (typeof brew != \"string\") {
+						npc.executeCommand(\"summon witchery.brew ~\"+offx+\" ~1 ~\"+offz+\" {Motion:[\"+dirx+\",\"+diry+\",\"+dirz+\"],Air:300,damageValue:\"+brew+\",inTile:-1,xTile:-1,yTile:-1,zTile:-1}\");
+					} else {
+						npc.executeCommand(\"/summon2 witchery.brew2 ~\"+offx+\" ~1 ~\"+offz+\" {Motion:[\"+dirx+\",\"+diry+\",\"+dirz+\"],Air:300,inTile:-1,xTile:-1,yTile:-1,zTile:-1,Spell:0,Brew:{id:witchery:brewbottle,tag:{Splash:1,Color:11886640,EffectCount:1,Items:[{id:372},{id:376},{id:382},{id:289}]}}}\")
+					}
+				} else {
+				//Shoot spell
+					switch(Math.floor(Math.random() * 10)) {
+							case 1:
+								//Poison
+								brew = \"{id:witchery:brewbottle,tag:{Splash:1,Color:24135678,EffectCount:1,Items:[{id:372},{id:375},{id:289}]}}\";
+								break;
+							case 2:
+								//Slow
+								brew = \"{id:witchery:brewbottle,tag:{Splash:1,Color:11883427,EffectCount:1,Items:[{id:372},{id:376},{id:353},{id:289}]}}\";
+								break;
+							case 3:
+								//Weakness
+								brew = \"{id:witchery:brewbottle,tag:{Splash:1,Color:15436896,EffectCount:1,Items:[{id:372},{id:376},{id:377},{id:289}]}}\";
+								break;
+							case 4:
+								//Grue
+								brew = \"{id:witchery:brewbottle,tag:{Splash:1,Color:11881980,EffectCount:1,Items:[{id:372},{id:witchery:ingredient,Damage:37},{id:88},{id:289}]}}\";
+								break;
+							default:
+								//Damage
+								brew = \"{id:witchery:brewbottle,tag:{Splash:1,Color:11886640,EffectCount:1,Items:[{id:372},{id:376},{id:382},{id:289}]}}\"
+					}
+					
+					var diry = -0.1
+
+					npc.executeCommand(\"/playsound mob.ghast.fireball @a\")
+					npc.executeCommand(\"/summon2 witchery.brew2 ~\"+offx+\" ~1 ~\"+offz+\" {Motion:[\"+dirx+\",\"+diry+\",\"+dirz+\"],Air:300,inTile:-1,xTile:-1,yTile:-1,zTile:-1,Spell:1,Brew:\"+brew+\"}\")
+				}
+				
+				var count = 0;
+				
+				//Set the next time to wait until potion throw
+				var newCountMax = 2 + Math.random() * 6;
+				npc.setTempData(\"countMax\",newCountMax);
+			} else {
+				++count;
+			}
+			npc.setTempData(\"count\",count);
+		}
+	}",
+            "ScriptConsole": "",
+            "Type": 1,
+            "ScriptList": [
+            ]
+        }
+    ],
+    "Air": 300s,
+    "TacticalVariant": 1,
+    "Orientation": 0,
+    "ScriptLanguage": "ECMAScript",
+    "KnockBack": 0,
+    "TransformHasJob": 0b,
+    "CustomName": "",
+    "CanDespawn": 0b,
+    "BurnInSun": 0b,
+    "StandingState": 0,
+    "AttackInvisible": 0b,
+    "HurtTime": 0s,
+    "WalkingRange": 10,
+    "CustomNameVisible": 0b,
+    "ShotCount": 1,
+    "pDur": 5,
+    "AttackRange": 2,
+    "NpcKillLines": {
+        "Lines": [
+        ]
+    },
+    "PotionImmune": 0b,
+    "AvoidsSun": 0b,
+    "Texture": "customnpcs:textures/covenwitch1.png",
+    "NpcJob": 0,
+    "BurstCount": 1,
+    "NpcAttackLines": {
+        "Lines": [
+        ]
+    },
+    "pSpeed": 10,
+    "pArea": 0,
+    "DeathTime": 0s,
+    "pImpact": 0,
+    "DropChances": [
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f
+    ],
+    "MoveState": 0,
+    "RangeAndMelee": 0,
+    "pRender3D": 0b,
+    "Motion": [
+        0.0d,
+        -0.0784000015258789d,
+        0.0d
+    ],
+    "CombatRegen": 0,
+    "pEffect": 0,
+    "DistanceToMelee": 4,
+    "NpcStepSound": "",
+    "FireRate": 5,
+    "pEffAmp": 0,
+    "OnGround": 1b,
+    "Dimension": 0,
+    "ImmuneToFire": 0b,
+    "NpcKilledLines": {
+        "Lines": [
+        ]
+    },
+    "CreatureInfusion": {
+        "PlayerInfusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "InfusionCosts": {
+            "Aspects": [
+            ]
+        },
+        "tumorWarpTemp": 0,
+        "Infusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "toggleClimb": 0b,
+        "toggleInvisible": 0b,
+        "tumorWarp": 0,
+        "sitting": 0b,
+        "tumorWarpPermanent": 0
+    },
+    "UUIDMost": 3618004421106L,
+    "Fire": -1s,
+    "DisablePitch": 0b,
+    "pPhysics": 1b,
+    "TransformHasInv": 0b,
+    "NpcInteractLines": {
+        "Lines": [
+        ]
+    },
+    "pSpin": 0b,
+    "NpcHurtSound": "minecraft:game.player.hurt",
+    "pTrail": 0,
+    "CreatureType": 1,
+    "Attributes": [
+        {
+            "Base": 24.0d,
+            "Name": "generic.maxHealth"
+        },
+        {
+            "Base": 0.0d,
+            "Name": "generic.knockbackResistance"
+        },
+        {
+            "Base": 0.15000000596046448d,
+            "Name": "generic.movementSpeed"
+        },
+        {
+            "Base": 32.0d,
+            "Name": "generic.followRange"
+        },
+        {
+            "Base": 5.0d,
+            "Name": "generic.attackDamage"
+        }
+    ],
+    "Invulnerable": 0b,
+    "TransformHasDisplay": 0b,
+    "NoFallDamage": 0b,
+    "AbsorptionAmount": 0.0f,
+    "TransformHasRole": 0b,
+    "Name": "Lesser Undead Witch",
+    "FallDistance": 0.0f,
+    "NpcIdleSound": "",
+    "Weapons": [
+    ],
+    "NPCDialogOptions": [
+    ],
+    "AggroRange": 16,
+    "DirectLOS": 1b,
+    "HealthRegen": 1,
+    "NpcModelData": {
+        "LegsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "BodyConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "EntityClass": "com.emoniph.witchery.entity.EntityCovenWitch",
+        "LegParts": {
+            "Type": 0b,
+            "PlayerTexture": 1b,
+            "Color": 16777215
+        },
+        "Parts": [
+        ],
+        "Breasts": 0b,
+        "Headwear": 2b,
+        "ArmsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "ExtraData": {
+            "QuestAccepted": 0b,
+            "Sitting": 0b,
+            "Age": 0
+        },
+        "HeadConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        }
+    },
+    "minDelay": 20,
+    "DoorInteract": 2,
+    "MoveSpeed": 3,
+    "TransformEditingModus": 0b,
+    "UsingSkinUrl": 0b,
+    "Leashed": 0b,
+    "SkinUrl": "",
+    "CanSwim": 1b,
+    "MaxHealth": 24,
+    "HideBodyWhenKilled": 0b,
+    "AttackSpeed": 20,
+    "PotionDuration": 5,
+    "maxDelay": 40,
+    "ScriptEnabled": 1b,
+    "Role": 0,
+    "DropChance": [
+        {
+            "Integer": 5,
+            "Slot": 0
+        },
+        {
+            "Integer": 1,
+            "Slot": 1
+        },
+        {
+            "Integer": 100,
+            "Slot": 2
+        },
+        {
+            "Integer": 100,
+            "Slot": 3
+        },
+        {
+            "Integer": 100,
+            "Slot": 4
+        },
+        {
+            "Integer": 100,
+            "Slot": 5
+        },
+        {
+            "Integer": 100,
+            "Slot": 6
+        },
+        {
+            "Integer": 100,
+            "Slot": 7
+        },
+        {
+            "Integer": 100,
+            "Slot": 8
+        }
+    ],
+    "FactionPoints": {
+        "DecreaseFaction1Points": 0b,
+        "OptionFaction2Points": 100,
+        "OptionFactions1": -1,
+        "OptionFactions2": -1,
+        "OptionFaction1Points": 100,
+        "DecreaseFaction2Points": 0b
+    },
+    "pDamage": 4,
+    "KilledTime": 0L,
+    "AimWhileShooting": 0b,
+    "CanPickUpLoot": 0b,
+    "AttackOtherFactions": 0b,
+    "CanDrown": 1b,
+    "AttackTime": 0s,
+    "pSize": 5,
+    "CanSprint": 0b,
+    "CanLeap": 0b,
+    "TransformIsActive": 0b,
+    "ForgeData": {
+        "WITCInitialWidth": 0.6f,
+        "CNPCStoredData": {
+            "type": "spell"
+        },
+        "WITCInitialHeight": 1.95f
+    },
+    "MovingState": 0,
+    "MovingPos": 0,
+    "PotionAmp": 0,
+    "OnAttack": 0,
+    "TacticalRadius": 4,
+    "MaxExp": 0,
+    "OrderedLines": 0b,
+    "PortalCooldown": 0,
+    "pGlows": 0b,
+    "TransformHasAdvanced": 0b,
+    "TransformHasStats": 0b,
+    "FiringSound": "random.bow",
+    "ModRev": 16,
+    "Accuracy": 60,
+    "MinExp": 0,
+    "Armor": [
+    ],
+    "CloakTexture": "",
+    "GlowTexture": "",
+    "MaxFiringRange": 15,
+    "pXlr8": 0b,
+    "UUIDLeast": 6436421235764423677L,
+    "Health": 24s,
+    "pExplode": 0b,
+    "pStick": 0b,
+    "MovingPause": 1b,
+    "NpcDeathSound": "witchery:mob.baba.baba_death",
+    "FactionID": 2,
+    "Title": "",
+    "TotalTicksAlive": 347884L,
+    "Rotation": [
+        -207.05165f,
+        0.0f
+    ],
+    "ShowName": 1,
+    "npcInteracting": 1b,
+    "AvoidsWater": 0b,
+    "Equipment": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+    ],
+    "NoLivingAnimation": 0b,
+    "SpawnCycle": 3
+}

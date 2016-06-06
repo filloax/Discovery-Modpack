@@ -2,7 +2,7 @@
     "ReturnToStart": 0b,
     "NpcInv": [
     ],
-    "PotionEffect": 0,
+    "PotionEffect": 2,
     "Size": 5,
     "stopAndInteract": 1b,
     "Resistances": {
@@ -15,16 +15,16 @@
     "RespawnTime": 0,
     "NpcAngrySound": "",
     "ReactsToFire": 0b,
-    "IgnoreCobweb": 0b,
+    "IgnoreCobweb": 1b,
     "PositionOffsetZ": 5.0f,
     "PositionOffsetY": 5.0f,
     "PositionOffsetX": 5.0f,
     "LootMode": 0,
     "TransformHasAI": 0b,
-    "AttackStrenght": 5,
+    "AttackStrenght": 10,
     "PersistenceRequired": 0b,
     "id": "customnpcs.CustomNpc",
-    "HealF": 201.0f,
+    "HealF": 151.0f,
     "MovingPatern": 0,
     "NpcLines": {
         "Lines": [
@@ -105,7 +105,8 @@
 	npc.setStoredData(\"oy\",npc.getBlockY());
 	npc.setStoredData(\"oz\",npc.getBlockZ());
 	npc.setTempData(\"pCount\",0);
-	npc.setRightItem(null);",
+	npc.clearPotionEffects();
+	npc.setRetaliateType(3);",
             "ScriptConsole": "",
             "Type": 0,
             "ScriptList": [
@@ -158,11 +159,11 @@ if (phase == \"start\") {
 		}
 	}
 ////////////////////
-//BOTH BARRIER PHASES
+//FIGHT PHASES
 ////////////////////
-} else if (phase == \"barrier1\" || phase == \"barrier2\") {
+} else if (phase == \"barrier1\" || phase == \"barrier2\" || phase == \"giant\") {
 	//Stay at starting position
-	npc.setPosition(ox+0.5,oy,oz+0.5);
+	if (phase == \"barrier1\" || phase == \"barrier2\") {npc.setPosition(ox+0.5,oy,oz+0.5);}
 	
 	//Get players and only do stuff if sat least 1 is found
 	var players = npc.getSurroundingEntities(40,1);
@@ -175,6 +176,13 @@ if (phase == \"start\") {
 			debug = players[0].getHeldItem().getName() == \"customnpcs:npcScripter\" || players[0].getHeldItem().getName() == \"customnpcs:npcWand\" || players[0].getHeldItem().getName() == \"customnpcs:npcMobCloner\";
 		}
 		var barrierTicks = 200;
+		
+		//Stay giant if npc is giant, effect 59 is resizing
+		var resizing = 59;
+		
+		if (phase == \"giant\" && npc.getPotionEffect(59) == -1) {
+			npc.addPotionEffect(59,100000,2,true);
+		}
 		
 		///////////
 		//SUMMONING
@@ -204,8 +212,11 @@ if (phase == \"start\") {
 			var y = py;
 			var z = pz + rand*6 - 3;
 			
+			//Choose between Hungry and Stabby Zombies or Wraiths during barrier phases, weaker undead witches in the giant phase
+			var mob = (phase != \"giant\") ? ((Math.random() < 0.5) ? ((Math.random() < 0.2) ? \"Stabby Zombie\" : \"Hungry Zombie\") : \"Summoned Wraith\") : \"Lesser Undead Witch\";
+			
 			if (world.getBlock(x,y,z) === null) {
-				world.spawnClone(x,y,z,1,(Math.random() < 0.5) ? ((Math.random() < 0.3) ? \"Hungry Zombie\" : \"Stabby Zombie\") : \"Summoned Wraith\");
+				world.spawnClone(x,y,z,1,mob);
 			}
 		} else {
 			countSummon++;
@@ -353,7 +364,7 @@ npc.setStoredData(\"count\",count);",
             ]
         },
         {
-            "Script": "var throwBack = eval(npc.getStoredData(\"throwBack\"));
+            "Script": "	var throwBack = eval(npc.getStoredData(\"throwBack\"));
 	var fill = eval(npc.getStoredData(\"fill\"));
 	
 	var phase = npc.getStoredData(\"phase\");
@@ -364,6 +375,8 @@ npc.setStoredData(\"count\",count);",
 	var ox = npc.getStoredData(\"ox\");
 	var oy = npc.getStoredData(\"oy\");
 	var oz = npc.getStoredData(\"oz\");
+	
+	if (event.getSource() == null || event.getSource().getType() != 1) {event.setCancelled(true);}
 	
 	if (phase == \"barrier1\" || phase == \"barrier2\") {
 		if (hitcount < 1) {
@@ -385,8 +398,11 @@ npc.setStoredData(\"count\",count);",
 	}
 	
 	if (health < maxHealth/3*2 && phase == \"barrier1\") {
-		npc.setStoredData(\"phase\",\"barrier2\")
-		npc.executeCommand('/tellraw @a barrier2')
+		npc.setStoredData(\"phase\",\"barrier2\");
+		// npc.executeCommand('/tellraw @a barrier2')
+	} else if (health < maxHealth/3 && phase == \"barrier2\") {
+		npc.setStoredData(\"phase\",\"giant\");
+		npc.setRetaliateType(0);
 	}
 	
 	// npc.say(\"ouch \"+hitcount);
@@ -413,12 +429,12 @@ npc.setStoredData(\"count\",count);",
     "CustomNameVisible": 0b,
     "ShotCount": 1,
     "pDur": 5,
-    "AttackRange": 2,
+    "AttackRange": 3,
     "NpcKillLines": {
         "Lines": [
         ]
     },
-    "PotionImmune": 1b,
+    "PotionImmune": 0b,
     "AvoidsSun": 0b,
     "Texture": "customnpcs:textures/covenleader.png",
     "NpcJob": 0,
@@ -504,7 +520,7 @@ npc.setStoredData(\"count\",count);",
             "Name": "generic.followRange"
         },
         {
-            "Base": 5.0d,
+            "Base": 10.0d,
             "Name": "generic.attackDamage"
         }
     ],
@@ -579,8 +595,8 @@ npc.setStoredData(\"count\",count);",
     "CanSwim": 1b,
     "MaxHealth": 300,
     "HideBodyWhenKilled": 0b,
-    "AttackSpeed": 20,
-    "PotionDuration": 5,
+    "AttackSpeed": 10,
+    "PotionDuration": 2,
     "maxDelay": 40,
     "ScriptEnabled": 1b,
     "Role": 0,
@@ -670,7 +686,7 @@ npc.setStoredData(\"count\",count);",
 			npc.say(\"Wrong syntax on fillLine!\");
 		}
 	}",
-            "phase": "barrier1",
+            "phase": "start",
             "getRandArr": "function(array) {
 		return(array[Math.floor(Math.random()*array.length)]);
 	}",
@@ -684,7 +700,7 @@ npc.setStoredData(\"count\",count);",
 		//velocityChanged
 		fmcp.field_70133_I = true;
 	}",
-            "count": 0.0d,
+            "count": 3.0d,
             "ox": 20214.0d,
             "oy": 66.0d,
             "oz": 20067.0d,
@@ -739,14 +755,14 @@ npc.setStoredData(\"count\",count);",
     "MaxFiringRange": 15,
     "pXlr8": 0b,
     "UUIDLeast": 4810205481735555545L,
-    "Health": 201s,
+    "Health": 151s,
     "pExplode": 0b,
     "pStick": 0b,
     "MovingPause": 1b,
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
     "Title": "CovenLeader1",
-    "TotalTicksAlive": 165450L,
+    "TotalTicksAlive": 195297L,
     "Rotation": [
         90.0f,
         0.0f

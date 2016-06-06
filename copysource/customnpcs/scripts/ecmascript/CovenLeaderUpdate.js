@@ -44,11 +44,11 @@ if (phase == "start") {
 		}
 	}
 ////////////////////
-//BOTH BARRIER PHASES
+//FIGHT PHASES
 ////////////////////
-} else if (phase == "barrier1" || phase == "barrier2") {
+} else if (phase == "barrier1" || phase == "barrier2" || phase == "giant") {
 	//Stay at starting position
-	npc.setPosition(ox+0.5,oy,oz+0.5);
+	if (phase == "barrier1" || phase == "barrier2") {npc.setPosition(ox+0.5,oy,oz+0.5);}
 	
 	//Get players and only do stuff if sat least 1 is found
 	var players = npc.getSurroundingEntities(40,1);
@@ -61,6 +61,13 @@ if (phase == "start") {
 			debug = players[0].getHeldItem().getName() == "customnpcs:npcScripter" || players[0].getHeldItem().getName() == "customnpcs:npcWand" || players[0].getHeldItem().getName() == "customnpcs:npcMobCloner";
 		}
 		var barrierTicks = 200;
+		
+		//Stay giant if npc is giant, effect 59 is resizing
+		var resizing = 59;
+		
+		if (phase == "giant" && npc.getPotionEffect(59) == -1) {
+			npc.addPotionEffect(59,100000,2,true);
+		}
 		
 		///////////
 		//SUMMONING
@@ -90,8 +97,11 @@ if (phase == "start") {
 			var y = py;
 			var z = pz + rand*6 - 3;
 			
+			//Choose between Hungry and Stabby Zombies or Wraiths during barrier phases, weaker undead witches in the giant phase
+			var mob = (phase != "giant") ? ((Math.random() < 0.5) ? ((Math.random() < 0.2) ? "Stabby Zombie" : "Hungry Zombie") : "Summoned Wraith") : "Lesser Undead Witch";
+			
 			if (world.getBlock(x,y,z) === null) {
-				world.spawnClone(x,y,z,1,(Math.random() < 0.5) ? ((Math.random() < 0.3) ? "Hungry Zombie" : "Stabby Zombie") : "Summoned Wraith");
+				world.spawnClone(x,y,z,1,mob);
 			}
 		} else {
 			countSummon++;
