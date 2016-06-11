@@ -1,0 +1,1 @@
+player.addPotionEffect("moveSlowdown",200,0);

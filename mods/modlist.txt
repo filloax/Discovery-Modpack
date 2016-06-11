@@ -1,0 +1,136 @@
+ Il volume nell'unit… C non ha etichetta.
+ Numero di serie del volume: 32F6-3A6B
+
+ Directory di C:\Giochi\Minecraft\MultiMC\instances\WIP Exploration\minecraft\mods
+
+13/04/2016  23.23    <DIR>          .
+13/04/2016  23.23    <DIR>          ..
+09/04/2016  12.42    <DIR>          1.7.10
+13/04/2016  22.46           813.329 1.7.10-Pistronics2-v0.6.4.jar
+14/01/2016  21.18           159.664 accidentallycircumstantialevents-1.11.0.jar
+01/03/2016  16.56         1.120.608 AgriCraft-1.7.10-1.4.6-hotfix.jar
+07/03/2016  16.43            14.859 AnimationAPI-1.7.10-1.2.4.jar
+01/03/2016  16.56           211.266 AOBD-2.9.1.jar
+25/01/2016  21.22           107.461 AppleCore-mc1.7.10-1.3.0.jar
+13/04/2016  22.50         2.526.302 appliedenergistics2-rv2-stable-10.jar
+17/03/2016  23.56           240.223 archimedesshipsplus-1.7.10-1.8.1.jar
+10/03/2016  20.37         6.567.165 Automagy-1.7.10-0.28.2.jar
+01/03/2016  16.56         5.445.175 BiblioCraft[v1.11.4][MC1.7.10].jar
+01/03/2016  16.56            73.340 Binnie Patcher 1.4.jar
+14/01/2016  21.18         4.519.402 binnie-mods-2.0-pre14.jar
+03/03/2016  00.37         5.734.271 BiomesOPlenty-1.7.10-2.1.0.1889-universal.jar
+26/03/2016  13.10           237.273 BiomeTweaker-1.7.10-1.2.128.jar
+01/03/2016  16.56         9.198.412 BloodMagic-1.7.10-1.3.3-17.jar
+01/03/2016  16.56        15.977.344 Botania r1.8-249.jar
+01/03/2016  16.56           509.503 Carpenter's Blocks v3.3.7 - MC 1.7.10.jar
+02/03/2016  19.46    <DIR>          carpentersblocks
+13/04/2016  23.23           522.532 catwalks-2.0.3.jar
+01/03/2016  16.56         6.377.439 Chisel-2.9.4.10.jar
+11/04/2016  20.52        77.505.671 ChromatiCraft 1.7.10 V12e.jar
+01/03/2016  16.56           145.782 CodeChickenCore-1.7.10-1.0.7.47-universal.jar
+01/03/2016  16.56         1.223.574 CoFHCore-[1.7.10]3.1.2-325.jar
+01/03/2016  16.56           303.665 CoFHLib-[1.7.10]1.1.1-181.jar
+01/03/2016  16.56           115.292 CustomMainMenu-MC1.7.10-1.9.2.jar
+05/03/2016  12.38         8.972.983 CustomNPCs_1.7.10d(21feb16).jar
+04/03/2016  22.38           575.929 CustomStuff2-0.11.29-MC1.7.10.jar
+26/03/2016  22.44           317.316 DefaultWorldGenerator-1.7.10-0.1-b13-universal.jar
+13/03/2016  15.45             4.764 Ding-MC1.7.10v2.jar
+11/04/2016  20.38         2.408.838 DragonAPI 1.7.10 V12e.jar
+08/04/2016  14.11         8.758.618 DynamicSurroundings-1.7.10-1.0.5.6.jar
+13/04/2016  22.52           235.576 DynamicTransport-0.1.2.0.jar
+01/03/2016  16.56           463.957 EnderCore-1.7.10-0.2.0.31_beta.jar
+01/03/2016  16.56         4.916.283 EnderIO-1.7.10-2.3.0.422_beta.jar
+14/01/2016  21.18           905.454 EnhancedInventories-1.7.10-1.1.8.jar
+28/02/2016  11.01           773.792 Et Futurum-1.5.4.jar
+01/03/2016  16.56         2.149.827 extrautilities-1.2.12.jar
+14/03/2016  22.29           376.751 Farseek-1.0.11.jar
+18/12/2015  19.19           116.959 fastcraft-1.21.jar
+01/03/2016  16.56             7.079 FastLeafDecay-1.7.10-1.4.jar
+01/03/2016  16.56           626.171 Forbidden Magic-1.7.10-0.573.jar
+01/03/2016  16.56         3.303.413 forestry_1.7.10-4.2.9.57.jar
+09/03/2016  16.50            77.576 ForgeNBTEdit-universal-1.0.0.test.jar
+07/03/2016  15.19             7.692 GlobalGameRules-1.0.jar.disabled
+01/03/2016  16.56           184.951 Guide-API-1.7.10-1.0.1-20.jar
+08/04/2016  18.48             6.552 HelpFixer-1.0.7.jar
+14/01/2016  21.18         1.435.528 HQM-The Journey-4.4.4.jar
+07/04/2016  21.39         3.609.306 ImmersiveEngineering-0.7.5.jar
+01/03/2016  16.56           302.262 immersiveintegration-0.6.7.jar
+11/04/2016  19.49            30.387 Improved Commands-1.7.10-1.0.jar
+01/03/2016  16.56           224.461 InventoryTweaks-1.59-dev-152.jar
+28/03/2016  20.00           364.971 IvToolkit-1.2.1.n106.jar.disabled
+13/04/2016  22.56           365.621 IvToolkit-1.2.1.n110.jar
+01/03/2016  16.56           440.712 Jabba-1.2.1a_1.7.10.jar
+01/03/2016  16.56         1.734.339 journeymap-1.7.10-5.1.4-unlimited.jar
+18/06/2012  19.07         1.134.765 js.jar
+26/03/2016  22.50            17.994 LaunchGui-1.7.10-2.0-18-client.jar
+06/04/2016  13.52           533.903 liteloader-1.7.10.jar.disabled
+01/03/2016  16.56           972.727 magicbees-1.7.10-2.4.3.jar
+13/04/2016  22.47           648.081 malisiscore-1.7.10-0.14.3.jar
+13/04/2016  22.47         1.645.689 malisisdoors-1.7.10-1.13.2.jar
+07/04/2016  18.36    <DIR>          matmos
+14/03/2016  00.07           187.881 mcjtylib-1.8.1.jar
+01/03/2016  16.56           927.376 MineTweaker3-1.7.10-3.0.10B.jar
+13/04/2016  23.24                 0 modlist.txt
+04/03/2016  23.16    <DIR>          Modpack Custom Stuff
+01/03/2016  16.56           578.158 ModTweaker2-0.9.5.jar
+06/04/2016  13.49           418.520 mod_MAtmos_29ub4_mc1.7.10.litemod.disabled
+17/03/2016  23.56           154.694 movingworld-1.7.10-1.8.1.jar
+07/03/2016  16.40         1.088.992 MutantCreatures-1.7.10-1.4.9.jar
+17/12/2015  20.42         2.015.935 nashorn.jar
+01/03/2016  16.56           101.777 neiaddons-1.12.14.40-mc1.7.10.jar
+01/03/2016  16.56           197.046 NEIIntegration-MC1.7.10-1.1.2.jar
+01/03/2016  16.56           513.018 NotEnoughItems-1.7.10-1.0.5.118-universal.jar
+01/03/2016  16.56           225.094 NotEnoughResources-1.7.10-0.1.0-121.jar
+01/03/2016  16.56         2.705.342 OpenBlocks-1.7.10-1.5.1.jar
+06/04/2016  14.04        12.243.394 OpenComputers-MC1.7.10-1.6.0.1-beta.1-universal.jar
+14/01/2016  21.18           178.309 OpenEye-0.6-1.7.10.jar
+01/03/2016  16.56         1.154.687 OpenModsLib-1.7.10-0.9.1.jar
+13/04/2016  22.53           972.199 OpenModularTurrets-1.7.10-2.1.9-211.jar
+01/03/2016  16.56           442.199 OpenPeripheralAddons-1.7.10-0.5.1.jar
+01/03/2016  16.56           399.701 OpenPeripheralCore-1.7.10-1.3.jar
+01/03/2016  16.56           258.517 OpenPeripheralIntegration-1.7.10-0.5.jar
+01/03/2016  16.56         1.432.027 ProjectRed-1.7.10-4.7.0pre12.95-Base.jar
+01/03/2016  16.56            84.757 ProjectRed-1.7.10-4.7.0pre12.95-Compat.jar
+01/03/2016  16.56         3.913.048 ProjectRed-1.7.10-4.7.0pre12.95-Integration.jar
+09/03/2016  00.03           603.501 QuiverBow_1.7.10_b101d.zip
+02/03/2016  19.46    <DIR>          railcraft
+01/03/2016  16.56         3.705.302 Railcraft_1.7.10-9.8.0.0.jar
+28/03/2016  20.01         4.470.986 RecurrentComplex-0.9.6.3.n357.jar.disabled
+01/04/2016  18.25         4.472.148 RecurrentComplex-0.9.6.3.n362.jar.disabled
+13/04/2016  22.56         4.480.672 RecurrentComplex-0.9.6.3.n375.jar
+11/04/2016  21.02    <DIR>          Reika
+01/03/2016  16.56            11.820 ResourceLoader-1.2.jar
+14/03/2016  00.08         3.449.259 rftools-4.22.jar
+11/04/2016  20.34         7.216.401 RotaryCraft 1.7.10 V12e.jar
+02/03/2016  21.59         2.125.267 RTG-1.7.10-0.7.0.jar
+13/04/2016  22.54            92.931 SlimevoidLibrary-2.0.4.7.jar
+04/04/2016  16.45            41.252 SoundFilters-0.8_for_1.7.X.jar
+01/03/2016  16.56           557.878 StorageDrawers-1.7.10-1.9.2.jar
+01/03/2016  16.56           109.214 StorageDrawers-BiomesOPlenty-1.7.10-1.1.1.jar
+01/03/2016  16.56           193.260 StorageDrawers-Forestry-1.7.10-1.1.2.jar
+01/03/2016  16.56           169.957 StorageDrawers-Misc-1.7.10-1.1.2.jar
+14/03/2016  22.29           251.440 Streams-0.2.jar
+13/04/2016  22.48            12.672 switchescontinued-0.0.1.jar
+10/03/2016  20.38            17.134 tcinventoryscan-mc1.7.10-1.0.10.jar
+01/03/2016  16.56        12.565.807 Thaumcraft-1.7.10-4.2.3.5.jar
+01/03/2016  16.56            68.794 thaumcraftneiplugin-1.7.10-1.7a.jar
+01/03/2016  16.56         1.982.603 ThaumicExploration-1.7.10-1.1-53.jar
+10/03/2016  15.42         2.456.405 thaumichorizons-1.7.10-1.1.9.jar
+01/03/2016  16.56         2.152.411 ThaumicTinkerer-2.5-1.7.10-512.jar
+01/03/2016  16.56           462.208 ThermalDynamics-[1.7.10]1.1.0-161.jar
+01/03/2016  16.56         2.199.024 ThermalFoundation-[1.7.10]1.2.3-112.jar
+01/03/2016  16.56           160.161 Translocator-1.7.10-1.1.2.15-universal.jar
+14/01/2016  21.18           312.717 TravellersGear-1.7.10-1.16.6.jar
+01/03/2016  16.56         3.682.125 twilightforest-1.7.10-2.3.7.jar
+01/03/2016  16.56           544.821 Waila-1.5.10_1.7.10.jar
+01/03/2016  16.56            28.800 WailaHarvestability-mc1.7.10-1.1.6.jar
+01/03/2016  16.56            73.287 Wawla-1.3.3-1.7.10.jar
+09/03/2016  00.01           283.520 weaponmod-1.14.3.jar
+01/03/2016  16.56         7.009.956 witchery-1.7.10-0.24.1.jar
+14/01/2016  21.18         4.217.711 WitchingGadgets-1.7.10-1.1.10.jar
+15/03/2016  20.43         1.448.276 worldedit-forge-mc1.7.10-6.1.1-SNAPSHOT-dist.jar
+13/04/2016  22.43           352.856 WR-CBE-1.7.10-1.4.1.9-universal.jar
+06/03/2016  15.52         1.361.162 YeGamolChattels-1.1.2.jar
+08/04/2016  14.45            27.281 [1.7.10]ArmorStatusHUD-client-1.28.jar
+             121 File    291.864.469 byte
+               8 Directory  235.021.684.736 byte disponibili

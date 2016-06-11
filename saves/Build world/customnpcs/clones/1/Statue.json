@@ -1,0 +1,696 @@
+{
+    "ReturnToStart": 0b,
+    "NpcInv": [
+    ],
+    "PotionEffect": 0,
+    "Size": 5,
+    "stopAndInteract": 0b,
+    "Resistances": {
+        "Arrow": 1.0f,
+        "Explosion": 1.0f,
+        "Knockback": 2.0f,
+        "Melee": 1.0f
+    },
+    "BossBar": 0b,
+    "RespawnTime": 0,
+    "NpcAngrySound": "",
+    "ReactsToFire": 0b,
+    "IgnoreCobweb": 0b,
+    "PositionOffsetZ": 5.0f,
+    "PositionOffsetY": 5.0f,
+    "PositionOffsetX": 5.0f,
+    "LootMode": 0,
+    "TransformHasAI": 0b,
+    "AttackStrenght": 5,
+    "PersistenceRequired": 0b,
+    "id": "customnpcs.CustomNpc",
+    "HealF": 1.0f,
+    "MovingPatern": 0,
+    "NpcLines": {
+        "Lines": [
+        ]
+    },
+    "DefendFaction": 0b,
+    "FireIndirect": 0,
+    "NpcVisible": 0,
+    "LinkedNpcName": "",
+    "FindShelter": 2,
+    "ScriptsContainers": [
+        {
+            "Script": "var iX = npc.getBlockX();
+	var iY = npc.getBlockY();
+	var iZ = npc.getBlockZ();
+	var getRandomIntInclusive = \"function(min, max) {\
+		return Math.floor(Math.random() * (max - min + 1)) + min;\
+	}\"
+	npc.setHome(iX+0.5,iY,iZ+0.5);
+	npc.setStoredData(\"random\",getRandomIntInclusive);
+	npc.setStoredData(\"phase\",\"statue\");
+	npc.setTempData(\"count\",0);
+",
+            "ScriptConsole": "",
+            "Type": 0,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "var getRandom = eval(npc.getStoredData(\"random\"));
+	var rand = getRandom(0,20);
+	var radius = getRandom(-5,5);
+	var phase = npc.getStoredData(\"phase\");
+	var health = npc.getHealth();
+	var attacking = npc.isAttacking();
+	var proj = npc.getStoredData(\"proj\");
+	var aboutToThunder = npc.getTempData(\"thunder\"); //Time left before lightning strike
+	var aboutToFrost = npc.getTempData(\"frost\"); //Time left before frost
+	var count = npc.getTempData(\"count\"); //Time left before return to home
+	var playerL = npc.getSurroundingEntities(50,1);
+	var player;
+	try {
+		player = playerL[0];
+	}
+	catch(err) {
+		player = \"dumb workaround again\";
+	}
+	
+	if (phase == \"startup\" && health == 300) {
+		npc.setStoredData(\"phase\",\"fight\");
+		npc.setRetaliateType(0);
+		npc.setHealthRegen(1);
+		npc.setTexture(\"customnpcs:textures/telvanni.png\");
+		npc.setCombatRegen(0);
+	}
+	
+	if (typeof player != \"string\") {
+		var pX = player.getX()
+		var pY = player.getY()
+		var pZ = player.getZ()
+		if ((rand == 1 || rand == 2) && attacking && phase == \"fight\") {
+			var X = npc.getX()+radius;
+			var Y = npc.getY();
+			var Z = npc.getZ()+radius;
+			npc.executeCommand(\"/summon Skeleton \" + X + \" \" + Y + \" \" + Z);
+		} else if ((rand == 3 && attacking && phase == \"fight\") && !(aboutToThunder >= 1 || aboutToFrost >= 1)) {
+			var aboutToThunder = 1;
+			npc.setTempData(\"thunder\",aboutToThunder);
+			npc.setTempData(\"pPos\", [pX,pY,pZ]);
+			npc.executeCommand(\"/playsound shockrune @a \" + pX + \" \" + pY + \" \" + pZ);
+			
+			// npc.say(player.getName());
+		} else if ((rand == 4 && attacking && phase == \"fight\") && !(aboutToThunder >= 1 || aboutToFrost >= 1)) {
+
+			var aboutToFrost = 1;
+			npc.setTempData(\"Frost\",aboutToFrost);
+			npc.setTempData(\"pPos\", [pX,pY,pZ]);
+			npc.executeCommand(\"/playsound icerune @a \" + pX + \" \" + pY + \" \" + pZ);
+			
+			// npc.say(player.getName());
+		}
+	}
+	
+	if (aboutToThunder == 4) {
+		var pPos = npc.getTempData(\"pPos\");
+		world.thunderStrike(pPos[0],pPos[1],pPos[2]);
+		npc.setTempData(\"thunder\",0);
+	} else if (aboutToThunder >= 1) {
+		++aboutToThunder;
+		npc.setTempData(\"thunder\",aboutToThunder);
+	}
+	
+	if (aboutToFrost == 3) {
+		var pPos = npc.getTempData(\"pPos\");
+		var ice = world.createItem(\"ModpackStuff:slowIce\",0,1);
+		var air = world.createItem(\"air\",0,1);
+		var pos = [pPos[0]-1,pPos[1]-1,pPos[2]-1];
+		for (i=0;i<3;i++) {
+			for (j=0;j<3;j++) {			
+				for (k=0;k<4;k++) {
+					if (world.getBlock(pos[0],pos[1],pos[2]) == undefined) {
+						world.setBlock(pos[0],pos[1],pos[2],ice);
+					}
+					pos[1]++
+				}
+				pos[1] = pPos[1]-1;
+				pos[0]++;
+			}
+			pos[0] = pPos[0]-1;
+			pos[2]++;
+		}
+		pos = [pPos[0],pPos[1],pPos[2]];
+		
+		for (i=0;i<2;i++) {
+			var block = world.getBlock(pos[0],pos[1],pos[2]);
+			if (block.getName() == \"ModpackStuff:slowIce\") {
+				world.setBlock(pos[0],pos[1],pos[2],air);
+			}
+			pos[1]++;
+		}
+		
+		npc.executeCommand(\"/playsound game.potion.smash @a \"+pPos[0]+\" \"+pPos[1]+\" \"+pPos[2]+\" 1.0 1.1\");
+		npc.setTempData(\"frost\",0);
+	} else if (aboutToFrost >= 1) {
+		++aboutToFrost;
+		npc.setTempData(\"frost\",aboutToFrost);
+	}
+	
+	if (phase == \"end\" && health > 30) {
+		npc.setArrowResistance(1.0);
+		npc.setMeleeResistance(1.0);
+		npc.setKnockbackResistance(2.0);
+		npc.setStoredData(\"phase\",\"fight\");
+		npc.clearPotionEffects();
+	}
+	
+	if (count == 100 && phase == \"fight\") {
+		var hX = npc.getHomeX();
+		var hY = npc.getHomeY();
+		var hZ = npc.getHomeZ();
+		npc.setPosition(hX,hY,hZ);	
+		npc.executeCommand(\"/playsound mob.endermen.portal @a \" + hX + \" \" + hY + \" \" + hZ);
+		count = 0;
+	} else {
+			++count;
+	}
+	npc.setTempData(\"count\",count);
+	// npc.say(rand);
+	
+	if (phase == \"fall\") {
+		if (health > 2) {
+			npc.setHealth(health-2);
+		} else {
+			var hX = npc.getHomeX();
+			var hY = npc.getHomeY();
+			var hZ = npc.getHomeZ();
+			var book = world.createItem(\"ModpackStuff:TCAddonsTomes\",0,1);
+			var wand = world.createItem(\"Thaumcraft:WandCasting\",0,1);
+			wand.setTag(\"ordo\",2500)
+			wand.setTag(\"perditio\",2500)
+			wand.setTag(\"ignis\",2500)
+			wand.setTag(\"aqua\",2500)
+			wand.setTag(\"aer\",2500)
+			wand.setTag(\"terra\",2500)
+			var lootBag = world.createItem(\"Thaumcraft:ItemLootBag\",2,2);
+			npc.setPosition(hX,hY,hZ);
+			npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
+			npc.executeCommand('/playsoundb victory normal @a[r=50]');
+			
+			npc.dropItem(book);
+			npc.dropItem(wand);
+			npc.dropItem(lootBag);
+			
+			var player;
+			try {
+				player = npc.getSurroundingEntities(50,1)[0];
+			}
+			catch(err) {
+				player = \"silly workaround\"
+			}
+			if (typeof player != \"string\") {
+				npc.executeCommand('/tellraw @a {color:\"gold\",bold:1,text:\"'+player.getName()+' defeated the Telvanni Master!\"}');
+			} else {
+				npc.executeCommand('/tellraw @a {color:\"gold\",bold:1,text:\"The Telvanni Master was defeated!\"}');
+			}
+			npc.despawn();
+		}
+	}",
+            "ScriptConsole": "",
+            "Type": 1,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "var shard = world.createItem(\"ModpackStuff:activator\",1,1);
+	var count = player.inventoryItemCount(shard);
+	var phase = npc.getStoredData(\"phase\");
+	var x = npc.getHomeX()
+	var y = npc.getHomeY()
+	var z = npc.getHomeZ()
+	if (phase == \"statue\") {
+		if (count == 0) {
+			player.sendMessage(\"§8§oYou hear a whisper: \\"5...\\"\");
+		} else if (count == 1) {
+			player.sendMessage(\"§8§oYou hear a whisper: \\"4...\\"\");
+		} else if (count == 2) {
+			player.sendMessage(\"§8§oYou hear a whisper: \\"3...\\"\");
+		} else if (count == 3) {
+			player.sendMessage(\"§8§oYou hear a whisper: \\"2...\\"\");
+		} else if (count == 4) {
+			player.sendMessage(\"§8§oYou hear a whisper: \\"1...\\"\");
+		} else {
+			if (player.getMode() != 1) {
+					player.removeItem(shard,5)
+			}
+			npc.executeCommand(\"/playsound mob.zombie.woodbreak @a \" + x + \" \" + y + \" \" + z);
+			npc.setTexture(\"customnpcs:textures/telvannicharge.png\");
+			npc.setStoredData(\"phase\",\"startup\");
+			npc.setName(\"Veltanni Master\");
+			npc.setMaxHealth(300)
+			npc.setHealthRegen(50);
+			npc.setCombatRegen(50);
+			npc.setShowBossBar(2);
+			npc.executeCommand(\"/playsound2 bossbattle loop @a \" + x + \" \" + y + \" \" + z + \" 5 1\");
+		}
+	}",
+            "ScriptConsole": "",
+            "Type": 2,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "	var phase = npc.getStoredData(\"phase\");
+	var health = npc.getHealth();
+	var healthLeft = health - event.getDamage();
+	var getRandom = eval(npc.getStoredData(\"random\"));
+	var hX = npc.getHomeX();
+	var hY = npc.getHomeY();
+	var hZ = npc.getHomeZ();
+	var sX = npc.getX();
+	var sY = npc.getY();
+	var sZ = npc.getZ();
+	
+	npc.setTempData(\"count\",0);
+	
+	if (phase == \"startup\" || phase == \"statue\" || event.getSource().getType() == 3) {
+		event.setCancelled(true);
+	} else if (phase != \"end\" && phase != \"fall\") {
+		if (healthLeft > 30) {
+			var runs = 0;
+			var radius = 20;
+			while (runs < 500) {
+				var eX = hX + getRandom(-radius,radius);
+				var eY = hY + getRandom (-1, radius);
+				var eZ = hZ + getRandom(-radius,radius);
+				var endBlock = world.getBlock(eX,eY,eZ);
+				var endBlockUp1 = world.getBlock(eX,eY+1,eZ);
+				var endBlockUp2 = world.getBlock(eX,eY+2,eZ);
+				if (endBlock && !endBlockUp1 && !endBlockUp2 && endBlock.getName() != \"reccomplex:generic_space\") {
+					npc.setPosition(eX,eY+1,eZ);
+					npc.executeCommand(\"/playsound mob.endermen.portal @a \" + sX + \" \" + sY + \" \" + sZ);
+					break;
+				}
+			}
+		} else {
+			event.setDamage(0);
+			npc.setHealth(10);
+			npc.setStoredData(\"phase\",\"end\");
+			npc.setPosition(hX,hY+2,hZ-20);
+			npc.executeCommand(\"/playsound mob.endermen.portal @a \" + sX + \" \" + sY + \" \" + sZ);
+			// npc.say(\"test\");
+			npc.setArrowResistance(2.0);
+			npc.setMeleeResistance(2.0);
+			npc.setKnockbackResistance(0.0);
+			npc.addPotionEffect(2,2147483647,7,true);
+		}
+	} else if (phase == \"end\") {
+		npc.setArrowResistance(0.0);
+		npc.setMeleeResistance(0.0);
+		npc.setStoredData(\"phase\",\"fall\");
+	} else {
+		event.setDamage(100);
+	}",
+            "ScriptConsole": "",
+            "Type": 4,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "npc.setStoredData(\"phase\",\"ded\");
+	var hX = npc.getHomeX();
+	var hY = npc.getHomeY();
+	var hZ = npc.getHomeZ();
+	var book = world.createItem(\"ModpackStuff:TCAddonsTomes\",0,1);
+	var wand = world.createItem(\"Thaumcraft:WandCasting\",0,1);
+	wand.setTag(\"ordo\",2500)
+	wand.setTag(\"perditio\",2500)
+	wand.setTag(\"ignis\",2500)
+	wand.setTag(\"aqua\",2500)
+	wand.setTag(\"aer\",2500)
+	wand.setTag(\"terra\",2500)
+	var lootBag = world.createItem(\"Thaumcraft:ItemLootBag\",2,2);
+	npc.setPosition(hX,hY,hZ);
+	npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
+	npc.executeCommand('/playsoundb victory normal @a[r=50]');
+	
+	npc.dropItem(book);
+	npc.dropItem(wand);
+	npc.dropItem(lootBag);
+	
+	var player;
+	try {
+		player = npc.getSurroundingEntities(50,1)[0];
+	}
+	catch(err) {
+		player = \"silly workaround\"
+	}
+	if (typeof player != \"string\") {npc.executeCommand('/tellraw @a {color:\"gold\",bold:1,text:\"'+player.getName()+' defeated the Telvanni Master!\"}');}
+	else {npc.executeCommand('/tellraw @a {color:\"gold\",bold:1,text:\"The Telvanni Master was defeated!\"}');}",
+            "ScriptConsole": "",
+            "Type": 5,
+            "ScriptList": [
+            ]
+        }
+    ],
+    "Air": 300s,
+    "TacticalVariant": 2,
+    "Orientation": 180,
+    "ScriptLanguage": "ECMAScript",
+    "KnockBack": 0,
+    "TransformHasJob": 0b,
+    "CustomName": "",
+    "CanDespawn": 0b,
+    "BurnInSun": 0b,
+    "StandingState": 1,
+    "AttackInvisible": 0b,
+    "HurtTime": 0s,
+    "WalkingRange": 10,
+    "CustomNameVisible": 0b,
+    "ShotCount": 1,
+    "pDur": 5,
+    "AttackRange": 2,
+    "NpcKillLines": {
+        "Lines": [
+        ]
+    },
+    "PotionImmune": 0b,
+    "AvoidsSun": 0b,
+    "Texture": "customnpcs:textures/telvannistone.png",
+    "NpcJob": 0,
+    "BurstCount": 1,
+    "NpcAttackLines": {
+        "Lines": [
+        ]
+    },
+    "pSpeed": 10,
+    "pArea": 0,
+    "DeathTime": 0s,
+    "pImpact": 0,
+    "DropChances": [
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f
+    ],
+    "MoveState": 0,
+    "RangeAndMelee": 0,
+    "pRender3D": 0b,
+    "Motion": [
+        0.0d,
+        -0.0784000015258789d,
+        0.0d
+    ],
+    "CombatRegen": 0,
+    "pEffect": 1,
+    "DistanceToMelee": 4,
+    "NpcStepSound": "",
+    "FireRate": 5,
+    "pEffAmp": 0,
+    "OnGround": 1b,
+    "Dimension": 0,
+    "ImmuneToFire": 1b,
+    "NpcKilledLines": {
+        "Lines": [
+        ]
+    },
+    "CreatureInfusion": {
+        "PlayerInfusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "InfusionCosts": {
+            "Aspects": [
+            ]
+        },
+        "tumorWarpTemp": 0,
+        "Infusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "toggleClimb": 0b,
+        "toggleInvisible": 0b,
+        "tumorWarp": 0,
+        "sitting": 0b,
+        "tumorWarpPermanent": 0
+    },
+    "UUIDMost": 7665838769438539963L,
+    "Fire": -1s,
+    "DisablePitch": 0b,
+    "pPhysics": 0b,
+    "TransformHasInv": 0b,
+    "NpcInteractLines": {
+        "Lines": [
+        ]
+    },
+    "pSpin": 0b,
+    "NpcHurtSound": "minecraft:game.player.hurt",
+    "pTrail": 6,
+    "CreatureType": 1,
+    "Attributes": [
+        {
+            "Base": 1.0d,
+            "Name": "generic.maxHealth"
+        },
+        {
+            "Base": 0.0d,
+            "Name": "generic.knockbackResistance"
+        },
+        {
+            "Base": 0.30000001192092896d,
+            "Name": "generic.movementSpeed"
+        },
+        {
+            "Base": 32.0d,
+            "Name": "generic.followRange"
+        },
+        {
+            "Base": 5.0d,
+            "Modifiers": [
+                {
+                    "UUIDMost": -3801225194067177672L,
+                    "UUIDLeast": -6586624321849018929L,
+                    "Amount": 6.0d,
+                    "Operation": 0,
+                    "Name": "Weapon modifier"
+                }
+            ],
+            "Name": "generic.attackDamage"
+        }
+    ],
+    "Invulnerable": 0b,
+    "TransformHasDisplay": 0b,
+    "NoFallDamage": 0b,
+    "AbsorptionAmount": 0.0f,
+    "TransformHasRole": 0b,
+    "Name": "Statue",
+    "FallDistance": 0.0f,
+    "NpcIdleSound": "",
+    "Weapons": [
+        {
+            "Slot": 0b,
+            "id": "Thaumcraft:WandCasting",
+            "Count": 1b,
+            "tag": {
+                "aqua": 900200,
+                "terra": 900200,
+                "ignis": 900200,
+                "cap": "orichalcum",
+                "rod": "neutronium_staff",
+                "ordo": 900200,
+                "perditio": 900200,
+                "AttributeModifiers": [
+                    {
+                        "UUIDMost": -3801225194067177672L,
+                        "UUIDLeast": -6586624321849018929L,
+                        "Amount": 6.0d,
+                        "AttributeName": "generic.attackDamage",
+                        "Operation": 0,
+                        "Name": "Weapon modifier"
+                    }
+                ],
+                "aer": 900200
+            },
+            "Damage": 2000s
+        },
+        {
+            "Slot": 1b,
+            "id": "customnpcs:npcFireElement",
+            "Count": 1b,
+            "Damage": 0s
+        }
+    ],
+    "NPCDialogOptions": [
+    ],
+    "AggroRange": 50,
+    "DirectLOS": 1b,
+    "HealthRegen": 1,
+    "NpcModelData": {
+        "LegsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "BodyConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "LegParts": {
+            "Type": 0b,
+            "PlayerTexture": 1b,
+            "Color": 16777215
+        },
+        "Parts": [
+        ],
+        "Breasts": 0b,
+        "Headwear": 2b,
+        "ArmsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "ExtraData": {
+        },
+        "HeadConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        }
+    },
+    "minDelay": 20,
+    "DoorInteract": 1,
+    "MoveSpeed": 6,
+    "TransformEditingModus": 0b,
+    "UsingSkinUrl": 0b,
+    "Leashed": 0b,
+    "SkinUrl": "",
+    "CanSwim": 1b,
+    "MaxHealth": 1,
+    "HideBodyWhenKilled": 0b,
+    "AttackSpeed": 20,
+    "PotionDuration": 5,
+    "maxDelay": 40,
+    "ScriptEnabled": 1b,
+    "Role": 0,
+    "DropChance": [
+        {
+            "Integer": 100,
+            "Slot": 0
+        },
+        {
+            "Integer": 100,
+            "Slot": 1
+        },
+        {
+            "Integer": 100,
+            "Slot": 2
+        },
+        {
+            "Integer": 100,
+            "Slot": 3
+        },
+        {
+            "Integer": 100,
+            "Slot": 4
+        },
+        {
+            "Integer": 100,
+            "Slot": 5
+        },
+        {
+            "Integer": 100,
+            "Slot": 6
+        },
+        {
+            "Integer": 100,
+            "Slot": 7
+        },
+        {
+            "Integer": 100,
+            "Slot": 8
+        }
+    ],
+    "FactionPoints": {
+        "DecreaseFaction1Points": 0b,
+        "OptionFaction2Points": 100,
+        "OptionFactions1": -1,
+        "OptionFactions2": -1,
+        "OptionFaction1Points": 100,
+        "DecreaseFaction2Points": 0b
+    },
+    "pDamage": 7,
+    "KilledTime": 0L,
+    "AimWhileShooting": 0b,
+    "CanPickUpLoot": 0b,
+    "AttackOtherFactions": 1b,
+    "CanDrown": 1b,
+    "AttackTime": 0s,
+    "pSize": 5,
+    "CanSprint": 0b,
+    "CanLeap": 0b,
+    "TransformIsActive": 0b,
+    "ForgeData": {
+        "WITCInitialWidth": 0.6f,
+        "CNPCStoredData": {
+            "phase": "statue",
+            "random": "function(min, max) {		return Math.floor(Math.random() * (max - min + 1)) + min;	}"
+        },
+        "WITCInitialHeight": 1.9f
+    },
+    "MovingState": 0,
+    "MovingPos": 0,
+    "PotionAmp": 0,
+    "OnAttack": 3,
+    "TacticalRadius": 16,
+    "MaxExp": 30,
+    "OrderedLines": 1b,
+    "PortalCooldown": 0,
+    "pGlows": 1b,
+    "TransformHasAdvanced": 0b,
+    "TransformHasStats": 0b,
+    "FiringSound": "thaumcraft:shock",
+    "ModRev": 16,
+    "Accuracy": 70,
+    "MinExp": 0,
+    "Armor": [
+    ],
+    "CloakTexture": "",
+    "GlowTexture": "",
+    "MaxFiringRange": 15,
+    "pXlr8": 1b,
+    "UUIDLeast": -4653641655157629201L,
+    "Health": 1s,
+    "pExplode": 0b,
+    "pStick": 0b,
+    "MovingPause": 1b,
+    "NpcDeathSound": "minecraft:game.player.hurt",
+    "FactionID": 2,
+    "Title": "",
+    "TotalTicksAlive": 162514L,
+    "Rotation": [
+        180.0f,
+        0.0f
+    ],
+    "ShowName": 1,
+    "npcInteracting": 1b,
+    "AvoidsWater": 0b,
+    "Equipment": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+    ],
+    "NoLivingAnimation": 1b,
+    "SpawnCycle": 3
+}

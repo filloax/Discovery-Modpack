@@ -1,5 +1,5 @@
 {
- "mch.bossvictory": {
+ "bossvictory": {
     "category": "music",
     "musicchoices": true,
 	"victory": [
@@ -13,7 +13,7 @@
       }
     ]
   },
-  "mch.boss.covenleader": {
+  "boss.covenleader": {
     "category": "music",
     "musicchoices": true,
 	"boss": [

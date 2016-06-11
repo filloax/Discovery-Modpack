@@ -1,0 +1,25 @@
+name = "nuclearCola";
+creativeTab = "food";
+maxStack = 64;
+
+addToCreative[0] = true;
+addToCreative[1] = true;
+addToCreative[2] = true;
+textureFile[0] = "nuclearcola.png";
+textureFile[1] = "nuclearcherry.png";
+textureFile[2] = "nuclearquantum.png";
+hunger[0]=1
+hunger[1]=1
+hunger[2]=1
+alwaysEdible[0] = true;
+alwaysEdible[1] = true;
+alwaysEdible[2] = true;
+potion[0]="moveSpeed";
+potion[1]="moveSpeed";
+potion[2]="moveSpeed";
+potionAmplifier[0] = 0;
+potionAmplifier[1] = 1;
+potionAmplifier[2] = 1;
+potionDuration[0] = 120;
+potionDuration[1] = 20;
+potionDuration[2] = 120;

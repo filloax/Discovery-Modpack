@@ -1,0 +1,536 @@
+{
+    "ReturnToStart": 0b,
+    "NpcInv": [
+        {
+            "Slot": 0b,
+            "id": "Botania:blackLotus",
+            "Count": 1b,
+            "Damage": 1s
+        },
+        {
+            "Slot": 1b,
+            "id": "Botania:blackLotus",
+            "Count": 1b,
+            "Damage": 0s
+        },
+        {
+            "Slot": 2b,
+            "id": "Botania:overgrowthSeed",
+            "Count": 1b,
+            "Damage": 0s
+        },
+        {
+            "Slot": 3b,
+            "id": "Botania:overgrowthSeed",
+            "Count": 1b,
+            "Damage": 0s
+        },
+        {
+            "Slot": 4b,
+            "id": "Botania:manasteelChest",
+            "Count": 1b,
+            "tag": {
+                "display": {
+                    "Name": "§6Keeper's Chestplate"
+                },
+                "AttributeModifiers": [
+                    {
+                        "UUIDMost": 800000L,
+                        "UUIDLeast": 1L,
+                        "Amount": 0.4d,
+                        "Slot": "chest",
+                        "AttributeName": "generic.knockbackResistance",
+                        "Operation": 0,
+                        "Name": "Custom"
+                    }
+                ]
+            },
+            "Damage": 0s
+        }
+    ],
+    "PotionEffect": 0,
+    "Size": 5,
+    "stopAndInteract": 0b,
+    "Resistances": {
+        "Arrow": 1.0f,
+        "Explosion": 1.0f,
+        "Knockback": 2.0f,
+        "Melee": 1.0f
+    },
+    "BossBar": 1b,
+    "RespawnTime": 0,
+    "NpcAngrySound": "minecraft:mob.cow.say",
+    "ReactsToFire": 0b,
+    "IgnoreCobweb": 0b,
+    "PositionOffsetZ": 5.0f,
+    "PositionOffsetY": 5.0f,
+    "PositionOffsetX": 5.0f,
+    "LootMode": 0,
+    "TransformHasAI": 0b,
+    "AttackStrenght": 10,
+    "PersistenceRequired": 0b,
+    "id": "customnpcs.CustomNpc",
+    "HealF": 300.0f,
+    "MovingPatern": 0,
+    "NpcLines": {
+        "Lines": [
+        ]
+    },
+    "DefendFaction": 0b,
+    "FireIndirect": 0,
+    "NpcVisible": 0,
+    "LinkedNpcName": "",
+    "FindShelter": 2,
+    "ScriptsContainers": [
+        {
+            "Script": "npc.clearStoredData();
+",
+            "ScriptConsole": "",
+            "Type": 0,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "if (npc.isAttacking()) {
+		var rand = Math.random();
+		if (rand < 0.2) {
+			var playerL = npc.getSurroundingEntities(60,1);
+			var player;
+			try {
+				player = playerL[0];
+			}
+			catch(err) {
+				player = \"this is weird, getSurroudingEntities works strangely so I have to do this workaround\"
+			}
+
+			if (typeof player != 'string') {
+				var px = player.getX();
+				var pz = player.getZ();
+				var x = npc.getX();
+				var z = npc.getZ();
+				var lookVec = npc.getMCEntity().func_70040_Z();
+				var lx = lookVec.field_72450_a;
+				var lz = lookVec.field_72449_c;
+				
+				var dirx = (px-x)/30*1.6;
+				var dirz = (pz-z)/30*1.6;
+				
+				var offx = lx*2;
+				var offz = lz*2;
+
+				npc.swingHand();
+				npc.executeCommand('/summon2 Botania.botania:manaBurst ~'+offx+' ~1.5 ~'+offz+' {Air:300,color:2162464,inTile:-1,mana:100,manaLossTick:4,minManaLoss:40,spreaderY:-1,startingMana:100,xTile:-1,yTile:-1,zTile:-1,Motion:['+dirx+',0,'+dirz+'],lensStack:{Count:1,Damage:0,id:Botania:terraSword,tag:{attackerUsername:Minotaur}},lastMotionX:'+dirx+',lastMotionY:0,lastMotionZ:'+dirz+'}');
+			}
+		}
+	}
+",
+            "ScriptConsole": "",
+            "Type": 1,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "var source = event.getSource();
+	if (source.getType() != 1) {
+		event.setCancelled(true);
+	}
+",
+            "ScriptConsole": "",
+            "Type": 4,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "//Do the usual message stuff and music
+	var playerL = npc.getSurroundingEntities(60,1);
+	var player;
+	var x = npc.getStoredData(\"x\");
+	var y = npc.getStoredData(\"y\");
+	var z = npc.getStoredData(\"z\");
+
+	try {
+		player = playerL[0];
+	}
+	catch(err) {
+		player = \"this is weird, getSurroudingEntities works strangely so I have to do this workaround\"
+	}
+
+	if (typeof player != 'string') {
+		npc.executeCommand('/tellraw @a {color:\"gold\",bold:1,text:\"'+player.getName()+' defeated the Garden Keeper!\"}');
+	}
+	else {
+		npc.executeCommand('/tellraw @a {color:\"gold\",bold:1,text:\"The Garden Keeper was defeated!\"}');
+	}	
+	npc.executeCommand('/playsound2 lol stop @a '+x+' '+y+' '+z);
+	npc.executeCommand('/playsoundb victory normal @a[r=60]');
+",
+            "ScriptConsole": "",
+            "Type": 5,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "if (!npc.hasStoredData(\"x\")) {
+		var x = npc.getX();
+		var y = npc.getY();
+		var z = npc.getZ();
+		npc.executeCommand(\"/playsound2 bossbattle loop @a \" + x + \" \" + y + \" \" + z + \" 7 1\");
+		npc.setStoredData(\"x\",x);
+		npc.setStoredData(\"y\",y);
+		npc.setStoredData(\"z\",z);
+		npc.setShowBossBar(1);
+	}
+",
+            "ScriptConsole": "",
+            "Type": 7,
+            "ScriptList": [
+            ]
+        }
+    ],
+    "Air": 300s,
+    "TacticalVariant": 0,
+    "Orientation": 0,
+    "ScriptLanguage": "ECMAScript",
+    "KnockBack": 0,
+    "TransformHasJob": 0b,
+    "CustomName": "",
+    "CanDespawn": 0b,
+    "BurnInSun": 0b,
+    "StandingState": 0,
+    "AttackInvisible": 0b,
+    "HurtTime": 0s,
+    "WalkingRange": 10,
+    "CustomNameVisible": 0b,
+    "ShotCount": 1,
+    "pDur": 5,
+    "AttackRange": 2,
+    "NpcKillLines": {
+        "Lines": [
+        ]
+    },
+    "PotionImmune": 0b,
+    "AvoidsSun": 0b,
+    "Texture": "twilightforest:textures/model/minotaur.png",
+    "NpcJob": 0,
+    "BurstCount": 1,
+    "NpcAttackLines": {
+        "Lines": [
+        ]
+    },
+    "pSpeed": 10,
+    "pArea": 0,
+    "DeathTime": 0s,
+    "pImpact": 0,
+    "DropChances": [
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f,
+        0.085f
+    ],
+    "MoveState": 0,
+    "RangeAndMelee": 0,
+    "pRender3D": 0b,
+    "Motion": [
+        0.0d,
+        -0.0784000015258789d,
+        0.0d
+    ],
+    "CombatRegen": 0,
+    "pEffect": 0,
+    "DistanceToMelee": 4,
+    "NpcStepSound": "minecraft:mob.cow.step",
+    "FireRate": 5,
+    "pEffAmp": 0,
+    "OnGround": 1b,
+    "Dimension": 0,
+    "ImmuneToFire": 0b,
+    "NpcKilledLines": {
+        "Lines": [
+        ]
+    },
+    "CreatureInfusion": {
+        "PlayerInfusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "InfusionCosts": {
+            "Aspects": [
+            ]
+        },
+        "tumorWarpTemp": 0,
+        "Infusions": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "toggleClimb": 0b,
+        "toggleInvisible": 0b,
+        "tumorWarp": 0,
+        "sitting": 0b,
+        "tumorWarpPermanent": 0
+    },
+    "UUIDMost": 6117556394971122846L,
+    "Fire": -1s,
+    "DisablePitch": 0b,
+    "pPhysics": 1b,
+    "TransformHasInv": 0b,
+    "NpcInteractLines": {
+        "Lines": [
+        ]
+    },
+    "pSpin": 0b,
+    "NpcHurtSound": "minecraft:mob.cow.hurt",
+    "pTrail": 0,
+    "CreatureType": 0,
+    "Attributes": [
+        {
+            "Base": 300.0d,
+            "Name": "generic.maxHealth"
+        },
+        {
+            "Base": 0.0d,
+            "Name": "generic.knockbackResistance"
+        },
+        {
+            "Base": 0.20000000298023224d,
+            "Name": "generic.movementSpeed"
+        },
+        {
+            "Base": 32.0d,
+            "Name": "generic.followRange"
+        },
+        {
+            "Base": 10.0d,
+            "Modifiers": [
+                {
+                    "UUIDMost": -3801225194067177672L,
+                    "UUIDLeast": -6586624321849018929L,
+                    "Amount": 7.0d,
+                    "Operation": 0,
+                    "Name": "Weapon modifier"
+                }
+            ],
+            "Name": "generic.attackDamage"
+        }
+    ],
+    "Invulnerable": 0b,
+    "TransformHasDisplay": 0b,
+    "NoFallDamage": 0b,
+    "AbsorptionAmount": 0.0f,
+    "TransformHasRole": 0b,
+    "Name": "Garden Keeper",
+    "FallDistance": 0.0f,
+    "NpcIdleSound": "minecraft:mob.cow.say",
+    "Weapons": [
+        {
+            "Slot": 0b,
+            "id": "Botania:terraSword",
+            "Count": 1b,
+            "Damage": 0s
+        }
+    ],
+    "NPCDialogOptions": [
+    ],
+    "AggroRange": 64,
+    "DirectLOS": 0b,
+    "HealthRegen": 0,
+    "NpcModelData": {
+        "LegsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "BodyConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "EntityClass": "twilightforest.entity.EntityTFMinotaur",
+        "LegParts": {
+            "Type": 0b,
+            "PlayerTexture": 1b,
+            "Color": 16777215
+        },
+        "Parts": [
+        ],
+        "Breasts": 0b,
+        "Headwear": 2b,
+        "ArmsConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        },
+        "ExtraData": {
+        },
+        "HeadConfig": {
+            "ScaleZ": 1.0f,
+            "TransZ": 0.0f,
+            "TransY": 0.0f,
+            "TransX": 0.0f,
+            "ScaleY": 1.0f,
+            "ScaleX": 1.0f
+        }
+    },
+    "minDelay": 20,
+    "DoorInteract": 1,
+    "MoveSpeed": 4,
+    "TransformEditingModus": 0b,
+    "UsingSkinUrl": 0b,
+    "Leashed": 0b,
+    "SkinUrl": "",
+    "CanSwim": 1b,
+    "MaxHealth": 300,
+    "HideBodyWhenKilled": 0b,
+    "AttackSpeed": 20,
+    "PotionDuration": 5,
+    "maxDelay": 40,
+    "ScriptEnabled": 1b,
+    "Role": 0,
+    "DropChance": [
+        {
+            "Integer": 20,
+            "Slot": 0
+        },
+        {
+            "Integer": 60,
+            "Slot": 1
+        },
+        {
+            "Integer": 100,
+            "Slot": 2
+        },
+        {
+            "Integer": 30,
+            "Slot": 3
+        },
+        {
+            "Integer": 100,
+            "Slot": 4
+        },
+        {
+            "Integer": 100,
+            "Slot": 5
+        },
+        {
+            "Integer": 100,
+            "Slot": 6
+        },
+        {
+            "Integer": 100,
+            "Slot": 7
+        },
+        {
+            "Integer": 100,
+            "Slot": 8
+        }
+    ],
+    "FactionPoints": {
+        "DecreaseFaction1Points": 0b,
+        "OptionFaction2Points": 100,
+        "OptionFactions1": -1,
+        "OptionFactions2": -1,
+        "OptionFaction1Points": 100,
+        "DecreaseFaction2Points": 0b
+    },
+    "pDamage": 4,
+    "KilledTime": 0L,
+    "AimWhileShooting": 0b,
+    "CanPickUpLoot": 0b,
+    "AttackOtherFactions": 1b,
+    "CanDrown": 1b,
+    "AttackTime": 0s,
+    "pSize": 5,
+    "CanSprint": 1b,
+    "CanLeap": 0b,
+    "TransformIsActive": 0b,
+    "ForgeData": {
+        "WITCInitialWidth": 0.6f,
+        "WITCInitialHeight": 1.8f
+    },
+    "MovingState": 0,
+    "MovingPos": 0,
+    "PotionAmp": 0,
+    "OnAttack": 0,
+    "TacticalRadius": 8,
+    "MaxExp": 20,
+    "OrderedLines": 0b,
+    "PortalCooldown": 0,
+    "pGlows": 0b,
+    "TransformHasAdvanced": 0b,
+    "TransformHasStats": 0b,
+    "FiringSound": "random.bow",
+    "ModRev": 16,
+    "Accuracy": 60,
+    "MinExp": 0,
+    "Armor": [
+        {
+            "Slot": 0b,
+            "id": "Botania:manasteelHelm",
+            "Count": 1b,
+            "tag": {
+            },
+            "Damage": 0s
+        },
+        {
+            "Slot": 1b,
+            "id": "Botania:manasteelChest",
+            "Count": 1b,
+            "tag": {
+            },
+            "Damage": 0s
+        },
+        {
+            "Slot": 2b,
+            "id": "Botania:manasteelLegs",
+            "Count": 1b,
+            "tag": {
+            },
+            "Damage": 0s
+        },
+        {
+            "Slot": 3b,
+            "id": "Botania:manasteelBoots",
+            "Count": 1b,
+            "tag": {
+            },
+            "Damage": 0s
+        }
+    ],
+    "CloakTexture": "",
+    "GlowTexture": "",
+    "MaxFiringRange": 15,
+    "pXlr8": 0b,
+    "UUIDLeast": -6209462709719825727L,
+    "Health": 300s,
+    "pExplode": 0b,
+    "pStick": 0b,
+    "MovingPause": 1b,
+    "NpcDeathSound": "minecraft:mob.cow.hurt",
+    "FactionID": 2,
+    "Title": "",
+    "TotalTicksAlive": 52366L,
+    "Rotation": [
+        157.17316f,
+        0.0f
+    ],
+    "ShowName": 0,
+    "npcInteracting": 0b,
+    "AvoidsWater": 0b,
+    "Equipment": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+    ],
+    "NoLivingAnimation": 0b,
+    "SpawnCycle": 3
+}
