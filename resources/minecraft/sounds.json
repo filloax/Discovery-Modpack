@@ -1,5 +1,13 @@
 {
   "icerune":{"sounds":["frost"]},
   "firerune":{"sounds":["fire"]},
-  "shockrune":{"sounds":["shock"]}
+  "shockrune":{"sounds":["shock"]},
+  "ghost.loop":{"sounds":["ghostloop"]},
+  "whoosh":{"sounds":["whoosh1",
+					  "whoosh2",
+					  "whoosh3",
+					  "whoosh4"]},
+  "magic.wall":{"sounds":["magicwall"]},
+  "stab":{"sounds":["stab"]},
+  "magic.swosh":{"sounds":["magicswosh"]}
 }

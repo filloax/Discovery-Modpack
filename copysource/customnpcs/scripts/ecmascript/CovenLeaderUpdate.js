@@ -271,6 +271,7 @@ if (phase == "start") {
 			world.setBlock(ox+4,oy-1,oz,null);
 			
 			var ghNpc = world.spawnClone(ox-5,oy-1,oz,2,"Soul of the Coven Leader");
+			npc.executeCommand('/playsound2 ghost.loop loop @a '+ox-10+' '+oy+' '+oz+' 3.0');
 			var myId = npc.getMCEntity().func_145782_y(); //getEntityId
 			ghNpc.setStoredData("owId",myId); 
 			// npc.say("Stored id:"+myId);
@@ -290,6 +291,7 @@ if (phase == "start") {
 			var count = players[i].inventoryItemCount(poppet);
 			if (count > 0) {
 				players[i].removeItem(poppet,count);
+				npc.executeCommand('/playsound2 ghost.loop stop @a '+ox-10+' '+oy+' '+oz+' 3.0');
 				npc.despawn();
 			}
 		}
