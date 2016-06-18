@@ -3,7 +3,7 @@ material = "rock";
 creativeTab = "buildingBlocks";
 transparent = true;
 
-var texture = ["/thaumcraft:lifterside.png","/thaumcraft:lifterside.png","/thaumcraft:lifterside.png","/stonebrick.png","/stonebrick.png","/stonebrick.png","/mob_spawner.png","magicBarrier","","","","","","","",""];
+var texture = ["/thaumcraft:lifterside.png","/thaumcraft:lifterside.png","/thaumcraft:lifterside.png","/stonebrick.png","/stonebrick.png","/stonebrick.png","/mob_spawner.png","/geostrata:sandstone_b.png","/geostrata:sandstone_b.png","","","","","","",""];
 for (i=0;i<16;i++) {
 	textureFileXP[i] = texture[i];
 	textureFileXN[i] = texture[i];
@@ -65,6 +65,18 @@ tileEntity[6] = "spawner";
 hasTileEntity[6] = true;
 drop[6] = "minecraft:air";
 tileTransparent[6] = true;
+
+addToCreative[7] = true;
+hardness[7] = -1.0;
+resistance[7] = 18000000.0;
+textureFileYP[7] = "shrinker.png";
+onWalkingPlayer[7] = "mod.loadScript('shrinker.js');"
+
+addToCreative[8] = true;
+hardness[8] = -1.0;
+resistance[8] = 18000000.0;
+textureFileYP[8] = "enlarger.png";
+onWalkingPlayer[8] = "mod.loadScript('enlarger.js');"
 
 // addToCreative[6] = true;
 // hardness[6] = -1.0;
