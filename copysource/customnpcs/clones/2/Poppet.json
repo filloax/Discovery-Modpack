@@ -12,7 +12,7 @@
         "Melee": 1.0f
     },
     "BossBar": 0b,
-    "RespawnTime": 20,
+    "RespawnTime": 0,
     "NpcAngrySound": "",
     "ReactsToFire": 0b,
     "IgnoreCobweb": 0b,
@@ -36,6 +36,29 @@
     "LinkedNpcName": "",
     "FindShelter": 2,
     "ScriptsContainers": [
+        {
+            "Script": "npc.setStoredData(\"count\",0);",
+            "ScriptConsole": "",
+            "Type": 0,
+            "ScriptList": [
+            ]
+        },
+        {
+            "Script": "var count = npc.getStoredData(\"count\");
+var MAX = 7;
+
+if (count >= MAX) {
+	npc.despawn();
+} else if (count < MAX) {
+	count++;
+}
+
+npc.setStoredData(\"count\",count);",
+            "ScriptConsole": "",
+            "Type": 1,
+            "ScriptList": [
+            ]
+        }
     ],
     "Air": 300s,
     "TacticalVariant": 0,
@@ -230,7 +253,7 @@
     "AttackSpeed": 20,
     "PotionDuration": 5,
     "maxDelay": 40,
-    "ScriptEnabled": 0b,
+    "ScriptEnabled": 1b,
     "Role": 0,
     "DropChance": [
         {
@@ -291,6 +314,9 @@
     "TransformIsActive": 0b,
     "ForgeData": {
         "WITCInitialWidth": 0.6f,
+        "CNPCStoredData": {
+            "count": 1.0d
+        },
         "WITCInitialHeight": 1.9f
     },
     "MovingState": 0,
@@ -322,7 +348,7 @@
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 0,
     "Title": "Holds the poppet for the boss",
-    "TotalTicksAlive": 10287L,
+    "TotalTicksAlive": 12497L,
     "Rotation": [
         90.0f,
         0.0f
@@ -343,5 +369,5 @@
         }
     ],
     "NoLivingAnimation": 0b,
-    "SpawnCycle": 0
+    "SpawnCycle": 3
 }

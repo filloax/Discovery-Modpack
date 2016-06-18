@@ -156,17 +156,10 @@ if (phase == "start") {
 		
 		var pCount = npc.getTempData("pCount"); //counter for managing poppet magic
 		var pTarget = npc.getTempData("pTarget"); //target for the magic
-		var poId = npc.getStoredData("poId");
-		var poNpc = world.getMCWorld().func_73045_a(poId); //getEntityById
 		
 		if (pCount == 1) {			
 			pCount++;
-			poNpc = world.spawnClone(ox-1,oy-0.5,oz+0.5,2,"Poppet"); //Summon the invisible npc that holds the poppet, as witch npcs cannot
-			poId = poNpc.getMCEntity().func_145782_y(); //getEntityId
-			npc.setStoredData("poId",poId);	
-	
-			poppet.setTempData("owner",npc);	
-			npc.setTempData("poppet",poppet);
+			world.spawnClone(ox-0.5,oy,oz+0.5,2,"Poppet"); //Summon the invisible npc that holds the poppet, as witch npcs cannot
 		} else if (pCount == 4) {
 			npc.swingHand();
 			throwBack(pTarget, 0.4);
@@ -177,7 +170,6 @@ if (phase == "start") {
 			throwBack(pTarget, 0.4);
 			npc.executeCommand('/playsound whoosh @a '+px+' '+py+' '+pz);
 			pCount = 0;	
-			poNpc.despawn();
 		} else if ((pCount > 1 && pCount < 4) || (pCount > 4 && pCount < 7)) {
 			pCount++;
 		}

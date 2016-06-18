@@ -89,7 +89,7 @@ function damaged(event) {
 	var oy = npc.getStoredData("oy");
 	var oz = npc.getStoredData("oz");
 	
-	if (event.getSource() == null || event.getSource().getType() != 1 || phase == "escape" || phase == "ghost") {
+	if (event.getSource() == null || event.getSource().getType() != 1 || phase == "escape" || phase == "ghost" || phase == "start") {
 		event.setCancelled(true);
 	}
 	
