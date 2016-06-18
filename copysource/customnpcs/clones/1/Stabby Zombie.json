@@ -45,35 +45,36 @@
         },
         {
             "Script": "//When a player is attacked, make the boss lock onto him with the poppet
-	
-	var target = event.getTarget();
-	var debugItem = target.getHeldItem();
-	var debug = (debugItem !== null) ? debugItem.getName() == \"customnpcs:npcScripter\" : false;
-	
-	if (debug) {npc.say(\"My target:\\"\"+target.getName()+\"\\"\");}
-	
-	if (target.typeOf(1) && npc.getStoredData(\"done\") == 0) { //If npcs hasn't already done this and target is a player
-		var npcs = npc.getSurroundingEntities(40,2)
-		if (npcs != null) {
-			for (i=0;i<npcs.length;i++) {
-				var title = npcs[i].getTitle();
-				if (debug) {
-					npc.say(\"Boss title:\\"\"+title+\"\\"\");
-					npc.say(\"Boss counter:\\"\"+npcs[i].getTempData(\"pCount\")+\"\\"\")
-				}
-				if ((title == \"CovenLeader\" || title == \"CovenLeader1\") && npcs[i].getTempData(\"pCount\") == 0) { //If the looped npc is the boss and isn't already targeting a player
-					npcs[i].setTempData(\"pCount\",1);
-					npcs[i].setTempData(\"pTarget\",target);
-					npc.setStoredData(\"done\",1);
 
-					if (debug) {
-						npc.say(\"Boss found.\")
-						npc.say(\"Boss target:\"+npcs[i].getTempData(\"pTarget\").getName());
-					}
+var target = event.getTarget();
+var debugItem = target.getHeldItem();
+var debug = (debugItem !== null) ? debugItem.getName() == \"customnpcs:npcScripter\" : false;
+
+if (debug) {npc.say(\"My target:\\"\"+target.getName()+\"\\"\");}
+
+if (target.typeOf(1) && npc.getStoredData(\"done\") == 0) { //If npcs hasn't already done this and target is a player
+	var npcs = npc.getSurroundingEntities(40,2)
+	if (npcs != null) {
+		for (i=0;i<npcs.length;i++) {
+			var title = npcs[i].getTitle();
+			if (debug) {
+				npc.say(\"Boss title:\\"\"+title+\"\\"\");
+				npc.say(\"Boss counter:\\"\"+npcs[i].getTempData(\"pCount\")+\"\\"\")
+			}
+			if ((title == \"CovenLeader\" || title == \"CovenLeader1\") && npcs[i].getTempData(\"pCount\") == 0) { //If the looped npc is the boss and isn't already targeting a player
+				npc.executeCommand('/playsound stab @a[r=2]');
+				npcs[i].setTempData(\"pCount\",1);
+				npcs[i].setTempData(\"pTarget\",target);
+				npc.setStoredData(\"done\",1);
+
+				if (debug) {
+					npc.say(\"Boss found.\")
+					npc.say(\"Boss target:\"+npcs[i].getTempData(\"pTarget\").getName());
 				}
 			}
 		}
-	}",
+	}
+}",
             "ScriptConsole": "",
             "Type": 6,
             "ScriptList": [
@@ -125,9 +126,9 @@
     "RangeAndMelee": 0,
     "pRender3D": 0b,
     "Motion": [
-        -1.1069520855715425E-4d,
+        0.0d,
         -0.0784000015258789d,
-        -0.03749782942396641d
+        0.0d
     ],
     "CombatRegen": 0,
     "pEffect": 0,
@@ -135,7 +136,7 @@
     "NpcStepSound": "",
     "FireRate": 5,
     "pEffAmp": 0,
-    "OnGround": 0b,
+    "OnGround": 1b,
     "Dimension": 0,
     "ImmuneToFire": 0b,
     "NpcKilledLines": {
@@ -333,7 +334,7 @@
     "ForgeData": {
         "WITCInitialWidth": 0.48000002f,
         "CNPCStoredData": {
-            "done": 1.0d
+            "done": 0.0d
         },
         "WITCInitialHeight": 1.4399999f
     },
@@ -366,10 +367,10 @@
     "NpcDeathSound": "minecraft:mob.zombie.death",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 17820L,
+    "TotalTicksAlive": 18060L,
     "Rotation": [
-        1258.6324f,
-        18.405752f
+        178.63245f,
+        0.0f
     ],
     "ShowName": 1,
     "npcInteracting": 1b,

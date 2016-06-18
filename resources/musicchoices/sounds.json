@@ -3,8 +3,7 @@
     "category": "music",
     "musicchoices": true,
 	"victory": [
-      "{Title:BossTest}",
-	  "{Title:CovenLeader}"
+      "{Title:BossTest}"
 	],
     "sounds": [
       {
@@ -21,28 +20,10 @@
 	],
     "sounds": [
       {
-        "name": "bossdark1",
+        "name": "witcher3/ciribattle",
         "stream": true
       }
     ]
-  },
-  "bossbattle": {
-	  "category": "record",
-	  "sounds": [
-		  {
-			"name": "Queen_of_the_night",
-			"stream": true
-		  }
-		]
-  },
-  "bossbattle2": {
-	  "category": "record",
-	  "sounds": [
-		  {
-			"name": "The_end_of_mankind",
-			"stream": true
-		  }
-		]
   },
   "Achaidh.cheide": {
     "category": "music",

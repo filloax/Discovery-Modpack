@@ -36,16 +36,6 @@
     "LinkedNpcName": "",
     "FindShelter": 2,
     "ScriptsContainers": [
-        {
-            "Script": "var owner = npc.getTempData(\"owner\");
-if (owner === null) {
-npc.despawn();
-}",
-            "ScriptConsole": "",
-            "Type": 1,
-            "ScriptList": [
-            ]
-        }
     ],
     "Air": 300s,
     "TacticalVariant": 0,
@@ -240,7 +230,7 @@ npc.despawn();
     "AttackSpeed": 20,
     "PotionDuration": 5,
     "maxDelay": 40,
-    "ScriptEnabled": 1b,
+    "ScriptEnabled": 0b,
     "Role": 0,
     "DropChance": [
         {
@@ -332,7 +322,7 @@ npc.despawn();
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 0,
     "Title": "Holds the poppet for the boss",
-    "TotalTicksAlive": 9917L,
+    "TotalTicksAlive": 10287L,
     "Rotation": [
         90.0f,
         0.0f
