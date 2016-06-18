@@ -24,7 +24,7 @@
     "AttackStrenght": 10,
     "PersistenceRequired": 0b,
     "id": "customnpcs.CustomNpc",
-    "HealF": 201.0f,
+    "HealF": 1.0f,
     "MovingPatern": 0,
     "NpcLines": {
         "Lines": [
@@ -252,12 +252,16 @@ if (phase == \"start\") {
 		if (countPotion >= maxCountPotion && !debug) {
 			maxCountPotion = \"reset\";
 			countPotion = 0;
-							
-			var command = '/summon2 witchery.brew2 '+(px+Math.random()*4-2)+' '+(oy+3)+' '+(pz+Math.random()*4-2)+' {Brew:{id:witchery:brewbottle,tag:{Splash:1,Color:'+(Math.random()*Math.pow(10, 8))+',EffectCount:1,Items:[{id:witchery:ingredient,Damage:22},{id:minecraft:nether_wart},{id:witchery:ingredient,Damage:37},'+getRandArr(effects)+',{id:minecraft:gunpowder}]}},Air:300,inTile:-1,xTile:-1,yTile:-1,zTile:-1,Motion:[0.0,0.1,0.0]}';
+			
+			var cx = px+Math.random()*4-2;
+			var cy = oy+1;
+			var cz = pz+Math.random()*4-2;
+			var command = '/summon2 witchery.brew2 '+cx+' '+cy+' '+cz+' {Brew:{id:witchery:brewbottle,tag:{Splash:1,Color:'+(Math.random()*Math.pow(10, 8))+',EffectCount:1,Items:[{id:witchery:ingredient,Damage:22},{id:minecraft:nether_wart},{id:witchery:ingredient,Damage:37},'+getRandArr(effects)+',{id:minecraft:gunpowder}]}},Air:300,inTile:-1,xTile:-1,yTile:-1,zTile:-1,Motion:[0.0,0.3,0.0]}';
 			
 			// npc.executeCommand('/tellraw @a \"'+command+'\"');
 
 			npc.executeCommand(command);
+			npc.executeCommand('/playsound magic.swosh @a '+cx+' '+cy+' '+cz);
 		} else {
 			countPotion++;
 		}
@@ -268,23 +272,20 @@ if (phase == \"start\") {
 		
 		var pCount = npc.getTempData(\"pCount\"); //counter for managing poppet magic
 		var pTarget = npc.getTempData(\"pTarget\"); //target for the magic
-		var poppet = npc.getTempData(\"poppet\");
 		
 		if (pCount == 1) {			
 			pCount++;
-			poppet = world.spawnClone(ox-1,oy-0.5,oz+0.5,2,\"Poppet\"); //Summon the invisible npc that holds the poppet, as witch npcs cannot
-			
-			poppet.setTempData(\"owner\",npc);	
-			npc.setTempData(\"poppet\",poppet);
+			world.spawnClone(ox-0.5,oy,oz+0.5,2,\"Poppet\"); //Summon the invisible npc that holds the poppet, as witch npcs cannot
 		} else if (pCount == 4) {
 			npc.swingHand();
 			throwBack(pTarget, 0.4);
+			npc.executeCommand('/playsound whoosh @a '+px+' '+py+' '+pz);
 			pCount++;
 		} else if (pCount == 7) {
 			npc.swingHand();
 			throwBack(pTarget, 0.4);
+			npc.executeCommand('/playsound whoosh @a '+px+' '+py+' '+pz);
 			pCount = 0;	
-			poppet.despawn();
 		} else if ((pCount > 1 && pCount < 4) || (pCount > 4 && pCount < 7)) {
 			pCount++;
 		}
@@ -320,6 +321,7 @@ if (phase == \"start\") {
 				//Don't if the barrier would be over the npc
 				if (px+2 != ox) {
 					fill(px+2,py,pz-2,px+2,py+5,pz+2,\"witchery:barrier\",0,\"{remainingTicks:\"+barrierTicks+\",blocksPlayers:1}\");
+					npc.executeCommand('/playsound magic.wall @a '+(px+2)+' '+py+' '+pz);
 				}
 			} else {
 			//Count upwards
@@ -348,6 +350,7 @@ if (phase == \"start\") {
 				fill(fillx,oy-1,oz-9,fillx,oy+13,oz+9,\"witchery:barrier\",0,\"{remainingTicks:\"+barrierTicks+\",blocksPlayers:1}\");
 				//Create opening
 				fill(fillx,oy-1,openingz-1,fillx,oy+1,openingz+1,\"air\",0,\"\",true,\"witchery:barrier\");
+				npc.executeCommand('/playsound magic.wall @a '+fillx+' '+oy+' '+openingz);
 			} else {
 			//Count upwards
 				count++;
@@ -387,6 +390,7 @@ if (phase == \"start\") {
 			world.setBlock(ox+4,oy-1,oz,null);
 			
 			var ghNpc = world.spawnClone(ox-5,oy-1,oz,2,\"Soul of the Coven Leader\");
+			npc.executeCommand('/playsound2 ghost.loop loop @a '+(ox-10)+' '+oy+' '+oz+' 3.0');
 			var myId = npc.getMCEntity().func_145782_y(); //getEntityId
 			ghNpc.setStoredData(\"owId\",myId); 
 			// npc.say(\"Stored id:\"+myId);
@@ -406,6 +410,8 @@ if (phase == \"start\") {
 			var count = players[i].inventoryItemCount(poppet);
 			if (count > 0) {
 				players[i].removeItem(poppet,count);
+				npc.executeCommand('/playsoundb mob.ghast.fireball normal '+players[i].getName()+' 1 0.7');
+				npc.executeCommand('/playsound2 ghost.loop stop @a '+(ox-10)+' '+oy+' '+oz);
 				npc.despawn();
 			}
 		}
@@ -735,6 +741,38 @@ npc.setStoredData(\"count\",count);",
     "ForgeData": {
         "WITCInitialWidth": 0.6f,
         "CNPCStoredData": {
+            "phase": "start",
+            "esId": 312952.0d,
+            "count": 3.0d,
+            "ox": 20214.0d,
+            "oy": 66.0d,
+            "oz": 20068.0d,
+            "fill": "function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
+		if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
+		if (debug == undefined || debug === null) {debug = false;}
+		
+		if (x2<x || y2<y || z2<z) {
+			npc.say(\"Wrong usage of fill, the second coords should be higher!\");
+		} else {
+			for (i=0;i<(x2-x+1);i++) {
+				for (j=0;j<(y2-y+1);j++) {			
+					for (k=0;k<(z2-z+1);k++) {
+						var blockTest = world.getBlock(x+i,y+j,z+k);
+						if (replaceSolid && blockTest !== null) {
+							if (replaceWhat == undefined || replaceWhat === null || blockTest.getName() == replaceWhat) {
+								npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+							}
+							if (debug) {npc.say(block);}
+						} else if (blockTest === null) {
+							npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
+							if (debug) {npc.say(block);}							
+						}
+					}
+				}
+			}
+		}
+	}",
+            "poId": 54322.0d,
             "fillLine": "function (x,y,z,dir,length,block,dmg,nbt,replaceSolid) {
 		if (dir == \"x\") {
 			for (i=0;i<length;i++) {
@@ -761,7 +799,6 @@ npc.setStoredData(\"count\",count);",
 			npc.say(\"Wrong syntax on fillLine!\");
 		}
 	}",
-            "phase": "barrier1",
             "getRandArr": "function(array) {
 		return(array[Math.floor(Math.random()*array.length)]);
 	}",
@@ -775,37 +812,7 @@ npc.setStoredData(\"count\",count);",
 		//velocityChanged
 		fmcp.field_70133_I = true;
 	}",
-            "esId": 312952.0d,
-            "count": 0.0d,
-            "ox": 20214.0d,
-            "oy": 66.0d,
-            "oz": 20067.0d,
             "escapingId": 156087.0d,
-            "fill": "function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
-		if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
-		if (debug == undefined || debug === null) {debug = false;}
-		
-		if (x2<x || y2<y || z2<z) {
-			npc.say(\"Wrong usage of fill, the second coords should be higher!\");
-		} else {
-			for (i=0;i<(x2-x+1);i++) {
-				for (j=0;j<(y2-y+1);j++) {			
-					for (k=0;k<(z2-z+1);k++) {
-						var blockTest = world.getBlock(x+i,y+j,z+k);
-						if (replaceSolid && blockTest !== null) {
-							if (replaceWhat == undefined || replaceWhat === null || blockTest.getName() == replaceWhat) {
-								npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
-							}
-							if (debug) {npc.say(block);}
-						} else if (blockTest === null) {
-							npc.executeCommand(\"/setblock \"+(x+i)+\" \"+(y+j)+\" \"+(z+k)+\" \"+block+\" \"+dmg+\" replace \"+nbt);
-							if (debug) {npc.say(block);}							
-						}
-					}
-				}
-			}
-		}
-	}",
             "hitcount": 0.0d
         },
         "WITCInitialHeight": 1.95f
@@ -832,14 +839,14 @@ npc.setStoredData(\"count\",count);",
     "MaxFiringRange": 15,
     "pXlr8": 0b,
     "UUIDLeast": 4810205481735555545L,
-    "Health": 201s,
+    "Health": 1s,
     "pExplode": 0b,
     "pStick": 0b,
     "MovingPause": 1b,
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
-    "Title": "CovenLeader1",
-    "TotalTicksAlive": 214758L,
+    "Title": "CovenLeader",
+    "TotalTicksAlive": 223670L,
     "Rotation": [
         90.0f,
         0.0f

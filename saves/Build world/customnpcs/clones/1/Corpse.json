@@ -83,123 +83,26 @@
 	var ox = x-0.9; //Coords used in loops / base coords with no float value
 	var oy = y-0.5;
 	var oz = z-0.5;
-	var lx = ox; //Used in loops
-	var ly = oy;
-	var lz = oz;
-	var playerL = npc.getSurroundingEntities(20,1);
-	var player;
-	try {
-		player = playerL[0];
-	}
-	catch(err) {
-		player = \"this is weird, getSurroudingEntities works strangely so I have to do this workaround\";
-	}
+	var players = npc.getSurroundingEntities(20,1);
 	
 	npc.setPosition(x,y,z);
 	
-	if (world.getBlock(lx,ly,lz) == null) {npc.executeCommand(\"/setblock \"+lx+\" \"+ly+\" \"+lz+\" ModpackStuff:unbreakSlab\")}
-	if (world.getBlock(lx+1,ly,lz) == null) {npc.executeCommand(\"/setblock \"+(lx+1)+\" \"+ly+\" \"+lz+\" ModpackStuff:unbreakSlab\")}
+	if (world.getBlock(ox,oy,oz) == null) {npc.executeCommand(\"/setblock \"+ox+\" \"+oy+\" \"+oz+\" ModpackStuff:unbreakSlab\")}
+	if (world.getBlock(ox+1,oy,oz) == null) {npc.executeCommand(\"/setblock \"+(ox+1)+\" \"+oy+\" \"+oz+\" ModpackStuff:unbreakSlab\")}
 	
-	if (typeof player != \"string\") {
-		var count = player.inventoryItemCount(poppet);
-		if (count > 0) {
-			player.removeItem(poppet,1);
-			// npc.say(\"Muahaha\");
-			world.setBlock(lx,ly,lz,null);
-			world.setBlock(lx+1,ly,lz,null);
-			lx -= 2;
-			ly -= 2;
-			lz -= 2;
-			
-			for (i=0;i<5;i++) {
-				for (j=0;j<5;j++) {
-					var block = world.getBlock(lx,ly,lz);
-					if (block == null) {
-						// npc.say(\"test;\"+lx+\";\"+ly+\";\"+lz);
-						npc.executeCommand(\"/setblock \"+lx+\" \"+ly+\" \"+lz+\" witchery:barrier 0 replace {remainingTicks:200,blocksPlayers:1}\")
-					}
-					ly++;
-				}
-				ly = y-1;
-				lz++;
-			}
-			
-			ly = oy - 2;
-			lz = oz - 2;
-			for (i=0;i<5;i++) {
-				for (j=0;j<5;j++) {
-					var block = world.getBlock(lx,ly,lz);
-					if (block == null) {
-						// npc.say(\"test;\"+lx+\";\"+ly+\";\"+lz);
-						npc.executeCommand(\"/setblock \"+lx+\" \"+ly+\" \"+lz+\" witchery:barrier 0 replace {remainingTicks:200,blocksPlayers:1}\")
-					}
-					ly++;
-				}
-				ly = y-1;
-				lx++;
-			}
-			
-			lx = ox + 2;
-			ly = oy - 2;
-			lz = oz + 2;
-			for (i=0;i<5;i++) {
-				for (j=0;j<5;j++) {
-					var block = world.getBlock(lx,ly,lz);
-					if (block == null) {
-						// npc.say(\"test;\"+lx+\";\"+ly+\";\"+lz);
-						npc.executeCommand(\"/setblock \"+lx+\" \"+ly+\" \"+lz+\" witchery:barrier 0 replace {remainingTicks:200,blocksPlayers:1}\")
-					}
-					ly++;
-				}
-				ly = y-1;
-				lx--;
-			}
-			
-			ly = oy - 2;
-			lx = ox - 2;			
-			for (i=0;i<5;i++) {
-				for (j=0;j<5;j++) {
-					var block = world.getBlock(lx,ly,lz);
-					if (block == null) {
-						// npc.say(\"test;\"+lx+\";\"+ly+\";\"+lz);
-						npc.executeCommand(\"/setblock \"+lx+\" \"+ly+\" \"+lz+\" witchery:barrier 0 replace {remainingTicks:200,blocksPlayers:1}\")
-					}
-					ly++;
-				}
-				ly = y-1;
-				lz--;
-			}
-			
-			var telePlayers = npc.getSurroundingEntities(10,1); //players to teleport out
-			var testPlayer; //still that weird workaround as when there is no player it goofs out
-			try {
-				testPlayer = telePlayers[0];
-			}
-			catch(err) {
-				testPlayer = \"this is weird, getSurroudingEntities works strangely so I have to do this workaround\";
-			}
-			
-			//Teleport all players inside the forcefield outside of it
-			if (typeof testPlayer != \"string\") { 
-				for (i=0;i<telePlayers.length;i++) {
-					var py = telePlayers[i].getY();
-					var pz = telePlayers[i].getZ();
-					var mcp = telePlayers[i].getMCEntity();
-					var mcnpc = telePlayers[i].getMCEntity();
-					
-					
-					//If player is inside field, func is getDistanceToEntity
-					if (mcnpc.func_70032_d(mcp) < 4.3) {
-						// npc.say(telePlayers[i].getName());
-						
-						//Teleport player a little behind the barrier
-						telePlayers[i].setPosition(ox - 3.5,py,pz);
-					}
-				}
-			}
+	if (players != null) {
+		for (i=0;i<players.length;i++) {
+			var count = players[i].inventoryItemCount(poppet);
+			if (count > 0) {
+				players[i].removeItem(poppet,1);
+				// npc.say(\"Muahaha\");
+				world.setBlock(ox,oy,oz,null);
+				world.setBlock(ox+1,oy,oz,null);
 
-			world.spawnClone(x-0.5,y-1,z,\"1\",\"Coven Leader\");
-			npc.despawn();
+				world.spawnClone(ox+0.5,oy-1,oz+0.5,\"1\",\"Coven Leader\");
+				npc.despawn();
+				break;
+			}
 		}
 	}",
             "ScriptConsole": "",
@@ -458,9 +361,9 @@
     "ForgeData": {
         "WITCInitialWidth": 0.6f,
         "CNPCStoredData": {
-            "x": 20214.0d,
-            "y": 66.0d,
-            "z": 20067.0d
+            "x": 20446.9d,
+            "y": 66.5d,
+            "z": 19871.5d
         },
         "WITCInitialHeight": 1.95f
     },
@@ -493,7 +396,7 @@
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 0,
     "Title": "",
-    "TotalTicksAlive": 51636L,
+    "TotalTicksAlive": 56081L,
     "Rotation": [
         -14.003357f,
         0.0f

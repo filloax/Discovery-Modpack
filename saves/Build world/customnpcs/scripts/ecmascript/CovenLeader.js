@@ -89,7 +89,7 @@ function damaged(event) {
 	var oy = npc.getStoredData("oy");
 	var oz = npc.getStoredData("oz");
 	
-	if (event.getSource() == null || event.getSource().getType() != 1 || phase == "escape" || phase == "ghost") {
+	if (event.getSource() == null || event.getSource().getType() != 1 || phase == "escape" || phase == "ghost" || phase == "start") {
 		event.setCancelled(true);
 	}
 	
@@ -107,8 +107,9 @@ function damaged(event) {
 			
 			if (nearbyPlayers != null) {
 				for (i=0;i<nearbyPlayers.length;i++) {					
+					npc.executeCommand("/playsound mob.endermen.portal @a " + ox + " " + oy + " " + oz);
 					nearbyPlayers[i].setPosition(ox-26.5,oy-1,oz+0.5);
-					npc.executeCommand("/playsound mob.endermen.portal @a " + ox-27 + " " + oy-1 + " " + oz);
+					// npc.executeCommand("/playsound mob.endermen.portal @a " + ox-27 + " " + oy-1 + " " + oz);
 					
 					// npc.executeCommand('/tellraw @a "teleporting '+nearbyPlayers[i].getName()+' to '+(ox-27)+' '+(oy-1)+' '+oz+'"');
 				}
