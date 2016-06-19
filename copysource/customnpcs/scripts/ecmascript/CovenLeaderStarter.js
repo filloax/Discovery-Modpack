@@ -58,7 +58,8 @@ function update() {
 				world.setBlock(ox,oy,oz,null);
 				world.setBlock(ox+1,oy,oz,null);
 
-				world.spawnClone(ox+0.5,oy-1,oz+0.5,"1","Coven Leader");
+				var boss = world.spawnClone(ox+0.5,oy-1,oz+0.5,"1","Coven Leader");
+				boss.setStoredData("startedControl",1);
 				npc.despawn();
 				break;
 			}

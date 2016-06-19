@@ -1,75 +1,87 @@
 function init() {
-	//Variables starting with f are function locals
+	//If it's 0/null, it has been spawned with the cloner and it will do the init each time.
+	//The Corpse npc sets it to 1 after spawning. If it's 1, it will be set to 2 after doing the stuff.
+	//If it's 2, don't do anything.
+	var startedControl = npc.getStoredData("startedControl");
 	
-	//Throw players back
-	var throwBack = function(player,strengthx,strengthy) {
-		var fmcp = player.getMCEntity();
-		if (!strengthx) {strengthx = 1}
-		if (!strengthy) {strengthy = 1}
+	if (startedControl != 2) {
+	
+		//Variables starting with f are function locals
 		
-		//addVelocity(double,double,double)
-		fmcp.func_70024_g(-3.5*strengthx,1.0*strengthy,Math.random()-0.5);
-		//velocityChanged
-		fmcp.field_70133_I = true;
-	}
-	npc.setStoredData("throwBack",throwBack.toString());
-		
-	//Fill from first coords to second coords with block of dmg and nbt
-	//Replaces only specified block if specified
-	var fill = function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
-		if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
-		if (debug == undefined || debug === null) {debug = false;}
-		
-		if (x2<x || y2<y || z2<z) {
-			npc.say("Wrong usage of fill, the second coords should be higher!");
-		} else {
-			for (i=0;i<(x2-x+1);i++) {
-				for (j=0;j<(y2-y+1);j++) {			
-					for (k=0;k<(z2-z+1);k++) {
-						var blockTest = world.getBlock(x+i,y+j,z+k);
-						if (replaceSolid && blockTest !== null) {
-							if (replaceWhat == undefined || replaceWhat === null || blockTest.getName() == replaceWhat) {
+		//Throw players back
+		var throwBack = function(player,strengthx,strengthy) {
+			var fmcp = player.getMCEntity();
+			if (!strengthx) {strengthx = 1}
+			if (!strengthy) {strengthy = 1}
+			
+			//addVelocity(double,double,double)
+			fmcp.func_70024_g(-3.5*strengthx,1.0*strengthy,Math.random()-0.5);
+			//velocityChanged
+			fmcp.field_70133_I = true;
+		}
+		npc.setStoredData("throwBack",throwBack.toString());
+			
+		//Fill from first coords to second coords with block of dmg and nbt
+		//Replaces only specified block if specified
+		var fill = function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
+			if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
+			if (debug == undefined || debug === null) {debug = false;}
+			
+			if (x2<x || y2<y || z2<z) {
+				npc.say("Wrong usage of fill, the second coords should be higher!");
+			} else {
+				for (i=0;i<(x2-x+1);i++) {
+					for (j=0;j<(y2-y+1);j++) {			
+						for (k=0;k<(z2-z+1);k++) {
+							var blockTest = world.getBlock(x+i,y+j,z+k);
+							if (replaceSolid && blockTest !== null) {
+								if (replaceWhat == undefined || replaceWhat === null || blockTest.getName() == replaceWhat) {
+									npc.executeCommand("/setblock "+(x+i)+" "+(y+j)+" "+(z+k)+" "+block+" "+dmg+" replace "+nbt);
+								}
+								if (debug) {npc.say(block);}
+							} else if (blockTest === null) {
 								npc.executeCommand("/setblock "+(x+i)+" "+(y+j)+" "+(z+k)+" "+block+" "+dmg+" replace "+nbt);
+								if (debug) {npc.say(block);}							
 							}
-							if (debug) {npc.say(block);}
-						} else if (blockTest === null) {
-							npc.executeCommand("/setblock "+(x+i)+" "+(y+j)+" "+(z+k)+" "+block+" "+dmg+" replace "+nbt);
-							if (debug) {npc.say(block);}							
 						}
 					}
 				}
 			}
 		}
-	}
-	npc.setStoredData("fill",fill.toString());
-	
-	var getRandArr = function(array) {
-		return(array[Math.floor(Math.random()*array.length)]);
-	}
-	npc.setStoredData("getRandArr",getRandArr.toString());
-	
-	var players = npc.getSurroundingEntities(10,1);
-	if (players !== null) {
-		for (i=0;i<players.length;i++) {
-			throwBack(players[i]);
+		npc.setStoredData("fill",fill.toString());
+		
+		var getRandArr = function(array) {
+			return(array[Math.floor(Math.random()*array.length)]);
+		}
+		npc.setStoredData("getRandArr",getRandArr.toString());
+		
+		var players = npc.getSurroundingEntities(10,1);
+		if (players !== null) {
+			for (i=0;i<players.length;i++) {
+				throwBack(players[i]);
+			}
+		}
+		npc.setTempData("thrownPlayers",players);
+		
+		npc.setStoredData("count",0);
+		npc.setStoredData("phase","start");
+		npc.setStoredData("hitcount",0);
+		npc.setHealth(1);
+		npc.setCombatRegen(50);
+		npc.setHealthRegen(50);
+		npc.setTempData("maxCountBarrier","reset");
+		npc.setStoredData("ox",npc.getBlockX());
+		npc.setStoredData("oy",npc.getBlockY());
+		npc.setStoredData("oz",npc.getBlockZ());
+		npc.setTempData("pCount",0);
+		npc.clearPotionEffects();
+		npc.setRetaliateType(3);
+		npc.setVisibleType(0);
+		
+		if (startedControl == 1) {
+			npc.setStoredData("startedControl",2);
 		}
 	}
-	npc.setTempData("thrownPlayers",players);
-	
-	npc.setStoredData("count",0);
-	npc.setStoredData("phase","start");
-	npc.setStoredData("hitcount",0);
-	npc.setHealth(1);
-	npc.setCombatRegen(50);
-	npc.setHealthRegen(50);
-	npc.setTempData("maxCountBarrier","reset");
-	npc.setStoredData("ox",npc.getBlockX());
-	npc.setStoredData("oy",npc.getBlockY());
-	npc.setStoredData("oz",npc.getBlockZ());
-	npc.setTempData("pCount",0);
-	npc.clearPotionEffects();
-	npc.setRetaliateType(3);
-	npc.setVisibleType(0);
 }
 
 var update() {
