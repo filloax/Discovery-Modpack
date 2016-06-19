@@ -4,6 +4,7 @@ creativeTab = "buildingBlocks";
 transparent = true;
 
 var texture = ["/geostrata:sandstone_b.png","sandstone_moss","sandstone_crack","","","","","","","","","","","","",""];
+var normalBlock = [["GeoStrata:geostrata_rock_sandstone_cobble",1],["GeoStrata:geostrata_rock_sandstone_cobble",1],["GeoStrata:geostrata_rock_sandstone_cobble",1],["",0],["",0],["",0],["",0],["",0],["",0],["",0],["",0],["",0],["",0],["",0],["",0],["",0]];
 for (i=0;i<16;i++) {
 	textureFileXP[i] = texture[i];
 	textureFileXN[i] = texture[i];
@@ -13,7 +14,9 @@ for (i=0;i<16;i++) {
 	textureFileZN[i] = texture[i];
 	drop[i] = "minecraft:air";
 	onDestroyedByPlayer[i] = "if (player.getInventory().getItemName(player.getCurrentSlot()) != 'TwilightForest:item.mazebreakerPick' && !player.isInCreative()) {\
-		world.setBlockAndMetadata(position,'ModpackStuff:mazeBlock',"+i+")\
+		world.setBlockAndMetadata(position,'ModpackStuff:mazeBlock',"+i+");\
+	} else if (player.getInventory().getItemName(player.getCurrentSlot()) == 'TwilightForest:item.mazebreakerPick' && !player.isInCreative()) {\
+		world.spawnItem(position,'"+normalBlock[i][0]+"',1,"+normalBlock[i][1]+");\
 	}"
 }
 

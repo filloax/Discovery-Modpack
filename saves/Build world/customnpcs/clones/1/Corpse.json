@@ -99,7 +99,8 @@
 				world.setBlock(ox,oy,oz,null);
 				world.setBlock(ox+1,oy,oz,null);
 
-				world.spawnClone(ox+0.5,oy-1,oz+0.5,\"1\",\"Coven Leader\");
+				var boss = world.spawnClone(ox+0.5,oy-1,oz+0.5,\"1\",\"Coven Leader\");
+				boss.setStoredData(\"startedControl\",1);
 				npc.despawn();
 				break;
 			}
@@ -361,9 +362,9 @@
     "ForgeData": {
         "WITCInitialWidth": 0.6f,
         "CNPCStoredData": {
-            "x": 20446.9d,
-            "y": 66.5d,
-            "z": 19871.5d
+            "x": 20262.9d,
+            "y": 64.5d,
+            "z": 20028.5d
         },
         "WITCInitialHeight": 1.95f
     },
@@ -396,7 +397,7 @@
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 0,
     "Title": "",
-    "TotalTicksAlive": 56081L,
+    "TotalTicksAlive": 56347L,
     "Rotation": [
         -14.003357f,
         0.0f

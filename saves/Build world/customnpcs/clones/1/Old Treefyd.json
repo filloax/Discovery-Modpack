@@ -43,27 +43,7 @@
     "FindShelter": 2,
     "ScriptsContainers": [
         {
-            "Script": "	//doing this because whìith a lot of treefyds loaded the sound got wonky for the player
-	//as in, costant clickclickclick-ing wonky
-	var count = npc.getTempData(\"count\");
-	var countMax = npc.getTempData(\"countMax\");
-	if (count >= countMax) {
-		npc.executeCommand(\"/playsound witchery:mob.treefyd.treefyd_say @a[r=8] ~ ~ ~ 0.5 \"+(1-0.1+Math.random()/5));
-		countMax = 7 + Math.random()*6;
-		count = 0;
-	} else {
-		count++;
-	}
-	npc.setTempData(\"count\",count);
-	npc.setTempData(\"countMax\",countMax);
-",
-            "ScriptConsole": "",
-            "Type": 1,
-            "ScriptList": [
-            ]
-        },
-        {
-            "Script": "	if (npc.getHealth()-event.getDamage() > 0) {
+            "Script": "if (npc.getHealth()-event.getDamage() > 0) {
 		npc.executeCommand(\"/playsound witchery:mob.treefyd.treefyd_say @a[r=8] ~ ~ ~ 0.5 0.9\");
 	} else {
 		npc.executeCommand(\"/playsound witchery:mob.treefyd.treefyd_say @a[r=8] ~ ~ ~ 0.5 0.7\");
@@ -193,7 +173,7 @@
     "TransformHasRole": 0b,
     "Name": "Old Treefyd",
     "FallDistance": 0.0f,
-    "NpcIdleSound": "",
+    "NpcIdleSound": "witchery:mob.treefyd.treefyd_say",
     "Weapons": [
     ],
     "NPCDialogOptions": [
@@ -353,7 +333,7 @@
     "NpcDeathSound": "",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 224535L,
+    "TotalTicksAlive": 225750L,
     "Rotation": [
         -282.14587f,
         0.0f
