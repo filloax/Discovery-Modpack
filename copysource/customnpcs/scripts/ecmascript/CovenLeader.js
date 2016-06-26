@@ -137,7 +137,7 @@ function damaged(event) {
 			
 			if (nearbyPlayers != null) {
 				for (i=0;i<nearbyPlayers.length;i++) {					
-					npc.executeCommand("/playsound mob.endermen.portal @a " + ox + " " + oy + " " + oz);
+					npc.executeCommand("/playsoundb mob.endermen.portal "+nearbyPlayers[i].getName());
 					nearbyPlayers[i].setPosition(ox-26.5,oy-1,oz+0.5);
 					// npc.executeCommand("/playsound mob.endermen.portal @a " + ox-27 + " " + oy-1 + " " + oz);
 					

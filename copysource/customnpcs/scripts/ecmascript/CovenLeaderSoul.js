@@ -7,7 +7,27 @@ if (owNpc == null) {
 	// npc.say("noo");
 	var players = npc.getSurroundingEntities(60,1);
 	if (players != null) {
-		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+players[0].getName()+' defeated the Coven Leader!"}');
+		var player = players[0].getName();
+		
+		if (players.length >= 2) {
+			for (i=1;i<(players.length-1);i++) {
+				player = player + ", " + players[i].getName();
+			}
+			player = player + " and " + players[players.length-1].getName();
+		} 
+		
+		// var playersdebug = ["Tizio","Caio","Sempronio"];
+		// var player = playersdebug[0];
+		
+		// if (playersdebug.length >= 2) {
+			// for (i=1;i<(playersdebug.length-1);i++) {
+				// player = player + ", " + playersdebug[i];
+			// }
+			// player = player + " and " + playersdebug[playersdebug.length-1];
+		// } 
+
+		
+		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+player+' defeated the Coven Leader!"}');
 	}
 	else {
 		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"The Coven Leader was defeated!"}');
