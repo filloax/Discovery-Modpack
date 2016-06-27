@@ -142,7 +142,6 @@ function interact(event) {
 			npc.setTexture("customnpcs:textures/telvannicharge.png");
 			npc.setStoredData("phase","startup");
 			npc.setName("Veltanni Master");
-			npc.setTitle("VeltMaster");
 			npc.setMaxHealth(300)
 			npc.setHealthRegen(50);
 			npc.setCombatRegen(50);

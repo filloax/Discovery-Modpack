@@ -314,7 +314,7 @@
     "AttackSpeed": 20,
     "PotionDuration": 5,
     "maxDelay": 40,
-    "ScriptEnabled": 0b,
+    "ScriptEnabled": 1b,
     "Role": 0,
     "DropChance": [
     ],

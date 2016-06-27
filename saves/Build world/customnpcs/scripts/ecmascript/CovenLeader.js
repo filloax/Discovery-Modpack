@@ -63,6 +63,24 @@ function init() {
 		}
 		npc.setTempData("thrownPlayers",players);
 		
+		//Check if block under is reinforced inscribed sandstone, if not, search 3x3 centered on opos for that block and set opos there
+		var ox = npc.getBlockX();
+		var oy = npc.getBlockY();
+		var oz = npc.getBlockZ();
+		var block = world.getBlock(ox,oy-1,oz);
+		
+		if (block == null || block.getName() != "ModpackStuff:unbreakBlock" || block.getItemDamage() != 1) {
+			for (i=0;i<3;i++) {
+				for (j=0;j<3;j++) {
+					var block1 = world.getBlock(ox-1+i,oy-1,oz-1+j);
+					if (block1 != null && block1.getName() == "ModpackStuff:unbreakBlock" && block1.getItemDamage() == 1) {
+						ox += i-1;
+						oz += j-1;
+					}
+				}
+			}
+		}
+		
 		npc.setStoredData("count",0);
 		npc.setStoredData("phase","start");
 		npc.setStoredData("hitcount",0);
@@ -70,9 +88,9 @@ function init() {
 		npc.setCombatRegen(50);
 		npc.setHealthRegen(50);
 		npc.setTempData("maxCountBarrier","reset");
-		npc.setStoredData("ox",npc.getBlockX());
-		npc.setStoredData("oy",npc.getBlockY());
-		npc.setStoredData("oz",npc.getBlockZ());
+		npc.setStoredData("ox",ox);
+		npc.setStoredData("oy",oy);
+		npc.setStoredData("oz",oz);
 		npc.setTempData("pCount",0);
 		npc.clearPotionEffects();
 		npc.setRetaliateType(3);
@@ -119,7 +137,7 @@ function damaged(event) {
 			
 			if (nearbyPlayers != null) {
 				for (i=0;i<nearbyPlayers.length;i++) {					
-					npc.executeCommand("/playsound mob.endermen.portal @a " + ox + " " + oy + " " + oz);
+					npc.executeCommand("/playsoundb mob.endermen.portal "+nearbyPlayers[i].getName());
 					nearbyPlayers[i].setPosition(ox-26.5,oy-1,oz+0.5);
 					// npc.executeCommand("/playsound mob.endermen.portal @a " + ox-27 + " " + oy-1 + " " + oz);
 					

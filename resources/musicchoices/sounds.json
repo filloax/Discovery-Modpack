@@ -42,7 +42,8 @@
     "category": "music",
     "musicchoices": true,
 	"boss": [
-      "{Title:Scavenger}"
+      "{Title:Scavenger}",
+	  "{Title:LeadScientist}"
 	],
     "sounds": [
       {

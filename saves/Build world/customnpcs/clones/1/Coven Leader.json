@@ -24,7 +24,7 @@
     "AttackStrenght": 10,
     "PersistenceRequired": 0b,
     "id": "customnpcs.CustomNpc",
-    "HealF": 1.0f,
+    "HealF": 201.0f,
     "MovingPatern": 0,
     "NpcLines": {
         "Lines": [
@@ -42,7 +42,6 @@
 	//If it's 2, don't do anything.
 	var startedControl = npc.getStoredData(\"startedControl\");
 	
-//npc.say(startedControl);
 	if (startedControl != 2) {
 	
 		//Variables starting with f are function locals
@@ -102,6 +101,24 @@
 		}
 		npc.setTempData(\"thrownPlayers\",players);
 		
+		//Check if block under is reinforced inscribed sandstone, if not, search 3x3 centered on opos for that block and set opos there
+		var ox = npc.getBlockX();
+		var oy = npc.getBlockY();
+		var oz = npc.getBlockZ();
+		var block = world.getBlock(ox,oy-1,oz);
+		
+		if (block == null || block.getName() != \"ModpackStuff:unbreakBlock\" || block.getItemDamage() != 1) {
+			for (i=0;i<3;i++) {
+				for (j=0;j<3;j++) {
+					var block1 = world.getBlock(ox-1+i,oy-1,oz-1+j);
+					if (block1 != null && block1.getName() == \"ModpackStuff:unbreakBlock\" && block1.getItemDamage() == 1) {
+						ox += i-1;
+						oz += j-1;
+					}
+				}
+			}
+		}
+		
 		npc.setStoredData(\"count\",0);
 		npc.setStoredData(\"phase\",\"start\");
 		npc.setStoredData(\"hitcount\",0);
@@ -109,9 +126,9 @@
 		npc.setCombatRegen(50);
 		npc.setHealthRegen(50);
 		npc.setTempData(\"maxCountBarrier\",\"reset\");
-		npc.setStoredData(\"ox\",npc.getBlockX());
-		npc.setStoredData(\"oy\",npc.getBlockY());
-		npc.setStoredData(\"oz\",npc.getBlockZ());
+		npc.setStoredData(\"ox\",ox);
+		npc.setStoredData(\"oy\",oy);
+		npc.setStoredData(\"oz\",oz);
 		npc.setTempData(\"pCount\",0);
 		npc.clearPotionEffects();
 		npc.setRetaliateType(3);
@@ -438,7 +455,7 @@ npc.setStoredData(\"count\",count);",
             ]
         },
         {
-            "Script": "var throwBack = eval(npc.getStoredData(\"throwBack\"));
+            "Script": "	var throwBack = eval(npc.getStoredData(\"throwBack\"));
 	var fill = eval(npc.getStoredData(\"fill\"));
 	
 	var phase = npc.getStoredData(\"phase\");
@@ -450,7 +467,7 @@ npc.setStoredData(\"count\",count);",
 	var oy = npc.getStoredData(\"oy\");
 	var oz = npc.getStoredData(\"oz\");
 	
-	if (event.getSource() == null || event.getSource().getType() != 1 || phase == \"escape\" || phase == \"ghost\") {
+	if (event.getSource() == null || event.getSource().getType() != 1 || phase == \"escape\" || phase == \"ghost\" || phase == \"start\") {
 		event.setCancelled(true);
 	}
 	
@@ -468,8 +485,9 @@ npc.setStoredData(\"count\",count);",
 			
 			if (nearbyPlayers != null) {
 				for (i=0;i<nearbyPlayers.length;i++) {					
+					npc.executeCommand(\"/playsoundb mob.endermen.portal \"+nearbyPlayers[i].getName());
 					nearbyPlayers[i].setPosition(ox-26.5,oy-1,oz+0.5);
-					npc.executeCommand(\"/playsound mob.endermen.portal @a \" + ox-27 + \" \" + oy-1 + \" \" + oz);
+					// npc.executeCommand(\"/playsound mob.endermen.portal @a \" + ox-27 + \" \" + oy-1 + \" \" + oz);
 					
 					// npc.executeCommand('/tellraw @a \"teleporting '+nearbyPlayers[i].getName()+' to '+(ox-27)+' '+(oy-1)+' '+oz+'\"');
 				}
@@ -754,12 +772,12 @@ npc.setStoredData(\"count\",count);",
     "ForgeData": {
         "WITCInitialWidth": 0.6f,
         "CNPCStoredData": {
-            "phase": "start",
+            "phase": "barrier1",
             "esId": 312952.0d,
-            "count": 3.0d,
-            "ox": 20244.0d,
+            "count": 0.0d,
+            "ox": 20214.0d,
             "oy": 64.0d,
-            "oz": 20033.0d,
+            "oz": 20011.0d,
             "fill": "function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
 			if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
 			if (debug == undefined || debug === null) {debug = false;}
@@ -852,14 +870,14 @@ npc.setStoredData(\"count\",count);",
     "MaxFiringRange": 15,
     "pXlr8": 0b,
     "UUIDLeast": 4810205481735555545L,
-    "Health": 1s,
+    "Health": 201s,
     "pExplode": 0b,
     "pStick": 0b,
     "MovingPause": 1b,
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
     "Title": "CovenLeader",
-    "TotalTicksAlive": 225673L,
+    "TotalTicksAlive": 230544L,
     "Rotation": [
         90.0f,
         0.0f

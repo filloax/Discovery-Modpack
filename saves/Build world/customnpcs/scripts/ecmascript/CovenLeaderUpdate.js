@@ -55,7 +55,7 @@ if (phase == "start") {
 		}
 	}
 	
-	//Get players and only do stuff if sat least 1 is found
+	//Get players and only do stuff if at least 1 is found
 	var players = npc.getSurroundingEntities(40,1);
 	if (players !== null) {
 		var px = players[0].getBlockX();
