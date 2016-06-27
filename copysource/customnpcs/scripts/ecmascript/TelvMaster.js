@@ -1,14 +1,25 @@
 function init(event){
-	var iX = npc.getBlockX();
-	var iY = npc.getBlockY();
-	var iZ = npc.getBlockZ();
-	var getRandomIntInclusive = "function(min, max) {\
-		return Math.floor(Math.random() * (max - min + 1)) + min;\
-	}"
-	npc.setHome(iX+0.5,iY,iZ+0.5);
-	npc.setStoredData("random",getRandomIntInclusive);
-	npc.setStoredData("phase","statue");
-	npc.setTempData("count",0);
+	//If it's 0/null, it has been spawned with the cloner and it will do the init each time.
+	//The starting npc (command-spawned) sets it to 1 after spawning. If it's 1, it will be set to 2 after doing the stuff.
+	//If it's 2, don't do anything.
+	var startedControl = npc.getStoredData("startedControl");
+	
+	if (startedControl != 2) {
+		var iX = npc.getBlockX();
+		var iY = npc.getBlockY();
+		var iZ = npc.getBlockZ();
+		var getRandomIntInclusive = "function(min, max) {\
+			return Math.floor(Math.random() * (max - min + 1)) + min;\
+		}"
+		npc.setHome(iX+0.5,iY,iZ+0.5);
+		npc.setStoredData("random",getRandomIntInclusive);
+		npc.setStoredData("phase","statue");
+		npc.setTempData("count",0);
+		
+		if (startedControl == 1) {
+			npc.setStoredData("startedControl",2);
+		}
+	}
 }
 
 function damaged(event){
@@ -80,22 +91,29 @@ function killed(event) {
 	wand.setTag("terra",2500)
 	var lootBag = world.createItem("Thaumcraft:ItemLootBag",2,2);
 	npc.setPosition(hX,hY,hZ);
-	npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
-	npc.executeCommand('/playsoundb victory normal @a[r=50]');
+	// npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
+	npc.executeCommand('/playsoundb musicchoices:bossvictory normal @a[r=60]');
 	
 	npc.dropItem(book);
 	npc.dropItem(wand);
 	npc.dropItem(lootBag);
 	
-	var player;
-	try {
-		player = npc.getSurroundingEntities(50,1)[0];
+	var players = npc.getSurroundingEntities(50,1);
+	
+	if (players != null) {
+		var winners = players[0].getName();
+		
+		if (players.length >= 2) {
+			for (i=1;i<(players.length-1);i++) {
+				winners = winners + ", " + players[i].getName();
+			}
+			winners = winners + " and " + players[players.length-1].getName();
+		} 
+	
+		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+winners+' defeated the Telvanni Master!"}');
+	} else {
+		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"The Telvanni Master was defeated!"}');
 	}
-	catch(err) {
-		player = "silly workaround"
-	}
-	if (typeof player != "string") {npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+player.getName()+' defeated the Telvanni Master!"}');}
-	else {npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"The Telvanni Master was defeated!"}');}
 }
 
 function interact(event) {
@@ -124,11 +142,12 @@ function interact(event) {
 			npc.setTexture("customnpcs:textures/telvannicharge.png");
 			npc.setStoredData("phase","startup");
 			npc.setName("Veltanni Master");
+			npc.setTitle("VeltMaster");
 			npc.setMaxHealth(300)
 			npc.setHealthRegen(50);
 			npc.setCombatRegen(50);
 			npc.setShowBossBar(2);
-			npc.executeCommand("/playsound2 bossbattle loop @a " + x + " " + y + " " + z + " 5 1");
+			// npc.executeCommand("/playsound2 bossbattle loop @a " + x + " " + y + " " + z + " 5 1");
 		}
 	}
 }
@@ -144,14 +163,8 @@ function update(event) {
 	var aboutToThunder = npc.getTempData("thunder"); //Time left before lightning strike
 	var aboutToFrost = npc.getTempData("frost"); //Time left before frost
 	var count = npc.getTempData("count"); //Time left before return to home
-	var playerL = npc.getSurroundingEntities(50,1);
-	var player;
-	try {
-		player = playerL[0];
-	}
-	catch(err) {
-		player = "dumb workaround again";
-	}
+	var players = npc.getSurroundingEntities(50,1);
+	var player = players[Math.floor(Math.random()*players.length)];
 	
 	if (phase == "startup" && health == 300) {
 		npc.setStoredData("phase","fight");
@@ -271,22 +284,25 @@ function update(event) {
 			wand.setTag("terra",2500)
 			var lootBag = world.createItem("Thaumcraft:ItemLootBag",2,2);
 			npc.setPosition(hX,hY,hZ);
-			npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
-			npc.executeCommand('/playsoundb victory normal @a[r=50]');
+			// npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
+			npc.executeCommand('/playsoundb musicchoices:bossvictory normal @a[r=60]')
 			
 			npc.dropItem(book);
 			npc.dropItem(wand);
 			npc.dropItem(lootBag);
+						
+			if (players != null) {
+
+				var winners = players[0].getName();
+				
+				if (players.length >= 2) {
+					for (i=1;i<(players.length-1);i++) {
+						winners = winners + ", " + players[i].getName();
+					}
+					winners = winners + " and " + players[players.length-1].getName();
+				} 
 			
-			var player;
-			try {
-				player = npc.getSurroundingEntities(50,1)[0];
-			}
-			catch(err) {
-				player = "silly workaround"
-			}
-			if (typeof player != "string") {
-				npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+player.getName()+' defeated the Telvanni Master!"}');
+				npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+winners+' defeated the Telvanni Master!"}');
 			} else {
 				npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"The Telvanni Master was defeated!"}');
 			}

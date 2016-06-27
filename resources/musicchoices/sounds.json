@@ -25,80 +25,106 @@
       }
     ]
   },
+  "boss.magebattle": {
+    "category": "music",
+    "musicchoices": true,
+	"boss": [
+      "{Title:VeltMaster}"
+	],
+    "sounds": [
+      {
+        "name": "machinima/queen_of_the_night",
+        "stream": true
+      }
+    ]
+  },
+  "boss.techbattle1": {
+    "category": "music",
+    "musicchoices": true,
+	"boss": [
+      "{Title:Scavenger}"
+	],
+    "sounds": [
+      {
+        "name": "machinima/the_end_of_mankind",
+        "stream": true
+      }
+    ]
+  },
   "Achaidh.cheide": {
     "category": "music",
-    "sounds": [{"name": "Achaidh Cheide", "stream": true}]
+    "sounds": [{"name": "mcleod/Achaidh Cheide", "stream": true}]
   },
   "Celtic.impulse": {
     "category": "music",
-    "sounds": [{"name": "Celtic Impulse", "stream": true}]
+    "sounds": [{"name": "mcleod/Celtic Impulse", "stream": true}]
   },
   "Chase": {
     "category": "music",
-    "sounds": [{"name": "Chase", "stream": true}]
+    "sounds": [{"name": "mcleod/Chase", "stream": true}]
   },
   "Confuse.state": {
     "category": "music",
-    "sounds": [{"name": "Confused State", "stream": true}]
+    "sounds": [{"name": "mcleod/Confused State", "stream": true}]
   },
   "Double.drift": {
     "category": "music",
-    "sounds": [{"name": "Double Drift", "stream": true}]
+    "sounds": [{"name": "mcleod/Double Drift", "stream": true}]
   },
   "Expeditionary": {
     "category": "music",
-    "sounds": [{"name": "Expeditionary", "stream": true}]
+    "sounds": [{"name": "mcleod/Expeditionary", "stream": true}]
   },
   "Frost.waltz.2": {
     "category": "music",
-    "sounds": [{"name": "Frost Waltz (Alternate)", "stream": true}]
+    "sounds": [{"name": "mcleod/Frost Waltz (Alternate)", "stream": true}]
   },
   "Frost.waltz": {
     "category": "music",
-    "sounds": [{"name": "Frost Waltz", "stream": true}]
+    "sounds": [{"name": "mcleod/Frost Waltz", "stream": true}]
   },
   "Heroic.age": {
     "category": "music",
-    "sounds": [{"name": "Heroic Age", "stream": true}]
+    "sounds": [{"name": "mcleod/Heroic Age", "stream": true}]
   },
   "Not.as.it.seems": {
     "category": "music",
-    "sounds": [{"name": "Not As It Seems", "stream": true}]
+    "sounds": [{"name": "mcleod/Not As It Seems", "stream": true}]
   },
   "Opium": {
     "category": "music",
-    "sounds": [{"name": "Opium", "stream": true}]
+    "sounds": [{"name": "mcleod/Opium", "stream": true}]
   },
   "Savannah.sketch": {
     "category": "music",
-    "sounds": [{"name": "Savannah Sketch", "stream": true}]
+    "sounds": [{"name": "mcleod/Savannah Sketch", "stream": true}]
   },
   "Senbazuru": {
     "category": "music",
-    "sounds": [{"name": "Senbazuru", "stream": true}]
+    "sounds": [{"name": "mcleod/Senbazuru", "stream": true}]
   },
   "Skye.cullin": {
     "category": "music",
-    "sounds": [{"name": "Skye Cullin", "stream": true}]
+    "sounds": [{"name": "mcleod/Skye Cullin", "stream": true}]
   },
   "Temple.of.the.manes": {
     "category": "music",
-    "sounds": [{"name": "Temple of the Manes", "stream": true}]
+    "sounds": [{"name": "mcleod/Temple of the Manes", "stream": true}]
   },
   "The.pyre": {
     "category": "music",
-    "sounds": [{"name": "The Pyre", "stream": true}]
+    "sounds": [{"name": "mcleod/The Pyre", "stream": true}]
   },
   "To.the.ends": {
     "category": "music",
-    "sounds": [{"name": "To the Ends", "stream": true}]
+    "sounds": [{"name": "mcleod/To the Ends", "stream": true}]
   },
   "Unpromised": {
     "category": "music",
-    "sounds": [{"name": "Unpromised", "stream": true}]
+    "sounds": [{"name": "mcleod/Unpromised", "stream": true}]
   },
   "Willow.and.the.light": {
     "category": "music",
-    "sounds": [{"name": "Willow and the Light", "stream": true}]
+    "sounds": [{"name": "mcleod/Willow and the Light", "stream": true}]
   }
 }
