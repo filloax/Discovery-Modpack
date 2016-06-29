@@ -11,3 +11,5 @@ textureFile[2] = "oldPoppet.png";
 onUse[2] = "mod.loadScript('oldpoppet.js');";
 addToCreative[3] = true;
 textureFile[3] = textureFile[2];
+addToCreative[4] = false;
+textureFile[4] = "mysterypiece.png";

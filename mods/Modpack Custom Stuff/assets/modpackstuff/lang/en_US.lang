@@ -28,6 +28,7 @@ tile.spring0.name=Spring
 tile.unbreakSlab0.name=Bedrock Slab
 tile.unbreakBlock0.name=Reinforced Sandstone Bricks
 tile.unbreakBlock1.name=Reinforced Inscribed Sandstone
+tile.unbreakBlock2.name=Lapis Caelestis Cinereus (Gray) (Unbreakable)
 tile.mazeBlock0.name=Maze Sandstone Bricks
 tile.mazeBlock1.name=Maze Sandstone Bricks
 tile.mazeBlock2.name=Maze Sandstone Bricks
@@ -49,3 +50,133 @@ item.activator0.name=§6Levitator Activator
 item.activator1.name=§6Peculiar Shard
 item.activator2.name=§6Old Poppet
 item.activator3.name=§6Old Poppet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tile.mysteryman_10.name=§kW.D.Gaster§r
+tile.mysteryman_20.name=§kW.D.Gaster§r
+tile.mysteryman_30.name=§kW.D.Gaster§r
+tile.mysteryman_40.name=§kW.D.Gaster§r
+tile.mysteryman_50.name=§kW.D.Gaster§r
+tile.mysteryman_60.name=§kW.D.Gaster§r
+tile.mysteryman_70.name=§kW.D.Gaster§r
+tile.mysteryman_80.name=§kW.D.Gaster§r
+tile.mysteryman_90.name=§kW.D.Gaster§r
+tile.mysteryman_100.name=§kW.D.Gaster§r
+tile.mysteryman_110.name=§kW.D.Gaster§r
+tile.mysteryman_120.name=§kW.D.Gaster§r
+tile.mysteryman_130.name=§kW.D.Gaster§r
+tile.mysteryman_140.name=§kW.D.Gaster§r
+tile.mysteryman_14.name=§kW.D.Gaster§r
+tile.mysteryman_24.name=§kW.D.Gaster§r
+tile.mysteryman_34.name=§kW.D.Gaster§r
+tile.mysteryman_44.name=§kW.D.Gaster§r
+tile.mysteryman_54.name=§kW.D.Gaster§r
+tile.mysteryman_64.name=§kW.D.Gaster§r
+tile.mysteryman_74.name=§kW.D.Gaster§r
+tile.mysteryman_84.name=§kW.D.Gaster§r
+tile.mysteryman_94.name=§kW.D.Gaster§r
+tile.mysteryman_104.name=§kW.D.Gaster§r
+tile.mysteryman_114.name=§kW.D.Gaster§r
+tile.mysteryman_124.name=§kW.D.Gaster§r
+tile.mysteryman_134.name=§kW.D.Gaster§r
+tile.mysteryman_144.name=§kW.D.Gaster§r
+tile.greydoor0.name=§kDoor§r
+
+item.activator4.name=§6Piece of §kW.D.Gaster§r
+item.activator5.name=§6Piece of §kW.D.Gaster§r

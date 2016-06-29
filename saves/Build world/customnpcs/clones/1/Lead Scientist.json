@@ -37,13 +37,13 @@
     "FindShelter": 2,
     "ScriptsContainers": [
         {
-            "Script": "	var bossid = \"MutantCreatures.MutantZombie\"
+            "Script": "	var bossid = \"MutantCreatures.MutantZombie\";
 	
-	npc.executeCommand('/summon '+bossid+' ~ ~ ~ {CustomName:\"Lead Scientist\",CustomNameVisible:0,PersistenceRequired:1}');
+	npc.executeCommand('/summon2 '+bossid+' ~ ~ ~ {CustomName:\"Lead Scientist\",CustomNameVisible:0,PersistenceRequired:1}');
 	var mobs = npc.getSurroundingEntities(1, 3);
 	var boss;
 	// npc.say(bossL[0].getMCEntity().func_94057_bL());
-	if (mobs != null)
+	if (mobs != null) {
 		for (i=0;i<mobs.length;i++) {
 			var bossCheck = mobs[i].getMCEntity();
 			// npc.say(bossCheck.func_94057_bL());
@@ -54,15 +54,14 @@
 	}
 	if (boss != undefined) {
 		npc.setStoredData(\"id\",boss.func_145782_y()); //getEntityId
-	}
-",
+	}",
             "ScriptConsole": "",
             "Type": 0,
             "ScriptList": [
             ]
         },
         {
-            "Script": "var boss = world.getMCWorld().func_73045_a(npc.getStoredData(\"id\")); //getEntityById
+            "Script": "	var boss = world.getMCWorld().func_73045_a(npc.getStoredData(\"id\")); //getEntityById
 	
 	if (boss === null) {
 		//Do the usual message stuff and music
@@ -88,7 +87,7 @@
 		}
 		
 		// npc.executeCommand('/playsound2 lol stop @a '+x+' '+y+' '+z);
-		npc.executeCommand('/playsoundb musicchoiches:bossvictory normal @a[r=60]')
+		npc.executeCommand('/playsoundb musicchoices:bossvictory normal @a[r=60]')
 		npc.despawn();
 	} else {
 		var health = boss.func_110143_aJ();
@@ -358,7 +357,7 @@
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
     "Title": "LeadScientist",
-    "TotalTicksAlive": 56795L,
+    "TotalTicksAlive": 58141L,
     "Rotation": [
         -86.69153f,
         0.0f

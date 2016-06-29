@@ -76,6 +76,7 @@ function init() {
 					if (block1 != null && block1.getName() == "ModpackStuff:unbreakBlock" && block1.getItemDamage() == 1) {
 						ox += i-1;
 						oz += j-1;
+						npc.setPosition(ox+0.5,oy,oz+0.5);
 					}
 				}
 			}

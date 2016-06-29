@@ -52,6 +52,19 @@
       }
     ]
   },
+  "music.ciri": {
+    "category": "music",
+    "musicchoices": true,
+	"boss": [
+		"{ThisHasTo:BePlayedManually}"
+	],
+    "sounds": [
+      {
+        "name": "witcher3/kaermorhen",
+        "stream": true
+      }
+    ]
+  },
   "Achaidh.cheide": {
     "category": "music",
     "sounds": [{"name": "mcleod/Achaidh Cheide", "stream": true}]

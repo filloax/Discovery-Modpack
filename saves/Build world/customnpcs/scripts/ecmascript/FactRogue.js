@@ -4,58 +4,70 @@
 //field_72449_c vector Z
 
 function init() {
-	//check if source is behind target
-	var isBehind = function(source,target) {
-		var mcTarget = target.getMCEntity();
-		var lookVec = mcTarget.func_70040_Z();
-		var lx = lookVec.field_72450_a;
-		var lz = lookVec.field_72449_c;
-		var tx = target.getX();
-		var tz = target.getZ();
-		var sx = source.getX();
-		var sz = source.getZ();
+	//If it's 0/null, it has been spawned with the cloner and it will do the init each time.
+	//The starting npc (command-spawned) sets it to 1 after spawning. If it's 1, it will be set to 2 after doing the stuff.
+	//If it's 2, don't do anything.
+	var startedControl = npc.getStoredData("startedControl");
+	
+	if (startedControl != 2) {
 		
-		//get the line perpendicular to the vector passing from target
-		//r: z = mx + q
-		var m = -(lx/lz);
-		var q = tz - m*tx;
+		//check if source is behind target
+		var isBehind = function(source,target) {
+			var mcTarget = target.getMCEntity();
+			var lookVec = mcTarget.func_70040_Z();
+			var lx = lookVec.field_72450_a;
+			var lz = lookVec.field_72449_c;
+			var tx = target.getX();
+			var tz = target.getZ();
+			var sx = source.getX();
+			var sz = source.getZ();
+			
+			//get the line perpendicular to the vector passing from target
+			//r: z = mx + q
+			var m = -(lx/lz);
+			var q = tz - m*tx;
+			
+			//get if source is behind the line 
+			if (lz > 0) {
+				return sz < m * sx + q;
+			} else {
+				return sz > m * sx + q;
+			}
+		}
+		var isBehindS = isBehind.toString();
+		npc.setStoredData("isBehind",isBehindS);
 		
-		//get if source is behind the line 
-		if (lz > 0) {
-			return sz < m * sx + q;
-		} else {
-			return sz > m * sx + q;
+		var getWeapon = function(key) {
+			return world.createItem((key == "knife") ? "customnpcs:npcKukri" : "weaponmod:musketbayonet.diamond",0,1);
+		}
+		var getWeaponS = getWeapon.toString();
+		npc.setStoredData("getWeapon",getWeaponS);
+		
+		var throwPearl = function(x,z,tx,tz) {
+			var mx = (tx-x)/32;
+			var my = 0.7
+			var mz = (tz-z)/32;
+			npc.executeCommand("/summon ThrownEnderpearl ~ ~3 ~ {Motion:["+mx+","+my+","+mz+"]}");
+			npc.executeCommand("/playsound random.bow @a ~ ~ ~ 1.0 0.7");
+		}
+		var throwPearlS = throwPearl.toString();
+		npc.setStoredData("throwPearl",throwPearlS);
+		
+		npc.setVisibleType(1);
+		npc.clearPotionEffects();
+		npc.setRetaliateType(3);
+		npc.setRightItem(null);
+		npc.setStoredData("drinkCount",0);
+		npc.setMaxHealth(50);
+		npc.setShowBossBar(0);
+		
+		npc.setStoredData("encounter",1);
+		npc.setStoredData("phase","start");
+		
+		if (startedControl == 1) {
+			npc.setStoredData("startedControl",2);
 		}
 	}
-	var isBehindS = isBehind.toString();
-	npc.setStoredData("isBehind",isBehindS);
-	
-	var getWeapon = function(key) {
-		return world.createItem((key == "knife") ? "customnpcs:npcKukri" : "weaponmod:musketbayonet.diamond",0,1);
-	}
-	var getWeaponS = getWeapon.toString();
-	npc.setStoredData("getWeapon",getWeaponS);
-	
-	var throwPearl = function(x,z,tx,tz) {
-		var mx = (tx-x)/32;
-		var my = 0.7
-		var mz = (tz-z)/32;
-		npc.executeCommand("/summon ThrownEnderpearl ~ ~2 ~ {Motion:["+mx+","+my+","+mz+"]}");
-		npc.executeCommand("/playsound random.bow @a ~ ~ ~ 1.0 0.7");
-	}
-	var throwPearlS = throwPearl.toString();
-	npc.setStoredData("throwPearl",throwPearlS);
-	
-	npc.setVisibleType(1);
-	npc.clearPotionEffects();
-	npc.setRetaliateType(3);
-	npc.setRightItem(null);
-	npc.setStoredData("drinkCount",0);
-	npc.setMaxHealth(50);
-	npc.setShowBossBar(0);
-	
-	npc.setStoredData("encounter",1);
-	npc.setStoredData("phase","start");
 }
 
 //func_70635_at get entity senses
@@ -67,17 +79,14 @@ function update(event) {
 	var isBehindF = eval(npc.getStoredData("isBehind"));
 	var getWeapon = eval(npc.getStoredData("getWeapon"));
 		
-	var playerL = npc.getSurroundingEntities(60,1);
-	var player;
-	try {
-		player = playerL[0];
-	}
-	catch(err) {
-		player = "this is weird, getSurroudingEntiteis works strangely so I have to do this workaround";
-	}
+	var players = npc.getSurroundingEntities(60,1);
 	
-	if (typeof player != "string") {
+	if (players != null) {
+		var player;
+		
 		if (phase == "sneaking") {
+			player = players[0];
+			
 			var isBehind = isBehindF(npc,player);
 			var canSee = npc.canSeeEntity(player);
 			var drink = eval(npc.getStoredData("drink"));
@@ -141,6 +150,8 @@ function update(event) {
 			}
 			npc.setStoredData("drinkCount",drinkCount);
 		} else if (phase == "waiting") {
+			player = players[0];
+			
 			var py = player.getY();
 			var y = npc.getY();
 			
@@ -148,17 +159,22 @@ function update(event) {
 				npc.setStoredData("phase","sneaking");
 			}
 		} else if (phase == "waitingEnd") {
+			player = players[0];
+			
 			var py = player.getY();
 			var y = npc.getY();
 			if (py >= y) {
 				npc.setStoredData("phase","final");
 				npc.setRetaliateType(0);
 				npc.setShowBossBar(1);		
-				npc.executeCommand("/playsound bossbattle2 @a " + npc.getX() + " " + y + " " + npc.getZ() + " 7 1");
+				// npc.executeCommand("/playsound2 bossbattle2 loop @a " + npc.getStoredData("finalx") + " " + npc.getStoredData("finaly") + " " + npc.getStoredData("finalz") + " 7 1");
+				npc.setTitle("Scavenger");
 				npc.setArrowResistance(1.5);
 				npc.setMeleeResistance(1.5);
 			}
 		} else if (phase == "final") {
+			player = players[Math.floor(Math.random()*players.length)];
+			
 			var rand = Math.random();
 			if (rand < 0.1) { //dynamite
 				npc.swingHand();
@@ -402,7 +418,7 @@ function damaged() {
 			}
 		}
 		
-		if (!success) { //if that still didn't work, settle down for his current position as a respawn point to rpevent crashes and don't teleport
+		if (!success) { //if that still didn't work, settle down for his current position as a respawn point to prevent crashes and don't teleport
 						npc.setStoredData("finalx",nx);
 						npc.setStoredData("finaly",ny);
 						npc.setStoredData("finalz",nz);			
@@ -449,41 +465,38 @@ function attack(event) {
 		npc.setRightItem(getWeapon(""));
 		npc.setRetaliateType(0);
 		event.setDamage(15);
-		npc.executeCommand("/playsound customnpcs:misc.swosh @a");
+		npc.executeCommand("/playsound stab @a");
 	}
 }
 
 function killed(event) {
 	//Do the usual message stuff and then spawn a chest with some workarounds with the drop items, so they don't get exploded
-	var playerL = npc.getSurroundingEntities(60,1);
-	var player;
 	var fx = Math.floor(npc.getStoredData("finalx"));
 	var fy = Math.floor(npc.getStoredData("finaly"));
 	var fz = Math.floor(npc.getStoredData("finalz"));
-	var hammer = world.createItem("ImmersiveEngineering:tool",0,1).getMCItemStack();
-	var grabbag = world.createItem("ImmersiveEngineering:shaderBag",0,2);
-	grabbag.setTag("rarity","epic");
-	grabbag = grabbag.getMCItemStack();
+
 	var chest = world.createItem("chest",0,1);
 	var mcWorld = world.getMCWorld();
 	
-	try {
-		player = playerL[0];
+	var players = npc.getSurroundingEntities(50,1);
+	
+	if (players != null) {
+		var winners = players[0].getName();
+		
+		if (players.length >= 2) {
+			for (i=1;i<(players.length-1);i++) {
+				winners = winners + ", " + players[i].getName();
+			}
+			winners = winners + " and " + players[players.length-1].getName();
+		} 
+	
+		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+winners+' defeated a Scavenger!"}');
+	} else {
+		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"A Scavenger was defeated!"}');
 	}
-	catch(err) {
-		player = "this is weird, getSurroudingEntiteis works strangely so I have to do this workaround"
-	}
-
-	if (typeof player != 'string') {
-		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+player.getName()+' defeated a scavenger!"}');
-	}
-	else {
-		npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"A scavenger was defeated!"}');
-	}	
-	npc.executeCommand('/setblock '+fx+' '+fy+' '+fz+' chest 0 replace {Items:[{id:387,Count:1,Damage:0,Slot:2,tag:{author:"Scavenger",title:"Journal",pages:["10...\n....\nThis factory looks promising, and I sh\n\n15\n     I found an old revolver, still working\n\n19\nI lost it    damnit\n\n[Most of the journal is unreadable.]"]}}]}');
-	// world.setBlock(fx,fy,fx,chest);
-	//func_70299_a setInventorySlotContents int,ItemStack
-	//func_147438_o getTileEntity
-	mcWorld.func_147438_o(fx,fy,fz).func_70299_a(0,hammer);
-	mcWorld.func_147438_o(fx,fy,fz).func_70299_a(1,grabbag);
+	
+	// npc.executeCommand('/playsound2 lol stop @a '+fx+' '+fy+' '+fz);
+	npc.executeCommand('/playsoundb musicchoices:bossvictory normal @a[r=50]');
+	
+	npc.executeCommand('/setblock2 '+fx+' '+fy+' '+fz+' chest 0 replace {Items:[{id:ImmersiveEngineering:tool,Count:1,Slot:0},{id:ImmersiveEngineering:shaderBag,Count:2,tag:{rarity:"epic"},Slot:1},{id:387,Count:1,Damage:0,Slot:2,tag:{author:"Scavenger",title:"Journal",pages:["10...\n....\nThis factory looks promising, and I sh\n\n15\n     I found an old revolver, still working\n\n19\nI lost it    damnit\n\n[Most of the journal is unreadable.]"]}}]}');
 }

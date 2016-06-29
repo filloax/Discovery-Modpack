@@ -24,7 +24,7 @@
     "AttackStrenght": 10,
     "PersistenceRequired": 0b,
     "id": "customnpcs.CustomNpc",
-    "HealF": 201.0f,
+    "HealF": 300.0f,
     "MovingPatern": 0,
     "NpcLines": {
         "Lines": [
@@ -37,7 +37,7 @@
     "FindShelter": 2,
     "ScriptsContainers": [
         {
-            "Script": "//If it's 0/null, it has been spawned with the cloner and it will do the init each time.
+            "Script": "	//If it's 0/null, it has been spawned with the cloner and it will do the init each time.
 	//The Corpse npc sets it to 1 after spawning. If it's 1, it will be set to 2 after doing the stuff.
 	//If it's 2, don't do anything.
 	var startedControl = npc.getStoredData(\"startedControl\");
@@ -114,6 +114,7 @@
 					if (block1 != null && block1.getName() == \"ModpackStuff:unbreakBlock\" && block1.getItemDamage() == 1) {
 						ox += i-1;
 						oz += j-1;
+						npc.setPosition(ox+0.5,oy,oz+0.5);
 					}
 				}
 			}
@@ -455,7 +456,7 @@ npc.setStoredData(\"count\",count);",
             ]
         },
         {
-            "Script": "	var throwBack = eval(npc.getStoredData(\"throwBack\"));
+            "Script": "var throwBack = eval(npc.getStoredData(\"throwBack\"));
 	var fill = eval(npc.getStoredData(\"fill\"));
 	
 	var phase = npc.getStoredData(\"phase\");
@@ -574,7 +575,7 @@ npc.setStoredData(\"count\",count);",
         -0.0784000015258789d,
         0.0d
     ],
-    "CombatRegen": 50,
+    "CombatRegen": 0,
     "pEffect": 0,
     "DistanceToMelee": 4,
     "NpcStepSound": "",
@@ -650,7 +651,7 @@ npc.setStoredData(\"count\",count);",
     ],
     "AggroRange": 50,
     "DirectLOS": 1b,
-    "HealthRegen": 50,
+    "HealthRegen": 1,
     "NpcModelData": {
         "LegsConfig": {
             "ScaleZ": 1.0f,
@@ -775,9 +776,9 @@ npc.setStoredData(\"count\",count);",
             "phase": "barrier1",
             "esId": 312952.0d,
             "count": 0.0d,
-            "ox": 20214.0d,
-            "oy": 64.0d,
-            "oz": 20011.0d,
+            "ox": -1654.0d,
+            "oy": 65.0d,
+            "oz": -1011.0d,
             "fill": "function(x,y,z,x2,y2,z2,block,dmg,nbt,replaceSolid,replaceWhat,debug) {
 			if (replaceSolid == undefined || replaceSolid === null) {replaceSolid = false;}
 			if (debug == undefined || debug === null) {debug = false;}
@@ -870,14 +871,14 @@ npc.setStoredData(\"count\",count);",
     "MaxFiringRange": 15,
     "pXlr8": 0b,
     "UUIDLeast": 4810205481735555545L,
-    "Health": 201s,
+    "Health": 300s,
     "pExplode": 0b,
     "pStick": 0b,
     "MovingPause": 1b,
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
     "Title": "CovenLeader",
-    "TotalTicksAlive": 230544L,
+    "TotalTicksAlive": 230892L,
     "Rotation": [
         90.0f,
         0.0f

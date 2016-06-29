@@ -9,6 +9,10 @@ mod.addBlock("spring.js","flat");
 mod.addBlock("unbreakSlab.js","slab");
 mod.addBlock("mazeBlock.js","normal");
 mod.addBlock("unbreakBlock.js","normal");
+for (i=1;i<=14;i++) {
+	mod.addBlock("mysteryman"+i+".js","flat");
+}
+mod.addBlock("greydoor.js","door");
 
 mod.addItem("vaultSuitChest.js", "armor");
 mod.addItem("vaultSuitLegs.js", "armor");
@@ -23,3 +27,4 @@ mod.addItem("activator.js","normal");
 mod.addTileEntity("elevTE.js","normal");
 mod.addTileEntity("slowIce.js","normal");
 mod.addTileEntity("spawner.js","normal");
+mod.addTileEntity("fade2sec.js","normal");

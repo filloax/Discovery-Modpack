@@ -10,5 +10,6 @@
   "magic.wall":{"sounds":["magicwall"]},
   "stab":{"sounds":["stab"]},
   "magic.swosh":{"sounds":["magicswosh"]},
-  "discovery":{"sounds":["discovery"]}
+  "discovery":{"sounds":["discovery"]},
+  "null":{"sounds":["null"]}
 }
