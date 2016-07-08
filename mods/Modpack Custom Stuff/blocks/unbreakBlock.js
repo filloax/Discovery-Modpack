@@ -3,7 +3,7 @@ material = "rock";
 creativeTab = "buildingBlocks";
 transparent = true;
 
-var texture = ["/geostrata:sandstone_b.png","/geostrata:sandstone_i.png","lapiscaelestis","","","","","","","","","","","","",""];
+var texture = ["/geostrata:sandstone_b.png","/geostrata:sandstone_i.png","lapiscaelestis.png","","","","","","","","","","","","",""];
 for (i=0;i<16;i++) {
 	textureFileXP[i] = texture[i];
 	textureFileXN[i] = texture[i];

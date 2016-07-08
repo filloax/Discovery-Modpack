@@ -6,12 +6,6 @@
             "id": "Thaumcraft:ItemLootBag",
             "Count": 1b,
             "Damage": 0s
-        },
-        {
-            "Slot": 1b,
-            "id": "ModpackStuff:activator",
-            "Count": 1b,
-            "Damage": 0s
         }
     ],
     "PotionEffect": 0,
@@ -20,7 +14,7 @@
     "Resistances": {
         "Arrow": 1.0f,
         "Explosion": 1.0f,
-        "Knockback": 1.0f,
+        "Knockback": 2.0f,
         "Melee": 1.0f
     },
     "BossBar": 0b,
@@ -49,70 +43,8 @@
     "FindShelter": 2,
     "ScriptsContainers": [
         {
-            "Script": "var iX = npc.getBlockX();
-	var iY = npc.getBlockY();
-	var iZ = npc.getBlockZ();
-	var getRandomIntInclusive = \"function(min, max) {\
-		return Math.floor(Math.random() * (max - min + 1)) + min;\
-	}\"
-	npc.setHome(iX,iY,iZ);
-	npc.setStoredData(\"random\",getRandomIntInclusive);
-",
-            "ScriptConsole": "",
-            "Type": 0,
-            "ScriptList": [
-            ]
-        },
-        {
-            "Script": "	var getRandom = eval(npc.getStoredData(\"random\"));
-	var rand = getRandom(0,20);
-	var radius = getRandom(-5,5);
-	if (rand == 1 && npc.isAttacking()) {
-		var X = npc.getX()+radius;
-		var Y = npc.getY();
-		var Z = npc.getZ()+radius;
-		npc.executeCommand(\"/summon Skeleton \" + X + \" \" + Y + \" \" + Z);
-	}
-",
-            "ScriptConsole": "",
-            "Type": 1,
-            "ScriptList": [
-            ]
-        },
-        {
-            "Script": "	var hRadius = 10;
-	var radius = 5;
-	var hX = npc.getHomeX();
-	var hY = npc.getHomeY();
-	var hZ = npc.getHomeZ();
-	var sX = npc.getX();
-	var sY = npc.getY();
-	var sZ = npc.getZ();
-	var runs = 0;
-	var getRandom = eval(npc.getStoredData(\"random\"));
-	if (sX <= hX + hRadius && sX >= hX - hRadius && sY <= hY + hRadius && sY >= hY - hRadius && sZ <= hZ + hRadius && sZ >= hZ - hRadius) { 
-		while (runs < 500) {
-			var eX = sX + getRandom(-radius,radius);
-			var eY = sY - 1;
-			var eZ = sZ + getRandom(-radius,radius);
-			var endBlock = world.getBlock(eX,eY,eZ);
-			var endBlockUp1 = world.getBlock(eX,eY+1,eZ);
-			var endBlockUp2 = world.getBlock(eX,eY+2,eZ);
-			if (endBlock != undefined && endBlockUp1 == undefined && endBlockUp2 == undefined) {
-				npc.setPosition(eX,eY+1,eZ);
-				break;
-			}
-		}
-	}
-",
-            "ScriptConsole": "",
-            "Type": 4,
-            "ScriptList": [
-            ]
-        },
-        {
-            "Script": "player = event:getSource()
-	player:giveItem(\"ModpackStuff:activator\",1,1)
+            "Script": "var player = event.getSource();
+	player.giveItem(\"ModpackStuff:activator\",1,1)
 ",
             "ScriptConsole": "",
             "Type": 5,
@@ -196,7 +128,7 @@
         "sitting": 0b,
         "tumorWarpPermanent": 0
     },
-    "UUIDMost": 6111404588789286614L,
+    "UUIDMost": 5675134707192973283L,
     "Fire": -1s,
     "DisablePitch": 0b,
     "pPhysics": 0b,
@@ -426,7 +358,7 @@
     "GlowTexture": "",
     "MaxFiringRange": 15,
     "pXlr8": 1b,
-    "UUIDLeast": -7300477817224852138L,
+    "UUIDLeast": -6119042276847791711L,
     "Health": 100s,
     "pExplode": 0b,
     "pStick": 0b,
@@ -434,7 +366,7 @@
     "NpcDeathSound": "minecraft:game.player.hurt",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 233922L,
+    "TotalTicksAlive": 235646L,
     "Rotation": [
         -4.6942444f,
         0.0f

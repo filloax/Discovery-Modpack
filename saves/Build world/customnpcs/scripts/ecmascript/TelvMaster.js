@@ -164,149 +164,151 @@ function update(event) {
 	var aboutToFrost = npc.getTempData("frost"); //Time left before frost
 	var count = npc.getTempData("count"); //Time left before return to home
 	var players = npc.getSurroundingEntities(50,1);
-	var player = players[Math.floor(Math.random()*players.length)];
-	
-	if (phase == "startup" && health == 300) {
-		npc.setStoredData("phase","fight");
-		npc.setRetaliateType(0);
-		npc.setHealthRegen(1);
-		npc.setTexture("customnpcs:textures/telvanni.png");
-		npc.setCombatRegen(0);
-	}
-	
-	if (typeof player != "string") {
-		var pX = player.getX()
-		var pY = player.getY()
-		var pZ = player.getZ()
-		if ((rand == 1 || rand == 2) && attacking && phase == "fight") {
-			var X = npc.getX()+radius;
-			var Y = npc.getY();
-			var Z = npc.getZ()+radius;
-			npc.executeCommand("/summon Skeleton " + X + " " + Y + " " + Z);
-		} else if ((rand == 3 && attacking && phase == "fight") && !(aboutToThunder >= 1 || aboutToFrost >= 1)) {
-			var aboutToThunder = 1;
-			npc.setTempData("thunder",aboutToThunder);
-			npc.setTempData("pPos", [pX,pY,pZ]);
-			npc.executeCommand("/playsound shockrune @a " + pX + " " + pY + " " + pZ);
-			
-			// npc.say(player.getName());
-		} else if ((rand == 4 && attacking && phase == "fight") && !(aboutToThunder >= 1 || aboutToFrost >= 1)) {
+	if (players != null && players.length >= 1) {
+		var player = players[Math.floor(Math.random()*players.length)];
+		
+		if (phase == "startup" && health == 300) {
+			npc.setStoredData("phase","fight");
+			npc.setRetaliateType(0);
+			npc.setHealthRegen(1);
+			npc.setTexture("customnpcs:textures/telvanni.png");
+			npc.setCombatRegen(0);
+		}
+		
+		if (typeof player != "string") {
+			var pX = player.getX()
+			var pY = player.getY()
+			var pZ = player.getZ()
+			if ((rand == 1 || rand == 2) && attacking && phase == "fight") {
+				var X = npc.getX()+radius;
+				var Y = npc.getY();
+				var Z = npc.getZ()+radius;
+				npc.executeCommand("/summon Skeleton " + X + " " + Y + " " + Z);
+			} else if ((rand == 3 && attacking && phase == "fight") && !(aboutToThunder >= 1 || aboutToFrost >= 1)) {
+				var aboutToThunder = 1;
+				npc.setTempData("thunder",aboutToThunder);
+				npc.setTempData("pPos", [pX,pY,pZ]);
+				npc.executeCommand("/playsound shockrune @a " + pX + " " + pY + " " + pZ);
+				
+				// npc.say(player.getName());
+			} else if ((rand == 4 && attacking && phase == "fight") && !(aboutToThunder >= 1 || aboutToFrost >= 1)) {
 
-			var aboutToFrost = 1;
-			npc.setTempData("Frost",aboutToFrost);
-			npc.setTempData("pPos", [pX,pY,pZ]);
-			npc.executeCommand("/playsound icerune @a " + pX + " " + pY + " " + pZ);
-			
-			// npc.say(player.getName());
+				var aboutToFrost = 1;
+				npc.setTempData("Frost",aboutToFrost);
+				npc.setTempData("pPos", [pX,pY,pZ]);
+				npc.executeCommand("/playsound icerune @a " + pX + " " + pY + " " + pZ);
+				
+				// npc.say(player.getName());
+			}
 		}
-	}
-	
-	if (aboutToThunder == 4) {
-		var pPos = npc.getTempData("pPos");
-		world.thunderStrike(pPos[0],pPos[1],pPos[2]);
-		npc.setTempData("thunder",0);
-	} else if (aboutToThunder >= 1) {
-		++aboutToThunder;
-		npc.setTempData("thunder",aboutToThunder);
-	}
-	
-	if (aboutToFrost == 3) {
-		var pPos = npc.getTempData("pPos");
-		var ice = world.createItem("ModpackStuff:slowIce",0,1);
-		var air = world.createItem("air",0,1);
-		var pos = [pPos[0]-1,pPos[1]-1,pPos[2]-1];
-		for (i=0;i<3;i++) {
-			for (j=0;j<3;j++) {			
-				for (k=0;k<4;k++) {
-					if (world.getBlock(pos[0],pos[1],pos[2]) == undefined) {
-						world.setBlock(pos[0],pos[1],pos[2],ice);
+		
+		if (aboutToThunder == 4) {
+			var pPos = npc.getTempData("pPos");
+			world.thunderStrike(pPos[0],pPos[1],pPos[2]);
+			npc.setTempData("thunder",0);
+		} else if (aboutToThunder >= 1) {
+			++aboutToThunder;
+			npc.setTempData("thunder",aboutToThunder);
+		}
+		
+		if (aboutToFrost == 3) {
+			var pPos = npc.getTempData("pPos");
+			var ice = world.createItem("ModpackStuff:slowIce",0,1);
+			var air = world.createItem("air",0,1);
+			var pos = [pPos[0]-1,pPos[1]-1,pPos[2]-1];
+			for (i=0;i<3;i++) {
+				for (j=0;j<3;j++) {			
+					for (k=0;k<4;k++) {
+						if (world.getBlock(pos[0],pos[1],pos[2]) == undefined) {
+							world.setBlock(pos[0],pos[1],pos[2],ice);
+						}
+						pos[1]++
 					}
-					pos[1]++
+					pos[1] = pPos[1]-1;
+					pos[0]++;
 				}
-				pos[1] = pPos[1]-1;
-				pos[0]++;
+				pos[0] = pPos[0]-1;
+				pos[2]++;
 			}
-			pos[0] = pPos[0]-1;
-			pos[2]++;
-		}
-		pos = [pPos[0],pPos[1],pPos[2]];
-		
-		for (i=0;i<2;i++) {
-			var block = world.getBlock(pos[0],pos[1],pos[2]);
-			if (block.getName() == "ModpackStuff:slowIce") {
-				world.setBlock(pos[0],pos[1],pos[2],air);
+			pos = [pPos[0],pPos[1],pPos[2]];
+			
+			for (i=0;i<2;i++) {
+				var block = world.getBlock(pos[0],pos[1],pos[2]);
+				if (block.getName() == "ModpackStuff:slowIce") {
+					world.setBlock(pos[0],pos[1],pos[2],air);
+				}
+				pos[1]++;
 			}
-			pos[1]++;
+			
+			npc.executeCommand("/playsound game.potion.smash @a "+pPos[0]+" "+pPos[1]+" "+pPos[2]+" 1.0 1.1");
+			npc.setTempData("frost",0);
+		} else if (aboutToFrost >= 1) {
+			++aboutToFrost;
+			npc.setTempData("frost",aboutToFrost);
 		}
 		
-		npc.executeCommand("/playsound game.potion.smash @a "+pPos[0]+" "+pPos[1]+" "+pPos[2]+" 1.0 1.1");
-		npc.setTempData("frost",0);
-	} else if (aboutToFrost >= 1) {
-		++aboutToFrost;
-		npc.setTempData("frost",aboutToFrost);
-	}
-	
-	if (phase == "end" && health > 30) {
-		npc.setArrowResistance(1.0);
-		npc.setMeleeResistance(1.0);
-		npc.setKnockbackResistance(2.0);
-		npc.setStoredData("phase","fight");
-		npc.clearPotionEffects();
-	}
-	
-	if (count == 100 && phase == "fight") {
-		var hX = npc.getHomeX();
-		var hY = npc.getHomeY();
-		var hZ = npc.getHomeZ();
-		npc.setPosition(hX,hY,hZ);	
-		npc.executeCommand("/playsound mob.endermen.portal @a " + hX + " " + hY + " " + hZ);
-		count = 0;
-	} else {
-			++count;
-	}
-	npc.setTempData("count",count);
-	// npc.say(rand);
-	
-	if (phase == "fall") {
-		if (health > 2) {
-			npc.setHealth(health-2);
-		} else {
+		if (phase == "end" && health > 30) {
+			npc.setArrowResistance(1.0);
+			npc.setMeleeResistance(1.0);
+			npc.setKnockbackResistance(2.0);
+			npc.setStoredData("phase","fight");
+			npc.clearPotionEffects();
+		}
+		
+		if (count == 100 && phase == "fight") {
 			var hX = npc.getHomeX();
 			var hY = npc.getHomeY();
 			var hZ = npc.getHomeZ();
-			var book = world.createItem("ModpackStuff:TCAddonsTomes",0,1);
-			var wand = world.createItem("Thaumcraft:WandCasting",0,1);
-			wand.setTag("ordo",2500)
-			wand.setTag("perditio",2500)
-			wand.setTag("ignis",2500)
-			wand.setTag("aqua",2500)
-			wand.setTag("aer",2500)
-			wand.setTag("terra",2500)
-			var lootBag = world.createItem("Thaumcraft:ItemLootBag",2,2);
-			npc.setPosition(hX,hY,hZ);
-			// npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
-			npc.executeCommand('/playsoundb musicchoices:bossvictory normal @a[r=60]')
-			
-			npc.dropItem(book);
-			npc.dropItem(wand);
-			npc.dropItem(lootBag);
-						
-			if (players != null) {
-
-				var winners = players[0].getName();
-				
-				if (players.length >= 2) {
-					for (i=1;i<(players.length-1);i++) {
-						winners = winners + ", " + players[i].getName();
-					}
-					winners = winners + " and " + players[players.length-1].getName();
-				} 
-			
-				npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+winners+' defeated the Telvanni Master!"}');
+			npc.setPosition(hX,hY,hZ);	
+			npc.executeCommand("/playsound mob.endermen.portal @a " + hX + " " + hY + " " + hZ);
+			count = 0;
+		} else {
+				++count;
+		}
+		npc.setTempData("count",count);
+		// npc.say(rand);
+		
+		if (phase == "fall") {
+			if (health > 2) {
+				npc.setHealth(health-2);
 			} else {
-				npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"The Telvanni Master was defeated!"}');
+				var hX = npc.getHomeX();
+				var hY = npc.getHomeY();
+				var hZ = npc.getHomeZ();
+				var book = world.createItem("ModpackStuff:TCAddonsTomes",0,1);
+				var wand = world.createItem("Thaumcraft:WandCasting",0,1);
+				wand.setTag("ordo",2500)
+				wand.setTag("perditio",2500)
+				wand.setTag("ignis",2500)
+				wand.setTag("aqua",2500)
+				wand.setTag("aer",2500)
+				wand.setTag("terra",2500)
+				var lootBag = world.createItem("Thaumcraft:ItemLootBag",2,2);
+				npc.setPosition(hX,hY,hZ);
+				// npc.executeCommand('/playsound2 lol stop @a '+hX+' '+hY+' '+hZ);
+				npc.executeCommand('/playsoundb musicchoices:bossvictory normal @a[r=60]')
+				
+				npc.dropItem(book);
+				npc.dropItem(wand);
+				npc.dropItem(lootBag);
+							
+				if (players != null) {
+
+					var winners = players[0].getName();
+					
+					if (players.length >= 2) {
+						for (i=1;i<(players.length-1);i++) {
+							winners = winners + ", " + players[i].getName();
+						}
+						winners = winners + " and " + players[players.length-1].getName();
+					} 
+				
+					npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"'+winners+' defeated the Telvanni Master!"}');
+				} else {
+					npc.executeCommand('/tellraw @a {color:"gold",bold:1,text:"The Telvanni Master was defeated!"}');
+				}
+				npc.despawn();
 			}
-			npc.despawn();
 		}
 	}
 }
