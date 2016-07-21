@@ -466,9 +466,9 @@
     "NpcDeathSound": "minecraft:mob.irongolem.death",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 10851L,
+    "TotalTicksAlive": 10960L,
     "Rotation": [
-        -181.66336f,
+        -58.420715f,
         0.0f
     ],
     "ShowName": 1,
