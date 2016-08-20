@@ -84,6 +84,15 @@
     "LinkedNpcName": "",
     "FindShelter": 2,
     "ScriptsContainers": [
+        {
+            "Script": "if (event.getSource().getType() != 1) {
+ event.setCancelled(true);
+}",
+            "ScriptConsole": "",
+            "Type": 4,
+            "ScriptList": [
+            ]
+        }
     ],
     "Air": 300s,
     "TacticalVariant": 0,
@@ -422,7 +431,7 @@
     "AttackSpeed": 20,
     "PotionDuration": 5,
     "maxDelay": 40,
-    "ScriptEnabled": 0b,
+    "ScriptEnabled": 1b,
     "Role": 0,
     "DropChance": [
         {
@@ -482,8 +491,8 @@
     "CanLeap": 0b,
     "TransformIsActive": 0b,
     "ForgeData": {
-        "WITCInitialWidth": 1.96f,
-        "WITCInitialHeight": 3.5f
+        "WITCInitialWidth": 1.6800001f,
+        "WITCInitialHeight": 3.0f
     },
     "MovingState": 0,
     "MovingPos": 0,
@@ -514,7 +523,7 @@
     "NpcDeathSound": "minecraft:mob.irongolem.death",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 18714L,
+    "TotalTicksAlive": 22886L,
     "Rotation": [
         0.0f,
         0.0f

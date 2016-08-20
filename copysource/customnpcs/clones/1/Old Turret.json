@@ -184,7 +184,7 @@
     ],
     "NPCDialogOptions": [
     ],
-    "AggroRange": 16,
+    "AggroRange": 60,
     "DirectLOS": 0b,
     "HealthRegen": 1,
     "NpcModelData": {
@@ -294,7 +294,7 @@
         "OptionFaction1Points": 100,
         "DecreaseFaction2Points": 0b
     },
-    "pDamage": 4,
+    "pDamage": 7,
     "KilledTime": 0L,
     "AimWhileShooting": 0b,
     "CanPickUpLoot": 0b,
@@ -338,10 +338,10 @@
     "NpcDeathSound": "minecraft:random.break",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 20069L,
+    "TotalTicksAlive": 22578L,
     "Rotation": [
         111.30012f,
-        -4.5223465f
+        -28.58501f
     ],
     "ShowName": 1,
     "npcInteracting": 1b,
