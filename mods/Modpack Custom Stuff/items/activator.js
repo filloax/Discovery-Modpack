@@ -13,3 +13,7 @@ addToCreative[3] = true;
 textureFile[3] = textureFile[2];
 addToCreative[4] = false;
 textureFile[4] = "mysterypiece.png";
+addToCreative[5] = false;
+textureFile[5] = "geartop.png";
+addToCreative[6] = false;
+textureFile[6] = "gearbottom.png";

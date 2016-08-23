@@ -54,7 +54,7 @@
     "Size": 7,
     "stopAndInteract": 0b,
     "Resistances": {
-        "Arrow": 1.4084507f,
+        "Arrow": 2.0f,
         "Explosion": 1.0f,
         "Knockback": 1.5070423f,
         "Melee": 1.4084507f
@@ -491,8 +491,8 @@
     "CanLeap": 0b,
     "TransformIsActive": 0b,
     "ForgeData": {
-        "WITCInitialWidth": 1.6800001f,
-        "WITCInitialHeight": 3.0f
+        "WITCInitialWidth": 1.96f,
+        "WITCInitialHeight": 3.5f
     },
     "MovingState": 0,
     "MovingPos": 0,
@@ -523,7 +523,7 @@
     "NpcDeathSound": "minecraft:mob.irongolem.death",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 22886L,
+    "TotalTicksAlive": 25117L,
     "Rotation": [
         0.0f,
         0.0f
