@@ -3,8 +3,8 @@
 
  Directory di C:\Giochi\Minecraft\MultiMC\instances\WIP Exploration\minecraft\mods
 
-05/06/2016  15.39    <DIR>          .
-05/06/2016  15.39    <DIR>          ..
+29/08/2016  17.33    <DIR>          .
+29/08/2016  17.33    <DIR>          ..
 09/04/2016  12.42    <DIR>          1.7.10
 13/04/2016  22.46           813.329 1.7.10-Pistronics2-v0.6.4.jar
 14/01/2016  21.18           159.664 accidentallycircumstantialevents-1.11.0.jar
@@ -26,7 +26,7 @@
 02/03/2016  19.46    <DIR>          carpentersblocks
 13/04/2016  23.23           522.532 catwalks-2.0.3.jar
 01/03/2016  16.56         6.377.439 Chisel-2.9.4.10.jar
-05/06/2016  12.44        93.148.582 ChromatiCraft 1.7.10 V14b.jar
+06/06/2016  20.22        89.528.395 ChromatiCraft 1.7.10 V14c.jar
 01/03/2016  16.56           145.782 CodeChickenCore-1.7.10-1.0.7.47-universal.jar
 01/03/2016  16.56         1.223.574 CoFHCore-[1.7.10]3.1.2-325.jar
 01/03/2016  16.56           303.665 CoFHLib-[1.7.10]1.1.1-181.jar
@@ -36,14 +36,16 @@
 04/03/2016  22.38           575.929 CustomStuff2-0.11.29-MC1.7.10.jar
 26/03/2016  22.44           317.316 DefaultWorldGenerator-1.7.10-0.1-b13-universal.jar
 13/03/2016  15.45             4.764 Ding-MC1.7.10v2.jar
-05/06/2016  12.43         2.533.948 DragonAPI 1.7.10 V14b.jar
+29/08/2016  17.55            21.857 Discovery Jar-1.7.10-1.0.jar
+06/06/2016  20.21         2.539.759 DragonAPI 1.7.10 V14c.jar
 08/04/2016  14.11         8.758.618 DynamicSurroundings-1.7.10-1.0.5.6.jar
-13/04/2016  22.52           235.576 DynamicTransport-0.1.2.0.jar
+13/04/2016  22.52           235.576 DynamicTransport-0.1.2.0.jar.disabled
 01/03/2016  16.56           463.957 EnderCore-1.7.10-0.2.0.31_beta.jar
 01/03/2016  16.56         4.916.283 EnderIO-1.7.10-2.3.0.422_beta.jar
 14/01/2016  21.18           905.454 EnhancedInventories-1.7.10-1.1.8.jar
 28/02/2016  11.01           773.792 Et Futurum-1.5.4.jar
 01/03/2016  16.56         2.149.827 extrautilities-1.2.12.jar
+29/06/2016  11.41    <DIR>          extrautils
 14/03/2016  22.29           376.751 Farseek-1.0.11.jar
 05/06/2016  14.53           182.657 fastcraft-1.23.jar
 01/03/2016  16.56             7.079 FastLeafDecay-1.7.10-1.4.jar
@@ -71,7 +73,7 @@
 14/03/2016  00.07           187.881 mcjtylib-1.8.1.jar
 01/03/2016  16.56           927.376 MineTweaker3-1.7.10-3.0.10B.jar
 13/04/2016  23.24             8.951 modlist.txt
-04/03/2016  23.16    <DIR>          Modpack Custom Stuff
+26/06/2016  13.02    <DIR>          Modpack Custom Stuff
 01/03/2016  16.56           578.158 ModTweaker2-0.9.5.jar
 17/03/2016  23.56           154.694 movingworld-1.7.10-1.8.1.jar
 17/04/2016  20.15            44.118 MusicChoices-1.3_for_1.7.10.jar
@@ -95,11 +97,11 @@
 09/03/2016  00.03           603.501 QuiverBow_1.7.10_b101d.zip
 02/03/2016  19.46    <DIR>          railcraft
 01/03/2016  16.56         3.705.302 Railcraft_1.7.10-9.8.0.0.jar
-20/04/2016  23.10         4.498.612 RecurrentComplex-0.9.7.jar
+19/06/2016  14.18         4.502.760 RecurrentComplex-0.9.7.1.jar
 11/04/2016  21.02    <DIR>          Reika
 01/03/2016  16.56            11.820 ResourceLoader-1.2.jar
 14/03/2016  00.08         3.449.259 rftools-4.22.jar
-05/06/2016  12.43         7.249.610 RotaryCraft 1.7.10 V14b.jar
+06/06/2016  20.21         7.253.550 RotaryCraft 1.7.10 V14c.jar
 02/03/2016  21.59         2.125.267 RTG-1.7.10-0.7.0.jar
 13/04/2016  22.54            92.931 SlimevoidLibrary-2.0.4.7.jar
 04/04/2016  16.45            41.252 SoundFilters-0.8_for_1.7.X.jar
@@ -130,5 +132,5 @@
 13/04/2016  22.43           352.856 WR-CBE-1.7.10-1.4.1.9-universal.jar
 06/03/2016  15.52         1.361.162 YeGamolChattels-1.1.2.jar
 08/04/2016  14.45            27.281 [1.7.10]ArmorStatusHUD-client-1.28.jar
-             119 File    298.896.742 byte
-               8 Directory  187.506.704.384 byte disponibili
+             120 File    295.312.311 byte
+               9 Directory  100.214.956.032 byte disponibili

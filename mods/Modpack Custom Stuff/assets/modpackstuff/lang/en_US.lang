@@ -29,10 +29,6 @@ tile.unbreakSlab0.name=Bedrock Slab
 tile.unbreakBlock0.name=Reinforced Sandstone Bricks
 tile.unbreakBlock1.name=Reinforced Inscribed Sandstone
 tile.unbreakBlock2.name=Lapis Caelestis Cinereus (Gray) (Unbreakable)
-tile.mazeBlock0.name=Maze Sandstone Bricks
-tile.mazeBlock1.name=Maze Sandstone Bricks
-tile.mazeBlock2.name=Maze Sandstone Bricks
-tile.mazeBlock3.name=Maze Yellow Clay
 
 item.vaultSuitChest0.name=Vault Jumpsuit Body
 item.vaultSuitLegs0.name=Vault Jumpsuit Pants

@@ -21,7 +21,7 @@
     "PositionOffsetX": 5.0f,
     "LootMode": 0,
     "TransformHasAI": 0b,
-    "AttackStrenght": 6,
+    "AttackStrenght": 8,
     "PersistenceRequired": 0b,
     "id": "customnpcs.CustomNpc",
     "HealF": 30.0f,
@@ -36,6 +36,27 @@
     "LinkedNpcName": "",
     "FindShelter": 2,
     "ScriptsContainers": [
+        {
+            "Script": "/* get a random type from 3:
+1:small,weak
+2:average, default
+3:big,strong */
+var rand = Math.random()*3;
+var INT_MAX = 2147483647;
+if (rand < 1) {
+	npc.setSize(2);
+	npc.setMeleeStrength(6);
+	// npc.addPotionEffect(1,INT_MAX,0,true); //speed doesn't hide particles, disabled
+} else if (rand > 2 && rand < 3){
+	npc.setSize(4);
+	npc.setMeleeStrength(10);
+	// npc.addPotionEffect(2,INT_MAX,0,true); //slow doesn't hide particles, disabled
+}",
+            "ScriptConsole": "",
+            "Type": 0,
+            "ScriptList": [
+            ]
+        }
     ],
     "Air": 300s,
     "TacticalVariant": 0,
@@ -82,9 +103,9 @@
     "RangeAndMelee": 0,
     "pRender3D": 0b,
     "Motion": [
-        0.0d,
+        -0.002167349707621502d,
         -0.0784000015258789d,
-        0.0d
+        0.025662439618906442d
     ],
     "CombatRegen": 0,
     "pEffect": 0,
@@ -144,7 +165,7 @@
             "Name": "generic.followRange"
         },
         {
-            "Base": 6.0d,
+            "Base": 8.0d,
             "Name": "generic.attackDamage"
         }
     ],
@@ -161,7 +182,7 @@
     "NPCDialogOptions": [
     ],
     "AggroRange": 20,
-    "DirectLOS": 1b,
+    "DirectLOS": 0b,
     "HealthRegen": 0,
     "NpcModelData": {
         "LegsConfig": {
@@ -374,7 +395,7 @@
     "AttackSpeed": 20,
     "PotionDuration": 5,
     "maxDelay": 40,
-    "ScriptEnabled": 0b,
+    "ScriptEnabled": 1b,
     "Role": 0,
     "DropChance": [
         {
@@ -434,8 +455,8 @@
     "CanLeap": 0b,
     "TransformIsActive": 0b,
     "ForgeData": {
-        "WITCInitialWidth": 0.84000003f,
-        "WITCInitialHeight": 1.5f
+        "WITCInitialWidth": 1.12f,
+        "WITCInitialHeight": 2.0f
     },
     "MovingState": 1,
     "MovingPos": 0,
@@ -466,9 +487,9 @@
     "NpcDeathSound": "minecraft:mob.irongolem.death",
     "FactionID": 2,
     "Title": "",
-    "TotalTicksAlive": 10960L,
+    "TotalTicksAlive": 16177L,
     "Rotation": [
-        -58.420715f,
+        -349.63187f,
         0.0f
     ],
     "ShowName": 1,
