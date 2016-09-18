@@ -21,6 +21,8 @@ tile.mechanism5.name=Stone Bricks
 tile.mechanism6.name=Spawner
 tile.mechanism7.name=Shrinker
 tile.mechanism8.name=Enlarger
+tile.mechanism9.name=Hot Clay Block
+tile.mechanism10.name=Clay Mechanism
 tile.slowIce0.name=Magical Ice
 tile.woodDec0.name=Wooden Storage Crate <Empty>
 tile.landMine0.name=Landmine
@@ -49,6 +51,7 @@ item.activator2.name=§6Old Poppet
 item.activator3.name=§6Old Poppet
 item.activator5.name=§6Old Broken Gear
 item.activator6.name=§6Old Broken Gear
+item.activator7.name=§6Old Broken Gear
 
 
 
