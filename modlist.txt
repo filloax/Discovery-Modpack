@@ -3,8 +3,8 @@
 
  Directory di C:\Giochi\Minecraft\MultiMC\instances\WIP Exploration\minecraft\mods
 
-29/08/2016  17.33    <DIR>          .
-29/08/2016  17.33    <DIR>          ..
+17/09/2016  13.34    <DIR>          .
+17/09/2016  13.34    <DIR>          ..
 09/04/2016  12.42    <DIR>          1.7.10
 13/04/2016  22.46           813.329 1.7.10-Pistronics2-v0.6.4.jar
 14/01/2016  21.18           159.664 accidentallycircumstantialevents-1.11.0.jar
@@ -36,7 +36,7 @@
 04/03/2016  22.38           575.929 CustomStuff2-0.11.29-MC1.7.10.jar
 26/03/2016  22.44           317.316 DefaultWorldGenerator-1.7.10-0.1-b13-universal.jar
 13/03/2016  15.45             4.764 Ding-MC1.7.10v2.jar
-29/08/2016  17.55            21.857 Discovery Jar-1.7.10-1.0.jar
+21/09/2016  13.47            28.080 Discovery Jar-1.7.10-1.0.jar
 06/06/2016  20.21         2.539.759 DragonAPI 1.7.10 V14c.jar
 08/04/2016  14.11         8.758.618 DynamicSurroundings-1.7.10-1.0.5.6.jar
 13/04/2016  22.52           235.576 DynamicTransport-0.1.2.0.jar.disabled
@@ -132,5 +132,5 @@
 13/04/2016  22.43           352.856 WR-CBE-1.7.10-1.4.1.9-universal.jar
 06/03/2016  15.52         1.361.162 YeGamolChattels-1.1.2.jar
 08/04/2016  14.45            27.281 [1.7.10]ArmorStatusHUD-client-1.28.jar
-             120 File    295.312.311 byte
-               9 Directory  100.214.956.032 byte disponibili
+             120 File    295.318.534 byte
+               9 Directory  207.187.963.904 byte disponibili

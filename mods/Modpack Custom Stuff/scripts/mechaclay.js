@@ -1,4 +1,4 @@
-var ITEM_DMG = 5;
+var ITEM_DMG = 5 ;
 
 var itemCount = player.getItemCount('ModpackStuff:activator',ITEM_DMG);
 var currentItem = player.getItemName(player.getCurrentSlot());
@@ -30,9 +30,6 @@ function checkBlocks(pos) {
 }
 
 if(itemCount > 0 && currentItem == "ModpackStuff:activator" && currentMeta == ITEM_DMG) {
-	if (player.isInCreative() == false) {
-		player.remove('ModpackStuff:activator', 1, ITEM_DMG);
-	}
 	checkBlocks(oPos);
 } else {
 	player.sendMessage('It has a strange hole. Maybe it can be used to do something.');
